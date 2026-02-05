@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Objeto 2: Soluciones y Mezclas | Medicina UACH</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --uach-guinda: #8b0000;
+            --uach-oro: #d4af37;
+            --nav-blue: #1a365d;
+            --med-blue: #2b6cb0;
+            --bg-light: #f8fafc;
+            --sidebar-width: 320px;
+            --accent-green: #48bb78;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-light);
+            display: flex;
+            color: #2d3748;
+        }
+
+        /* Navigation Sidebar */
+        .sidebar {
+            width: var(--sidebar-width);
+            height: 100vh;
+            background: var(--nav-blue);
+            color: white;
+            position: fixed;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 4px 0 10px rgba(0, 0, 0, 0.2);
+            z-index: 100;
+        }
+
+        .sidebar-header {
+            padding: 30px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+
+        .sidebar-header h2 {
+            font-size: 1.2em;
+            color: var(--uach-oro);
+        }
+
+        .progress-box {
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.2);
+            margin: 15px;
+            border-radius: 12px;
+        }
+
+        .progress-bar-bg {
+            background: rgba(255, 255, 255, 0.1);
+            height: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            background: var(--accent-green);
+            width: 0%;
+            height: 100%;
+            transition: 0.5s ease;
+        }
+
+        .nav-items {
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+
+        .nav-item {
+            padding: 14px 25px;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 0.85em;
+            opacity: 0.8;
+            border-left: 4px solid transparent;
+            line-height: 1.4;
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            opacity: 1;
+        }
+
+        .nav-item.active {
+            background: #2b6cb0;
+            border-left-color: var(--uach-oro);
+            opacity: 1;
+            font-weight: 600;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            flex-grow: 1;
+            padding: 40px;
+            max-width: 1200px;
+        }
+
+        .content-section {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        .section-header {
+            background: var(--uach-guinda);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 35px;
+            margin-bottom: 30px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        h2 {
+            color: var(--nav-blue);
+            margin-bottom: 20px;
+            font-size: 1.4em;
+            border-bottom: 2px solid #f1f5f9;
+            padding-bottom: 10px;
+        }
+
+        h3 {
+            color: var(--med-blue);
+            margin: 25px 0 15px;
+            font-size: 1.1em;
+        }
+
+        .question-block {
+            margin-bottom: 30px;
+        }
+
+        .question-text {
+            font-weight: 600;
+            margin-bottom: 12px;
+            display: block;
+            color: #1a202c;
+            line-height: 1.6;
+        }
+
+        .answer-box {
+            min-height: 120px;
+            padding: 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            background: #fff;
+            outline: none;
+            transition: 0.3s;
+            line-height: 1.6;
+        }
+
+        .answer-box:focus {
+            border-color: var(--med-blue);
+            box-shadow: 0 0 0 4px rgba(66, 153, 225, 0.1);
+        }
+
+        .answer-box:empty::before {
+            content: "Escriba su respuesta detallada aquí...";
+            color: #a0aec0;
+            font-style: italic;
+        }
+
+        /* Calculators */
+        .calculator {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+        }
+
+        .calc-title {
+            font-weight: 700;
+            color: var(--nav-blue);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .calc-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .input-group label {
+            font-size: 0.85em;
+            font-weight: 600;
+            color: #4a5568;
+        }
+
+        .input-group input {
+            padding: 12px;
+            border: 1px solid #cbd5e0;
+            border-radius: 8px;
+            font-size: 1em;
+        }
+
+        .calc-result {
+            margin-top: 20px;
+            padding: 15px;
+            background: var(--nav-blue);
+            color: white;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 1.2em;
+        }
+
+        .btn-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 200;
+        }
+
+        .btn {
+            padding: 15px 25px;
+            border-radius: 50px;
+            border: none;
+            color: white;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+        }
+
+        th,
+        td {
+            border: 1px solid #e2e8f0;
+            padding: 15px;
+            text-align: left;
+        }
+
+        th {
+            background: #f1f5f9;
+            color: var(--nav-blue);
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <h2>OBJETO DE ESTUDIO 2</h2>
+            <p>Biofísica de Soluciones</p>
+        </div>
+
+        <div class="progress-box">
+            <span style="font-size: 0.8em; font-weight: 700;">PROGRESO DE LA GUÍA</span>
+            <div class="progress-bar-bg">
+                <div id="progress-fill" class="progress-bar-fill"></div>
+            </div>
+            <div style="font-size: 0.8em; text-align: right;"><span id="count">0</span> / 68 Ejercicios</div>
+        </div>
+
+        <div class="nav-items">
+            <div class="nav-item active" data-target="sec-20">💡 2.0 Actividades Preliminares</div>
+            <div class="nav-item" data-target="sec-21">🧪 2.1 Propiedades Generales</div>
+            <div class="nav-item" data-target="sec-22">🔬 2.2 Tipos y Enfoque Molecular</div>
+            <div class="nav-item" data-target="sec-24">📊 2.4 Unidades de Concentración</div>
+            <div class="nav-item" data-target="sec-25">❄️ 2.5 Propiedades Coligativas</div>
+            <div class="nav-item" data-target="sec-26">☁️ 2.6 Coloides</div>
+            <div class="nav-item" data-target="sec-evi">🏆 Evidencia Final</div>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="btn-float">
+            <button class="btn" style="background: var(--med-blue);" onclick="save(true)">💾 Guardar</button>
+            <button class="btn" style="background: #e53e3e;" onclick="reset()">🔄 Reiniciar</button>
+        </div>
+
+        <div id="sec-20" class="content-section active">
+            <div class="section-header">
+                <h1>2.0.1 Actividades Preliminares</h1>
+            </div>
+            <div class="card">
+                <p style="margin-bottom: 25px; color: #718096; font-style: italic;">
+                    "Las actividades preliminares tienen como finalidad llevarlo a la reflexión sobre el objeto de
+                    estudio a abordar. Toma como punto de partida el reconocer lo que se sabe y lo que se ignora sobre
+                    el tema, sin la necesidad de consultar referencias bibliográficas."
+                </p>
+                <div id="q-20"></div>
+            </div>
+        </div>
+
+        <div id="sec-21" class="content-section">
+            <div class="section-header">
+                <h1>2.1 Propiedades Generales</h1>
+            </div>
+            <div class="card">
+                <h2>2.1.2 Actividades de Desarrollo</h2>
+
+                <div id="q-21-des"></div>
+                <h2>2.1.3 Actividades de Aplicación</h2>
+                <div id="q-21-api"></div>
+            </div>
+        </div>
+
+        <div id="sec-22" class="content-section">
+            <div class="section-header">
+                <h1>2.2 Tipos y Enfoque Molecular</h1>
+            </div>
+            <div class="card">
+                <h2>2.2.2 Actividades de Desarrollo</h2>
+                <div id="q-22-des"></div>
+                <h2>2.2.3 Actividades de Aplicación</h2>
+                <div id="q-22-api"></div>
+            </div>
+        </div>
+
+        <div id="sec-24" class="content-section">
+            <div class="section-header">
+                <h1>2.4 Unidades de Concentración</h1>
+            </div>
+            <div class="card">
+                <h2>Calculadora de Laboratorio: Molaridad</h2>
+                <div class="calculator">
+                    <div class="calc-title">🧪 Preparación de Soluciones</div>
+                    <div class="calc-grid">
+                        <div class="input-group"><label>Masa Soluto (g)</label><input type="number" id="c-m-masa"
+                                oninput="runMolar()"></div>
+                        <div class="input-group"><label>Peso Molecular (g/mol)</label><input type="number" id="c-m-pm"
+                                oninput="runMolar()"></div>
+                        <div class="input-group"><label>Volumen Solución (mL)</label><input type="number" id="c-m-vol"
+                                oninput="runMolar()"></div>
+                    </div>
+                    <div class="calc-result" id="res-molar">Molaridad: 0.0000 M</div>
+                </div>
+                <h2>2.4.2 Actividades de Desarrollo</h2>
+                <div id="q-24-des"></div>
+                <h2>2.4.3 Actividades de Aplicación</h2>
+                <div id="q-24-api"></div>
+            </div>
+        </div>
+
+        <div id="sec-25" class="content-section">
+            <div class="section-header">
+                <h1>2.5 Propiedades Coligativas</h1>
+            </div>
+            <div class="card">
+                <h2>Calculadora de Presión Osmótica</h2>
+                <div class="calculator">
+                    <div class="calc-title">🩸 Análisis de Tonicidad</div>
+                    <div class="calc-grid">
+                        <div class="input-group"><label>Molaridad (M)</label><input type="number" id="c-p-m"
+                                oninput="runOsm()"></div>
+                        <div class="input-group"><label>Factor van't Hoff (i)</label><input type="number" id="c-p-i"
+                                value="1" oninput="runOsm()"></div>
+                        <div class="input-group"><label>Temperatura (°C)</label><input type="number" id="c-p-t"
+                                value="37" oninput="runOsm()"></div>
+                    </div>
+                    <div class="calc-result" id="res-osm">Presión Osmótica: 0.00 atm</div>
+                </div>
+
+
+                [Image of red blood cells in isotonic, hypotonic, and hypertonic solutions]
+
+                <h2>2.5.2 Actividades de Desarrollo</h2>
+                <div id="q-25-des"></div>
+                <h2>2.5.3 Actividades de Aplicación</h2>
+                <div id="q-25-api"></div>
+            </div>
+        </div>
+
+        <div id="sec-26" class="content-section">
+            <div class="section-header">
+                <h1>2.6 Coloides</h1>
+            </div>
+            <div class="card">
+                <h2>2.6.2 Actividades de Desarrollo</h2>
+                <div id="q-26-des"></div>
+            </div>
+        </div>
+
+        <div id="sec-evi" class="content-section">
+            <div class="section-header">
+                <h1>🏆 Evidencia Final</h1>
+            </div>
+            <div class="card">
+                <div id="q-evi-final"></div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const content = {
+            "20": [
+                "1. ¿Qué entiende por concepto de solución y de qué manera se diferencia este de una mezcla heterogénea?",
+                "2. Mencione tres ejemplos de soluciones encontradas en la vida cotidiana e identifique el soluto y el solvente para cada una de ellas.",
+                "3. ¿Qué factores considera que afecten la velocidad con la que un soluto se disuelve en un solvente?",
+                "4. ¿Cuál es la diferencia entre una solución concentrada y una solución diluida?",
+                "5. Mencione al menos dos unidades de medida que se utilicen para expresar la concentración de una solución.",
+                "6. ¿Por qué considera que es importante para un médico conocer la concentración exacta de una solución que se administra a un paciente?",
+                "7. ¿Por qué considera que el agua salada hierve a una temperatura diferente a la del agua pura?",
+                "8. ¿Por qué algunas sustancias se disuelven mejor en agua caliente que en agua fría?",
+                "9. ¿Qué entiende por el término 'saturación' en el contexto de las soluciones químicas?",
+                "10. ¿Por qué el suero fisiológico utilizado en los hospitales tiene una concentración específica de sal y no se utiliza simplemente agua pura?",
+                "11. Explique por qué el azúcar se disuelve en agua pero no en aceite, basándose en lo que sabe sobre la naturaleza de estas sustancias.",
+                "12. ¿Qué es la osmosis y cuál considera que es su importancia en el funcionamiento de las células del cuerpo humano?"
+            ],
+            "21-des": [
+                "1. Defina soluto, solvente y solución. ¿Cómo se describe el proceso de disolución?",
+                "2. Describa la diferencia entre un electrolito fuerte, un electrolito débil y un no-electrolito.",
+                "3. ¿Qué es la hidratación y cómo influye en la solubilidad de compuestos iónicos?",
+                "4. Explique el significado de los símbolos ⟶ y ⇆ en las ecuaciones de disociación.",
+                "5. El agua es un mal conductor de la electricidad. ¿Por qué existe el riesgo de sufrir una descarga eléctrica al tocar un aparato eléctrico con las manos mojadas?",
+                "6. Mencione cuáles son las especies (iones o moléculas) que se encuentran presentes en una solución acuosa de Na2SO4."
+            ],
+            "21-api": [
+                "1. Clasifique las siguientes sustancias como electrolito fuerte, débil o no-electrolito: H2O, KCl, HNO3, CH3COOH, C12H22O11 (sacarosa).",
+                "2. Clasifique las siguientes sustancias como electrolito fuerte, débil o no-electrolito: Ba(NO3)2, Ne, NH3, NaOH.",
+                "3. Predicción de conductividad: ¿Cuál de las siguientes soluciones conducirá mejor la electricidad y por qué: NaCl 0.1 M o CH3COOH 0.1 M?",
+                "4. Describa qué sucede a nivel molecular cuando el cloruro de potasio (KCl) se disuelve en agua."
+            ],
+            "22-des": [
+                "1. Distinga entre una solución saturada, una solución insaturada y una solución sobresaturada.",
+                "2. Explique la diferencia entre el proceso de cristalización y el proceso de precipitación.",
+                "3. Describa los tres tipos de interacciones (soluto-soluto, solvente-solvente y soluto-solvente) que determinan el grado de solubilidad."
+            ],
+            "22-api": [
+                "1. ¿Por qué el naftaleno (C10H8) es mucho más soluble en benceno que el fluoruro de cesio (CsF)?",
+                "2. Explique por qué el etanol (C2H5OH) no es soluble en ciclohexano (C6H12).",
+                "3. Acomode las siguientes sustancias en orden de solubilidad creciente en agua: O2, LiCl, Br2, Metanol (CH3OH)."
+            ],
+            "24-des": [
+                "1. Defina y proporcione las dimensiones (unidades) de: porcentaje en masa, fracción molar, molaridad y molalidad.",
+                "2. Describa el procedimiento para realizar la conversión de unidades de molaridad a molalidad cuando se conoce la densidad de la solución."
+            ],
+            "24-api": [
+                "1. Calcule el porcentaje en masa de soluto en cada una de las siguientes soluciones: a) 5.50 g de NaBr en 78.2 g de disolución, b) 31.0 g de KCl en 152 g de agua.",
+                "2. Calcule la cantidad de agua (en gramos) que se debe añadir a: a) 5.00 g de urea para preparar una solución al 16.2% en masa, b) 26.2 g de MgCl2 para preparar una solución al 1.5% en masa.",
+                "3. Calcule la molalidad de una solución preparada disolviendo 14.3 g de sacarosa (C12H22O11) en 676 g de agua.",
+                "4. ¿Cuál es la fracción molar del soluto y del solvente en una solución que contiene 25.0 g de etanol en 100 g de agua?",
+                "5. Calcule la molaridad de una solución que se preparó disolviendo 10.0 g de KOH en suficiente agua para formar 250 mL de solución.",
+                "6. Una solución de ácido sulfúrico (H2SO4) al 40% en masa tiene una densidad de 1.30 g/mL. Calcule su molaridad.",
+                "7. Describa cómo prepararía 500 mL de una solución de glucosa 0.1 M a partir de una solución de glucosa 2.0 M."
+            ],
+            "25-des": [
+                "1. ¿Qué se entiende por propiedades coligativas? ¿De qué dependen estas propiedades?",
+                "2. Explique la Ley de Raoult y bajo qué condiciones se cumple.",
+                "3. Defina presión osmótica y explique el concepto de membrana semipermeable.",
+                "4. ¿Qué es el factor de van't Hoff (i) y por qué es necesario utilizarlo para soluciones electrolíticas?"
+            ],
+            "25-api": [
+                "1. La presión de vapor del agua pura a 30°C es de 31.8 mmHg. Calcule la presión de vapor de una solución que contiene 150 g de glucosa en 500 g de agua.",
+                "2. Calcule el punto de ebullición y el punto de congelación de una solución acuosa de NaCl 0.5 m (Kb = 0.52 °C/m; Kf = 1.86 °C/m).",
+                "3. Calcule la presión osmótica (en atm) de una solución de urea (NH2)2CO 0.15 M a la temperatura corporal de 37°C."
+            ],
+            "26-des": [
+                "1. Defina qué es un coloide y cómo se clasifica según el estado de la fase dispersa y el medio dispersante.",
+                "2. Explique el Efecto Tyndall y su utilidad para distinguir soluciones de coloides.",
+                "3. ¿Cómo se estabilizan los coloides hidrofóbicos en un medio acuoso?"
+            ],
+            "evi-final": [
+                "🏆 ACTIVIDAD DE EVIDENCIA FINAL: Analice el siguiente caso clínico. Un paciente ingresa a urgencias con signos de deshidratación severa. El médico ordena la administración de una solución salina isotónica (NaCl 0.9% p/v). Basándose en lo aprendido: a) Calcule la molaridad de esta solución, b) Determine su osmolaridad teórica, c) Explique por qué esta solución es considerada isotónica con respecto al plasma sanguíneo (osmolaridad plasmática normal ≈ 290 mOsm/L)."
+            ]
+        };
+
+        function runMolar() {
+            const m = parseFloat(document.getElementById('c-m-masa').value);
+            const pm = parseFloat(document.getElementById('c-m-pm').value);
+            const v = parseFloat(document.getElementById('c-m-vol').value) / 1000;
+            if (m && pm && v) document.getElementById('res-molar').innerText = `Molaridad: ${(m / pm / v).toFixed(4)} M`;
+        }
+
+        function runOsm() {
+            const M = parseFloat(document.getElementById('c-p-m').value);
+            const i = parseFloat(document.getElementById('c-p-i').value);
+            const T = parseFloat(document.getElementById('c-p-t').value) + 273.15;
+            if (M && i && T) document.getElementById('res-osm').innerText = `Presión Osmótica: ${(i * M * 0.0821 * T).toFixed(2)} atm`;
+        }
+
+        function init() {
+            for (let key in content) {
+                const container = document.getElementById(`q-${key}`);
+                if (container) {
+                    content[key].forEach((text, i) => {
+                        container.innerHTML += `<div class="question-block"><span class="question-text">${text}</span><div class="answer-box" id="ans-${key}-${i}" contenteditable="true"></div></div>`;
+                    });
+                }
+            }
+
+            document.querySelectorAll('.nav-item').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.nav-item, .content-section').forEach(el => el.classList.remove('active'));
+                    btn.classList.add('active');
+                    document.getElementById(btn.dataset.target).classList.add('active');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            });
+
+            load();
+            document.addEventListener('input', () => save(false));
+        }
+
+        function save(manual) {
+            const data = {};
+            document.querySelectorAll('[contenteditable="true"], input').forEach(el => {
+                if (el.id) data[el.id] = el.tagName === 'INPUT' ? el.value : el.innerHTML;
+            });
+            localStorage.setItem('biofisica_uach_obj2', JSON.stringify(data));
+            track();
+            if (manual) alert("✅ Progreso del Objeto 2 guardado.");
+        }
+
+        function load() {
+            const saved = JSON.parse(localStorage.getItem('biofisica_uach_obj2') || '{}');
+            for (let id in saved) {
+                const el = document.getElementById(id);
+                if (el) {
+                    if (el.tagName === 'INPUT') el.value = saved[id];
+                    else el.innerHTML = saved[id];
+                }
+            }
+            track();
+            runMolar(); runOsm();
+        }
+
+        function track() {
+            const boxes = Array.from(document.querySelectorAll('.answer-box'));
+            const filled = boxes.filter(el => el.innerText.trim().length > 5).length;
+            document.getElementById('progress-fill').style.width = (filled / 68) * 100 + '%';
+            document.getElementById('count').innerText = filled;
+        }
+
+        function reset() {
+            if (confirm("¿Estás seguro de reiniciar todo el Objeto 2? No se puede deshacer.")) {
+                localStorage.removeItem('biofisica_uach_obj2');
+                location.reload();
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+
+</html>
