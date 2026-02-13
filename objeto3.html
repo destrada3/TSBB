@@ -418,17 +418,66 @@
         <div id="tab-calculator" class="tab-content hidden">
             <div class="card">
                 <div class="card-header" style="background:#faf5ff;color:#7c3aed">🔢 Calculadoras Biofísicas</div>
-                <div class="calculator">
-                    <h3 style="margin-bottom:1rem;font-size:1rem;">Índice de Yodo (Saturación)</h3>
+                
+                <!-- Calculator 1: Iodine -->
+                <div class="calculator" style="padding:1.5rem; border-bottom:1px solid #e5e7eb; margin-bottom:1.5rem">
+                    <h3 style="margin-bottom:0.5rem;font-size:1.1rem;color:#4b5563;">1. Índice de Yodo (Grado de Insaturación)</h3>
+                    <p style="font-size:0.9rem; color:#6b7280; margin-bottom:1rem">Mide la cantidad de yodo que reacciona con los dobles enlaces. A mayor índice, más insaturaciones.</p>
+                    
                     <div class="calc-input">
-                        <select id="calc-fatty-acid" onchange="calculateIodine()">
-                            <option value="">Selecciona Ácido Graso...</option>
-                            <option value="0">Esteárico (18:0) - Saturado</option>
-                            <option value="90">Oleico (18:1) - Monoinsaturado</option>
-                            <option value="181">Linoléico (18:2) - Poliinsaturado</option>
+                        <label style="display:block; margin-bottom:0.5rem; font-weight:600; font-size:0.9rem;">Selecciona un Ácido Graso:</label>
+                        <select id="calc-fatty-acid" onchange="calculateIodine()" style="width:100%; padding:0.75rem; border-radius:0.5rem; border:1px solid #d1d5db; background:white;">
+                            <option value="">-- Selecciona --</option>
+                            <option value="0">Ácido Esteárico (18:0) - Saturado</option>
+                            <option value="0">Ácido Palmítico (16:0) - Saturado</option>
+                            <option value="90">Ácido Oleico (18:1) - Monoinsaturado</option>
+                            <option value="181">Ácido Linoléico (18:2) - Poliinsaturado (ω-6)</option>
+                            <option value="273">Ácido Linolénico (18:3) - Poliinsaturado (ω-3)</option>
+                            <option value="320">Ácido Araquidónico (20:4) - Poliinsaturado (ω-6)</option>
                         </select>
                     </div>
-                    <div class="calc-result" id="calc-result" style="display:none"><div class="calc-result-value" id="calc-value">--</div><div id="calc-interpretation"></div></div>
+                    
+                    <div class="calc-result" id="calc-result" style="display:none; background:#f0fdf4; border:1px solid #bbf7d0; border-radius:0.5rem; padding:1rem; margin-top:1rem;">
+                        <div style="font-size:0.85rem; color:#6b7280; text-transform:uppercase; letter-spacing:0.5px;">Resultado</div>
+                        <div class="calc-result-value" id="calc-value" style="font-size:1.5rem; font-weight:700; color:#15803d; margin:0.25rem 0;">--</div>
+                        <div id="calc-interpretation" style="font-weight:500; color:#166534;"></div>
+                    </div>
+                </div>
+
+                <!-- Calculator 2: Melting Point -->
+                <div class="calculator" style="padding:1.5rem;">
+                    <h3 style="margin-bottom:0.5rem;font-size:1.1rem;color:#4b5563;">2. Estimador de Punto de Fusión</h3>
+                    <p style="font-size:0.9rem; color:#6b7280; margin-bottom:1rem">Simula cómo la longitud de la cadena y los dobles enlaces afectan la temperatura a la que una grasa se vuelve líquida.</p>
+                    
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:1rem; margin-bottom:1rem;">
+                        <div>
+                            <label style="display:block; margin-bottom:0.5rem; font-weight:600; font-size:0.9rem;">Carbonos:</label>
+                            <input type="number" id="calc-chain-length" min="4" max="24" value="18" oninput="calculateMeltingPoint()" style="width:100%; padding:0.5rem; border-radius:0.5rem; border:1px solid #d1d5db;">
+                        </div>
+                        <div>
+                            <label style="display:block; margin-bottom:0.5rem; font-weight:600; font-size:0.9rem;">Dobles Enlaces:</label>
+                            <input type="number" id="calc-double-bonds" min="0" max="6" value="0" oninput="calculateMeltingPoint()" style="width:100%; padding:0.5rem; border-radius:0.5rem; border:1px solid #d1d5db;">
+                        </div>
+                    </div>
+                    
+                    <div style="margin-bottom:1rem;">
+                        <label style="display:block; margin-bottom:0.5rem; font-weight:600; font-size:0.9rem;">Configuración:</label>
+                        <select id="calc-config" onchange="calculateMeltingPoint()" style="width:100%; padding:0.5rem; border-radius:0.5rem; border:1px solid #d1d5db; background:white;">
+                            <option value="cis">Cis (Natural - Curvo)</option>
+                            <option value="trans">Trans (Industrial - Recto)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="calc-result" id="calc-mp-result" style="display:block; background:#f8fafc; border:1px solid #e2e8f0; border-radius:0.5rem; padding:1rem;">
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <div>
+                                <div style="font-size:0.85rem; color:#6b7280;">Punto de Fusión Estimado:</div>
+                                <div class="calc-result-value" id="calc-mp-value" style="font-size:1.8rem; font-weight:700; color:#334155;">70 °C</div>
+                            </div>
+                            <div id="calc-mp-state" style="font-size:2.5rem;">🧱</div>
+                        </div>
+                        <div id="calc-mp-interpretation" style="font-weight:600; color:#475569; margin-top:0.5rem; padding-top:0.5rem; border-top:1px dashed #cbd5e1;">Sólido a temperatura ambiente (25°C)</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1049,14 +1098,73 @@ function renderFlashcards() {
     document.getElementById('flashcard-container').innerHTML = h;
 }
 
-// Calculadora
+// Calculadora Iodine
 function calculateIodine() {
     const v = document.getElementById('calc-fatty-acid').value;
     const r = document.getElementById('calc-result');
-    if(!v) { r.style.display='none'; return; }
+    
+    if(v === "") { 
+        r.style.display='none'; 
+        return; 
+    }
+    
     r.style.display='block';
-    document.getElementById('calc-value').innerText = v;
-    document.getElementById('calc-interpretation').innerText = v==0?'Saturado':v<100?'Monoinsaturado':'Poliinsaturado';
+    document.getElementById('calc-value').innerText = "Índice: " + v;
+    
+    let interp = "";
+    if(v == 0) interp = "Saturado (Sin dobles enlaces)";
+    else if(v < 100) interp = "Monoinsaturado (1 doble enlace)";
+    else interp = "Poliinsaturado (Múltiples dobles enlaces)";
+    
+    document.getElementById('calc-interpretation').innerText = interp;
+}
+
+// Calculadora Melting Point
+function calculateMeltingPoint() {
+    const c = parseInt(document.getElementById('calc-chain-length').value) || 0;
+    const b = parseInt(document.getElementById('calc-double-bonds').value) || 0;
+    const cfg = document.getElementById('calc-config').value;
+    
+    // Algoritmo simplificado para propósitos educativos
+    // Base: 18:0 (Esteárico) es approx 70°C. 
+    // Cada carbono extra añade ~2-3°C (simplificado).
+    // Cada doble enlace CIS reduce drásticamente (~ -30°C el primero, menos los siguientes).
+    // Trans reduce mucho menos.
+    
+    let baseline = 70; // Para C18
+    let carbonEffect = (c - 18) * 5; // Ajuste por longitud
+    
+    let bondEffect = 0;
+    if (b > 0) {
+        if (cfg === 'cis') {
+            bondEffect = -(b * 25); // Cis baja mucho el PF
+            if(b > 1) bondEffect -= 10; // Efecto acumulativo
+        } else {
+            bondEffect = -(b * 5); // Trans baja poco (se parece a saturado)
+        }
+    }
+    
+    let mp = baseline + carbonEffect + bondEffect;
+    
+    // Limites lógicos para la demo
+    if (c < 4) mp = -50; 
+    
+    const valEl = document.getElementById('calc-mp-value');
+    const stateEl = document.getElementById('calc-mp-state');
+    const intEl = document.getElementById('calc-mp-interpretation');
+    const resEl = document.getElementById('calc-mp-result');
+    
+    valEl.innerText = "~" + mp.toFixed(1) + " °C";
+    
+    if(mp > 25) {
+        stateEl.innerText = "🧱";
+        intEl.innerText = "Sólido a temperatura ambiente (25°C)";
+        intEl.style.color = "#b91c1c"; // Rojo/Duro
+    } else {
+        stateEl.innerText = "💧";
+        intEl.innerText = "Líquido a temperatura ambiente (25°C)";
+        intEl.style.color = "#0369a1"; // Azul/Liquido
+    }
 }
 
 document.addEventListener('DOMContentLoaded', init);
