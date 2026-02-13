@@ -187,6 +187,20 @@
     .modal-content {background:white;border-radius:1rem;padding:2rem;max-width:500px;margin:1rem;box-shadow:0 20px 25px -5px rgba(0,0,0,0.3); animation: slideIn 0.3s ease-out;}
     @keyframes slideIn { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
+    /* Flashcards Mejoradas */
+    .flashcard-grid {display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1.5rem;margin:2rem 0}
+    .flashcard {background:white;border:1px solid #e5e7eb;border-radius:1rem;padding:2rem;text-align:center;cursor:pointer;transition:all 0.3s cubic-bezier(0.4, 0, 0.2, 1);box-shadow:0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);min-height:220px;display:flex;align-items:center;justify-content:center;flex-direction:column;position:relative;overflow:hidden}
+    .flashcard:hover {transform:translateY(-5px);box-shadow:0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);border-color:var(--color-primary)}
+    .flashcard-icon {font-size:2.5rem;margin-bottom:1rem;transition:transform 0.5s}
+    .flashcard:hover .flashcard-icon {transform:rotateY(180deg)}
+    .flashcard-front {font-weight:700;color:#111827;font-size:1.1rem;line-height:1.5}
+    .flashcard-back {display:none;color:#4b5563;font-size:1rem;line-height:1.6;animation:fadeIn 0.3s ease-in}
+    .flashcard.flipped {background:#fef2f2;border-color:var(--color-primary)}
+    .flashcard.flipped .flashcard-front {display:none}
+    .flashcard.flipped .flashcard-back {display:block}
+    .flashcard.flipped .flashcard-icon {display:none}
+    @keyframes fadeIn {from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
     @media (max-width: 768px) {
         .stats {display:none}
         .simulator-grid {grid-template-columns:1fr}
@@ -294,7 +308,7 @@
             <div class="tab" onclick="showTab('drag-drop')">🎯 Clasificar</div>
             <div class="tab" onclick="showTab('ejercicios')">✍️ Ejercicios (Completo)</div>
             <div class="tab" onclick="showTab('calculator')">🔢 Calculadora</div>
-            <div class="tab" onclick="showTab('flashcards')">🎴 Flashcards</div>
+            <div class="tab" onclick="showTab('flashcards')">🎴 Flashcards (40 Tarjetas)</div>
         </div>
 
         <!-- TAB: QUIZZES -->
@@ -422,7 +436,7 @@
         <!-- TAB: FLASHCARDS -->
         <div id="tab-flashcards" class="tab-content hidden">
             <div class="card">
-                <div class="card-header" style="background:#fef2f2;color:#991b1b">🎴 Repaso Rápido</div>
+                <div class="card-header" style="background:#fef2f2;color:#991b1b">🎴 Repaso Rápido (40 Tarjetas)</div>
                 <div style="padding:1.5rem"><div class="flashcard-grid" id="flashcard-container"></div></div>
             </div>
         </div>
@@ -668,14 +682,46 @@ var lipidsData = [
 ];
 
 var flashcardsData = [
-    {front: "¿Qué son los lípidos?", back: "Biomoléculas insolubles en agua, solubles en solventes orgánicos."},
-    {front: "Diferencia cis vs trans", back: "CIS: Curvo (natural). TRANS: Recto (industrial/nocivo)."},
-    {front: "Función del colesterol", back: "Regula fluidez de membrana y precursor de esteroides."},
-    {front: "¿Qué son eicosanoides?", back: "Señalizadores locales (inflamación) derivados del ác. araquidónico."},
-    {front: "Quilomicrones", back: "Transportan lípidos de la dieta desde el intestino a los tejidos."},
-    {front: "Vaina de mielina", back: "Aislante eléctrico rico en esfingolípidos que recubre axones."},
-    {front: "Sales biliares", back: "Detergentes biológicos que emulsionan grasas."},
-    {front: "LDL vs HDL", back: "LDL: Colesterol a tejidos (riesgo). HDL: Colesterol al hígado (protección)."}
+    {front: "Lípidos", back: "Biomoléculas insolubles en agua, solubles en solventes orgánicos (apolares)."},
+    {front: "Ácido Graso Saturado", back: "Cadena hidrocarbonada con enlaces simples (recta). Sólido a T° ambiente."},
+    {front: "Ácido Graso Insaturado", back: "Tiene uno o más dobles enlaces. Líquido a T° ambiente (si es cis)."},
+    {front: "Configuración Cis", back: "Hidrógenos del mismo lado del doble enlace. Causa curvatura (fluidez)."},
+    {front: "Configuración Trans", back: "Hidrógenos en lados opuestos. Cadena recta (rígida/nociva)."},
+    {front: "Ácidos Grasos Esenciales", back: "Linoleico (ω-6) y Alfa-linolénico (ω-3). El cuerpo no los sintetiza."},
+    {front: "Triacilglicerol (TAG)", back: "Glicerol + 3 Ácidos Grasos. Principal reserva de energía."},
+    {front: "Saponificación", back: "Hidrólisis alcalina de grasas para producir jabón y glicerol."},
+    {front: "Ceras", back: "Ésteres de ácido graso y alcohol de cadena larga. Impermeabilizantes."},
+    {front: "Fosfolípidos", back: "Lípidos anfipáticos principales de membranas. Forman bicapas."},
+    {front: "Anfipático", back: "Molécula con una parte hidrofílica (polar) y otra hidrofóbica (apolar)."},
+    {front: "Surfactante Pulmonar", back: "Rico en DPPC. Reduce tensión superficial alveolar (evita colapso)."},
+    {front: "Esfingosina", back: "Aminoalcohol de cadena larga, base de los esfingolípidos."},
+    {front: "Ceramida", back: "Esfingosina + Ácido Graso (unido por enlace amida)."},
+    {front: "Esfingomielina", back: "Fosfolípido/Esfingolípido en vaina de mielina (aislante nervioso)."},
+    {front: "Cerebrósido", back: "Ceramida + 1 azúcar (glucosa o galactosa)."},
+    {front: "Gangliósido", back: "Ceramida + Oligosacárido complejo con ácido siálico."},
+    {front: "Enfermedad de Tay-Sachs", back: "Acumulación de Gangliósido GM2 por falta de Hexosaminidasa A."},
+    {front: "Enfermedad de Gaucher", back: "Acumulación de Glucocerebrósido por falta de Beta-glucosidasa."},
+    {front: "Isopreno", back: "Unidad de 5 carbonos base de terpenos y esteroides."},
+    {front: "Colesterol", back: "Esteroide de 27 carbonos. Regula fluidez de membrana."},
+    {front: "Sales Biliares", back: "Derivados del colesterol. Emulsionan grasas en el intestino."},
+    {front: "Vitamina D", back: "Derivado del colesterol sintetizado con luz UV. Regula calcio."},
+    {front: "Hormonas Esteroideas", back: "Cortisol, Aldosterona, Sex hormones. Derivan del colesterol."},
+    {front: "Ácido Araquidónico", back: "Precursor de eicosanoides (20 carbonos, ω-6)."},
+    {front: "Prostaglandinas", back: "Mediadores locales de inflamación, dolor y fiebre."},
+    {front: "Tromboxanos", back: "Promueven agregación plaquetaria y vasoconstricción."},
+    {front: "Leucotrienos", back: "Mediadores de asma y alergia (broncoconstricción)."},
+    {front: "COX (Ciclooxigenasa)", back: "Enzima que convierte araquidónico en prostaglandinas. Diana de aspirina."},
+    {front: "Lipasa Pancreática", back: "Enzima principal de digestión de TAGs en intestino."},
+    {front: "Emulsificación", back: "Proceso de romper grandes gotas de grasa en micelas (por bilis)."},
+    {front: "Quilomicrones", back: "Transportan grasa dietética (exógena) desde intestino a tejidos."},
+    {front: "VLDL", back: "Transporta grasa endógena (sintetizada en hígado) a tejidos."},
+    {front: "LDL (Malo)", back: "Transporta colesterol a tejidos. Exceso causa aterosclerosis."},
+    {front: "HDL (Bueno)", back: "Transporte reverso de colesterol (tejidos -> hígado)."},
+    {front: "LPL (Lipoproteína Lipasa)", back: "Enzima capilar que libera ácidos grasos de quilomicrones/VLDL."},
+    {front: "Aterosclerosis", back: "Acumulación de placa lipídica en paredes arteriales."},
+    {front: "Estatinas", back: "Fármacos que inhiben HMG-CoA reductasa (bajan síntesis colesterol)."},
+    {front: "Omega-3", back: "Antiinflamatorios, cardiosaludables (EPA, DHA)."},
+    {front: "Fosfatidilserina", back: "En cara interna membrana. Si sale, señala apoptosis ('cómeme')."}
 ];
 
 var achievements = {
@@ -992,7 +1038,14 @@ function updateStats() {
 // Flashcards
 function renderFlashcards() {
     let h = '';
-    flashcardsData.forEach(c => h+=`<div class="flashcard" onclick="this.classList.toggle('flipped')"><div class="flashcard-front">${c.front}</div><div class="flashcard-back">${c.back}</div></div>`);
+    flashcardsData.forEach(c => {
+        h += `<div class="flashcard" onclick="this.classList.toggle('flipped')">
+            <div class="flashcard-icon">🧬</div>
+            <div class="flashcard-front">${c.front}</div>
+            <div class="flashcard-back">${c.back}</div>
+            <div style="margin-top:1rem;font-size:0.75rem;color:#9ca3af;text-transform:uppercase;letter-spacing:1px">Click para voltear</div>
+        </div>`;
+    });
     document.getElementById('flashcard-container').innerHTML = h;
 }
 
