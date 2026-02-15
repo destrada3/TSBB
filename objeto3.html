@@ -3,20 +3,21 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Biofísica UACH - Objeto 3: Lípidos y Membranas (Master Version)</title>
+<title>Biofísica UACH - Objeto 3: Lípidos y Transporte (Versión Completa)</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
 <style>
     /* =========================================
-       ESTILOS GENERALES
+       ESTILOS GENERALES Y VARIABLES
        ========================================= */
     :root {
-        --color-primary: #7f1d1d;
+        --color-primary: #7f1d1d; /* Rojo UACH */
         --color-primary-dark: #991b1b;
         --color-bg: #f3f4f6;
-        --color-sat: #15803d;
-        --color-cis: #2563eb;
-        --color-trans: #dc2626;
-        --color-chol: #7c3aed;
+        --color-sat: #15803d; /* Verde */
+        --color-cis: #2563eb; /* Azul */
+        --color-trans: #dc2626; /* Rojo Alerta */
+        --color-chol: #7c3aed; /* Púrpura */
+        --card-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
     }
 
     * {margin:0;padding:0;box-sizing:border-box}
@@ -26,7 +27,7 @@
 
     /* Loading Overlay */
     .loading {position:fixed;inset:0;background:#f3f4f6;display:flex;align-items:center;justify-content:center;z-index:100;flex-direction:column;gap:1rem}
-    .spinner {width:40px;height:40px;border:4px solid var(--color-primary);border-top-color:transparent;border-radius:50%;animation:spin 1s linear infinite}
+    .spinner {width:50px;height:50px;border:5px solid var(--color-primary);border-top-color:transparent;border-radius:50%;animation:spin 1s linear infinite}
     @keyframes spin {to{transform:rotate(360deg)}}
 
     /* Navbar */
@@ -44,19 +45,13 @@
     .stat-label {font-size:0.625rem;color:#6b7280;text-transform:uppercase}
     .progress {width:8rem}
     .progress-bar {height:0.5rem;background:#e5e7eb;border-radius:9999px;overflow:hidden;margin-top:0.25rem}
-    .progress-fill {height:100%;background:var(--color-primary);transition:width 0.3s;width:0%}
+    .progress-fill {height:100%;background:var(--color-primary);transition:width 0.5s cubic-bezier(0.4, 0, 0.2, 1);width:0%}
 
     /* Main Content */
     main {padding-top:5rem;padding-bottom:5rem}
-    .hero {background:linear-gradient(135deg,var(--color-primary),#991b1b);color:white;padding:2rem;border-radius:1rem;margin-bottom:2rem;position:relative;overflow:hidden}
-    .hero::before {content:'';position:absolute;top:-50%;right:-10%;width:300px;height:300px;background:rgba(255,255,255,0.1);border-radius:50%;z-index:0}
+    .hero {background:linear-gradient(135deg,var(--color-primary),#991b1b);color:white;padding:2rem;border-radius:1rem;margin-bottom:2rem;position:relative;overflow:hidden; box-shadow: var(--card-shadow);}
     .hero-content {position:relative;z-index:1}
     .hero h2 {font-size:1.875rem;font-weight:700;margin-bottom:0.5rem}
-    .btn {display:inline-flex;align-items:center;gap:0.5rem;padding:0.625rem 1.25rem;border-radius:0.5rem;font-weight:600;cursor:pointer;border:none;font-size:0.875rem;transition:all 0.2s}
-    .btn-white {background:white;color:var(--color-primary)}
-    .btn-white:hover {background:#f9fafb;transform:translateY(-1px)}
-    .btn-outline {background:rgba(255,255,255,0.1);color:white;border:1px solid rgba(255,255,255,0.3)}
-    .btn-outline:hover {background:rgba(255,255,255,0.2)}
 
     /* Tabs */
     .tabs {display:flex;gap:0.5rem;margin-bottom:2rem;background:white;padding:0.5rem;border-radius:0.75rem;box-shadow:0 1px 3px rgba(0,0,0,0.1);overflow-x:auto}
@@ -65,21 +60,26 @@
     .tab.active {background:var(--color-primary);color:white}
 
     /* Cards */
-    .card {background:white;border-radius:0.75rem;box-shadow:0 1px 3px rgba(0,0,0,0.1);border:1px solid #e5e7eb;margin-bottom:1.5rem;overflow:hidden}
+    .card {background:white;border-radius:0.75rem;box-shadow:var(--card-shadow);border:1px solid #e5e7eb;margin-bottom:1.5rem;overflow:hidden}
     .card-header {padding:1rem 1.5rem;border-bottom:1px solid #e5e7eb;background:#f9fafb;font-weight:700;display:flex;align-items:center;gap:0.5rem}
 
-    /* Simulator Styles */
+    /* =========================================
+       ESTILOS DEL SIMULADOR 1 (MEMBRANA)
+       ========================================= */
     .simulator-grid {display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; padding: 1.5rem;}
     .lipid-selector {display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 0.5rem; padding: 1rem;}
-    .lipid-btn {padding: 0.75rem; border: 2px solid #e5e7eb; border-radius: 0.75rem; background: white; cursor: pointer; transition: all 0.2s; text-align: center; font-size: 0.75rem; font-weight: 500; display: flex; flex-direction: column; align-items: center;}
-    .lipid-btn.active {border-color: var(--color-primary); background: #fef2f2;}
+    .lipid-btn {padding: 0.75rem; border: 2px solid #e5e7eb; border-radius: 0.75rem; background: white; cursor: pointer; transition: all 0.2s; text-align: center; font-size: 0.75rem; font-weight: 500; display: flex; flex-direction: column; align-items: center; gap:0.5rem;}
+    .lipid-btn:hover {border-color: #cbd5e1;}
+    .lipid-btn.active {border-color: var(--color-primary); background: #fef2f2; box-shadow: 0 0 0 2px rgba(127,29,29,0.1);}
+    
     .structure-viewer {min-height: 250px; background: #fafafa; border-radius: 0.75rem; padding: 1rem; border: 2px solid #e5e7eb; display: flex; justify-content: center; align-items: center;}
-    .membrane-simulation {height: 350px; background: linear-gradient(to bottom, #dbeafe, white, #dbeafe); border-radius: 0.75rem; padding: 1rem; position: relative; overflow: hidden; border: 2px solid #e5e7eb;}
+    
+    .membrane-simulation {height: 300px; background: linear-gradient(to bottom, #dbeafe, white, #dbeafe); border-radius: 0.75rem; padding: 1rem; position: relative; overflow: hidden; border: 2px solid #e5e7eb;}
     .bilayer {height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 4px;}
     .layer {display: flex; justify-content: center; align-items: flex-end; gap: 2px; height: 100px; width: 100%;}
     .layer.upper {transform: scaleY(-1);}
     
-    /* Molecules */
+    /* Molecules Animation */
     .lipid-molecule {display: flex; flex-direction: column; align-items: center; width: 22px; position: relative; transform-origin: top center;}
     .head {width: 16px; height: 16px; border-radius: 50%; margin-bottom: -2px; z-index: 2; background: radial-gradient(circle, #fbbf24, #d97706);}
     .tail-container {width: 100%; display: flex; justify-content: center; gap: 2px;}
@@ -87,36 +87,136 @@
     .tail.straight {background: linear-gradient(to bottom, var(--color-sat), #14532d);}
     .tail.cis {background: linear-gradient(135deg, var(--color-cis), #1e3a8a); border-radius: 0 0 10px 10px; transform: rotate(-15deg) translateX(-5px); height: 50px;}
     .tail.trans {background: linear-gradient(to bottom, var(--color-trans), #7f1d1d);}
-    .tail.cholesterol {height: 35px; width: 6px; background: var(--color-chol); margin-top: 10px;}
+    .tail.cholesterol {height: 35px; width: 8px; background: var(--color-chol); margin-top: 10px; border-radius: 4px;}
 
-    /* Animations */
     @keyframes sway { 0% { transform: rotate(-5deg); } 50% { transform: rotate(5deg); } 100% { transform: rotate(-5deg); } }
     @keyframes vibrate { 0% { transform: translateX(-1px); } 50% { transform: translateX(1px); } 100% { transform: translateX(-1px); } }
-    .fluid-high .tail-container { animation: sway 2s infinite ease-in-out; }
-    .fluid-low .tail-container { animation: vibrate 0.2s infinite linear; }
-    .fluid-med .tail-container { animation: sway 4s infinite ease-in-out; }
+    .fluid-high .tail-container { animation: sway 1s infinite ease-in-out; }
+    .fluid-med .tail-container { animation: sway 3s infinite ease-in-out; }
+    .fluid-low .tail-container { animation: vibrate 0.1s infinite linear; }
 
-    /* Comparison & Info */
-    .comparison-grid {display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; padding: 1.5rem;}
-    .comparison-card {padding: 0.75rem; border: 2px solid #e5e7eb; border-radius: 0.75rem; text-align: center; font-size: 0.8rem;}
-    .info-panel {background: #eff6ff; border-left: 4px solid #3b82f6; padding: 1rem; border-radius: 0.5rem; margin-top: 1rem;}
-    .info-panel.warning {background: #fffbeb; border-left-color: #f59e0b;}
-
-    /* Nervous System Panel Styles */
-    .nervous-system-panel {background: linear-gradient(135deg, #fef3c7, #fef9c3); border: 2px solid #fbbf24; border-radius: 1rem; padding: 1.5rem; margin: 1.5rem;}
+    /* Nervous System Panel */
+    .nervous-system-panel {background: linear-gradient(135deg, #fef3c7, #fef9c3); border: 2px solid #fbbf24; border-radius: 1rem; padding: 1.5rem; margin: 0 1.5rem 1.5rem 1.5rem;}
     .effects-grid {display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1rem;}
     .effect-card {background: white; padding: 1rem; border-radius: 0.5rem; border-left: 4px solid #f59e0b; box-shadow: 0 2px 4px rgba(0,0,0,0.05);}
     .effect-card.severe {border-left-color: #ef4444;}
-    .effect-card h4 {margin-bottom: 0.5rem; color: #1f2937;}
-    .effect-card p {font-size: 0.85rem; color: #4b5563;}
 
-    /* Quizzes & Questions */
+    /* =========================================
+       ESTILOS DEL SIMULADOR 2 (LIPOPROTEÍNAS - NUEVO)
+       ========================================= */
+    .lipoprotein-stage {
+        background: #0f172a; /* Fondo oscuro espacial */
+        border-radius: 1rem;
+        padding: 2rem;
+        position: relative;
+        height: 350px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        margin: 1.5rem;
+        box-shadow: inset 0 0 50px rgba(0,0,0,0.5);
+    }
+    .lipoprotein-core {
+        width: 180px;
+        height: 180px;
+        background: radial-gradient(circle, #fde047 0%, #ca8a04 100%); /* Núcleo */
+        border-radius: 50%;
+        position: relative;
+        border: 4px solid #4ade80; /* Capa fosfolípidos */
+        box-shadow: 0 0 30px rgba(74, 222, 128, 0.3);
+        transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); /* Rebote */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .apoprotein {
+        position: absolute;
+        background: #ef4444;
+        border-radius: 10px;
+        color: white;
+        font-size: 0.7rem;
+        font-weight: bold;
+        padding: 4px 8px;
+        z-index: 5;
+        box-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        white-space: nowrap;
+    }
+    .lp-label {
+        position: absolute;
+        bottom: 15px;
+        left: 15px;
+        color: white;
+        background: rgba(255,255,255,0.1);
+        backdrop-filter: blur(4px);
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        border: 1px solid rgba(255,255,255,0.2);
+    }
+    .component-legend {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        font-size: 0.8rem;
+        padding: 0 1.5rem 1.5rem 1.5rem;
+        justify-content: center;
+    }
+    .legend-item { display: flex; align-items: center; gap: 0.5rem; }
+    .dot { width: 12px; height: 12px; border-radius: 50%; border: 1px solid rgba(0,0,0,0.1); }
+
+    /* ESTILOS DE LA TABLA COMPARATIVA */
+    .lp-details {
+        margin: 0 1.5rem 1.5rem 1.5rem;
+        border: 1px solid #e5e7eb;
+        border-radius: 0.5rem;
+        overflow: hidden;
+    }
+    .lp-summary {
+        padding: 1rem;
+        background: #f8fafc;
+        font-weight: 600;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: #1e40af;
+    }
+    .lp-summary:hover { background: #f1f5f9; }
+    .lp-table-container {
+        overflow-x: auto;
+        padding: 1rem;
+        background: white;
+    }
+    .lp-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.8rem;
+        min-width: 600px;
+    }
+    .lp-table th, .lp-table td {
+        padding: 0.75rem;
+        border-bottom: 1px solid #e5e7eb;
+        text-align: left;
+    }
+    .lp-table th {
+        background-color: #eff6ff;
+        color: #1e3a8a;
+        font-weight: 700;
+        position: sticky;
+        left: 0;
+    }
+    .lp-table tr:nth-child(even) { background-color: #f9fafb; }
+    .lp-table tr:hover { background-color: #f0f9ff; }
+
+    /* =========================================
+       UI ELEMENTS: QUIZ, DRAG, ETC.
+       ========================================= */
     .quiz-container {padding:1.5rem}
     .quiz-question {margin-bottom:2rem; background: #fff; padding: 1.5rem; border-radius: 0.5rem; box-shadow: 0 2px 4px rgba(0,0,0,0.05); border: 1px solid #f3f4f6;}
     .quiz-q {font-weight:700;margin-bottom:1rem;font-size:1.1rem; color: #1f2937;}
     .quiz-option {padding:1rem;border:2px solid #e5e7eb;border-radius:0.5rem;cursor:pointer;transition:all 0.2s;background:white; margin-bottom: 0.5rem;}
     .quiz-option:hover {border-color:var(--color-primary);background:#fef2f2}
-    .quiz-option.selected {border-color:var(--color-primary);background:#fee2e2}
     .quiz-option.correct {border-color:#22c55e;background:#f0fdf4}
     .quiz-option.incorrect {border-color:#ef4444;background:#fef2f2}
     .quiz-feedback {margin-top:1rem;padding:1rem;border-radius:0.5rem;font-size:0.9rem}
@@ -131,80 +231,50 @@
     .drop-zone.over {border-color:var(--color-primary);background:#fef2f2}
     .draggables {display:flex;flex-wrap:wrap;gap:0.75rem;padding:1rem;background:#f9fafb;border-radius:0.5rem;margin-bottom:1rem}
     .draggable {padding:0.5rem 0.75rem;background:white;border:1px solid #d1d5db;border-radius:0.5rem;cursor:grab;font-size:0.85rem;font-weight:600; box-shadow: 0 1px 2px rgba(0,0,0,0.05);}
-    .draggable:hover {border-color:var(--color-primary);transform:translateY(-1px); box-shadow: 0 4px 6px rgba(0,0,0,0.1);}
-    .draggable.dragging {opacity:0.5}
     .draggable.placed {background:#f0fdf4;border-color:#86efac; cursor: default;}
 
-    /* Ejercicios */
-    .question-list {padding:1.5rem}
-    .question-item {margin-bottom:2rem;padding-left:1.5rem;border-left:4px solid #fbbf24;transition:all 0.3s}
-    .question-item.completed {border-left-color:#22c55e;background:#f0fdf4;padding:1rem;border-radius:0 0.5rem 0.5rem 0}
-    .question-text {font-weight:600;margin-bottom:0.75rem;display:block; color: #374151;}
-    textarea {width:100%;padding:1rem;border:1px solid #d1d5db;border-radius:0.5rem;font-family:inherit;font-size:0.9rem;resize:vertical;min-height:120px; transition: border 0.2s;}
+    /* Inputs & Textareas */
+    textarea {width:100%;padding:1rem;border:1px solid #d1d5db;border-radius:0.5rem;font-family:inherit;font-size:0.9rem;resize:vertical;min-height:100px; transition: border 0.2s;}
     textarea:focus {outline:none;border-color:var(--color-primary);box-shadow:0 0 0 3px rgba(127,29,29,0.1)}
+    .question-item {margin-bottom:2rem;padding-left:1rem;border-left:4px solid #e5e7eb;}
+    .question-item.completed {border-left-color: #22c55e;}
 
-    /* Save System UI */
+    /* Flashcards */
+    .flashcard-grid {display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1.5rem}
+    .flashcard {background:white;border:1px solid #e5e7eb;border-radius:1rem;padding:2rem;text-align:center;cursor:pointer;transition:transform 0.6s;transform-style:preserve-3d;position:relative;height:220px;perspective:1000px;}
+    .flashcard-inner {position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.6s; transform-style: preserve-3d; }
+    .flashcard:hover .flashcard-inner { transform: rotateY(10deg); }
+    .flashcard.flipped .flashcard-inner { transform: rotateY(180deg); }
+    .flashcard-front, .flashcard-back { position: absolute; width: 100%; height: 100%; -webkit-backface-visibility: hidden; backface-visibility: hidden; display: flex; align-items: center; justify-content: center; flex-direction: column; padding: 1rem; border-radius: 1rem; }
+    .flashcard-front { background-color: #fff; color: black; }
+    .flashcard-back { background-color: #fef2f2; color: #7f1d1d; transform: rotateY(180deg); border: 1px solid var(--color-primary); }
+
+    /* Save UI */
     .save-system-fab {position:fixed;bottom:2rem;right:2rem;z-index:90;}
-    .fab-button {
-        width:3.5rem;height:3.5rem;border-radius:50%;background:var(--color-primary);color:white;
-        border:none;box-shadow:0 4px 12px rgba(0,0,0,0.3);cursor:pointer;
-        display:flex;align-items:center;justify-content:center;font-size:1.5rem;
-        transition:transform 0.2s;
-    }
-    .fab-button:hover {transform:scale(1.1);background:var(--color-primary-dark);}
-    .save-menu {
-        position:absolute;bottom:4.5rem;right:0;width:280px;background:white;
-        border-radius:0.75rem;box-shadow:0 10px 25px -5px rgba(0,0,0,0.2);
-        padding:1rem;border:1px solid #e5e7eb;display:none;opacity:0;transform:translateY(10px);
-        transition:all 0.2s;
-    }
-    .save-menu.show {display:block;opacity:1;transform:translateY(0);}
-    .save-action-btn {
-        width:100%;text-align:left;padding:0.75rem;background:white;border:1px solid #e5e7eb;
-        border-radius:0.5rem;margin-bottom:0.5rem;cursor:pointer;display:flex;align-items:center;gap:0.75rem;
-        font-size:0.875rem;transition:background 0.2s;color:#374151;
-    }
-    .save-action-btn:hover {background:#f9fafb;border-color:#d1d5db;}
-    .save-notification {
-        position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);
-        background:rgba(31, 41, 55, 0.95);color:white;padding:0.75rem 1.5rem;
-        border-radius:9999px;font-size:0.875rem;z-index:100;
-        display:flex;align-items:center;gap:0.5rem;
-        opacity:0;pointer-events:none;transition:opacity 0.3s;
-    }
-    .save-notification.show {opacity:1;}
-    .hidden-file-input {display:none;}
+    .fab-button {width:3.5rem;height:3.5rem;border-radius:50%;background:var(--color-primary);color:white;border:none;box-shadow:0 4px 12px rgba(0,0,0,0.3);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.5rem;transition:transform 0.2s;}
+    .fab-button:hover {transform:scale(1.1);}
+    .save-menu {position:absolute;bottom:4.5rem;right:0;width:280px;background:white;border-radius:0.75rem;box-shadow:0 10px 25px -5px rgba(0,0,0,0.2);padding:1rem;display:none;}
+    .save-menu.show {display:block;}
+    .save-action-btn {width:100%;text-align:left;padding:0.75rem;background:white;border:1px solid #e5e7eb;border-radius:0.5rem;margin-bottom:0.5rem;cursor:pointer;display:flex;align-items:center;gap:0.75rem;transition:background 0.2s;}
+    .save-action-btn:hover {background:#f9fafb;}
 
-    /* Achievements */
+    /* Achievement Bar */
     .achievement-bar {padding:1rem;background:white;border-radius:0.75rem;margin-bottom:1rem; border: 1px solid #e5e7eb;}
     .achievement-list {display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:0.5rem}
-    .achievement {padding:0.5rem 0.75rem;background:#f3f4f6;border-radius:0.5rem;font-size:0.75rem;display:flex;align-items:center;gap:0.5rem;opacity:0.6; border: 1px solid transparent;}
-    .achievement.unlocked {background:#fef3c7;border-color:#fcd34d;opacity:1; box-shadow: 0 1px 2px rgba(0,0,0,0.05);}
+    .achievement {padding:0.5rem 0.75rem;background:#f3f4f6;border-radius:0.5rem;font-size:0.75rem;display:flex;align-items:center;gap:0.5rem;opacity:0.6; filter: grayscale(1);}
+    .achievement.unlocked {background:#fef3c7;border-color:#fcd34d;opacity:1; filter: grayscale(0); font-weight: bold; color: #92400e;}
 
     /* Modal */
     .modal {display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:100;align-items:center;justify-content:center}
     .modal.show {display:flex}
-    .modal-content {background:white;border-radius:1rem;padding:2rem;max-width:500px;margin:1rem;box-shadow:0 20px 25px -5px rgba(0,0,0,0.3); animation: slideIn 0.3s ease-out;}
+    .modal-content {background:white;border-radius:1rem;padding:2rem;max-width:500px;margin:1rem;box-shadow:0 20px 25px -5px rgba(0,0,0,0.3);text-align: center; animation: slideIn 0.3s ease-out;}
     @keyframes slideIn { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-
-    /* Flashcards Mejoradas */
-    .flashcard-grid {display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1.5rem;margin:2rem 0}
-    .flashcard {background:white;border:1px solid #e5e7eb;border-radius:1rem;padding:2rem;text-align:center;cursor:pointer;transition:all 0.3s cubic-bezier(0.4, 0, 0.2, 1);box-shadow:0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);min-height:220px;display:flex;align-items:center;justify-content:center;flex-direction:column;position:relative;overflow:hidden}
-    .flashcard:hover {transform:translateY(-5px);box-shadow:0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);border-color:var(--color-primary)}
-    .flashcard-icon {font-size:2.5rem;margin-bottom:1rem;transition:transform 0.5s}
-    .flashcard:hover .flashcard-icon {transform:rotateY(180deg)}
-    .flashcard-front {font-weight:700;color:#111827;font-size:1.1rem;line-height:1.5}
-    .flashcard-back {display:none;color:#4b5563;font-size:1rem;line-height:1.6;animation:fadeIn 0.3s ease-in}
-    .flashcard.flipped {background:#fef2f2;border-color:var(--color-primary)}
-    .flashcard.flipped .flashcard-front {display:none}
-    .flashcard.flipped .flashcard-back {display:block}
-    .flashcard.flipped .flashcard-icon {display:none}
-    @keyframes fadeIn {from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+    .btn {padding: 0.625rem 1.25rem; border-radius: 0.5rem; cursor: pointer; border: none; font-weight: 600; background: var(--color-primary); color: white;}
+    .btn:hover {background: var(--color-primary-dark);}
 
     @media (max-width: 768px) {
+        .simulator-grid, .comparison-grid {grid-template-columns:1fr}
         .stats {display:none}
-        .simulator-grid {grid-template-columns:1fr}
-        .comparison-grid {grid-template-columns:1fr}
         .save-system-fab {bottom: 1rem; right: 1rem;}
         .drop-zones {grid-template-columns: 1fr;}
     }
@@ -214,21 +284,23 @@
 
 <div id="loading" class="loading">
     <div class="spinner"></div>
-    <p style="font-weight:600">Cargando Biofísica Interactiva...</p>
+    <p style="font-weight:600; margin-top:1rem;">Cargando Laboratorio Biofísico...</p>
 </div>
 
-<div id="save-notification" class="save-notification">
+<!-- Notification Toast -->
+<div id="save-notification" style="position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:rgba(31, 41, 55, 0.95);color:white;padding:0.75rem 1.5rem;border-radius:9999px;font-size:0.875rem;z-index:100;opacity:0;pointer-events:none;transition:opacity 0.3s;">
     <i class="fas fa-check-circle"></i> <span id="save-message">Progreso guardado</span>
 </div>
 
 <div id="app" class="hidden">
+    <!-- Navegación Superior -->
     <nav class="navbar">
         <div class="navbar-content">
             <div class="brand">
-                <div class="brand-icon">🧬</div>
+                <div class="brand-icon"><i class="fas fa-dna"></i></div>
                 <div class="brand-text">
                     <h1>Biofísica UACH</h1>
-                    <p>Objeto 3: Lípidos y Membranas</p>
+                    <p>Objeto 3: Lípidos y Transporte</p>
                 </div>
             </div>
             <div class="stats">
@@ -238,157 +310,308 @@
                 </div>
                 <div class="stat-item">
                     <div class="stat-value" id="stat-badges">0/10</div>
-                    <div class="stat-label">Logros</div>
+                    <div class="stat-label">Medallas</div>
                 </div>
                 <div class="progress">
-                    <div style="font-size:0.75rem;color:#6b7280">Progreso</div>
+                    <div style="font-size:0.75rem;color:#6b7280;margin-bottom:2px">Progreso</div>
                     <div class="progress-bar"><div id="progress-fill" class="progress-fill"></div></div>
                 </div>
             </div>
         </div>
     </nav>
 
-    <!-- SISTEMA DE GUARDADO FLOTANTE -->
+    <!-- Menú Flotante de Guardado -->
     <div class="save-system-fab">
         <div class="save-menu" id="save-menu">
-            <div style="font-weight:700;color:#374151;margin-bottom:0.75rem;padding-bottom:0.5rem;border-bottom:1px solid #e5e7eb;display:flex;justify-content:space-between;align-items:center;">
-                <span>Gestión de Progreso</span>
+            <div style="font-weight:700;color:#374151;margin-bottom:0.75rem;border-bottom:1px solid #e5e7eb;padding-bottom:0.5rem;display:flex;justify-content:space-between;">
+                <span>Opciones de Guardado</span>
                 <i class="fas fa-times" style="cursor:pointer" onclick="toggleSaveMenu()"></i>
             </div>
-            <button class="save-action-btn" onclick="saveSystem.forceSave()">
-                <i class="fas fa-save"></i> Guardar Ahora
-            </button>
-            <button class="save-action-btn" onclick="saveSystem.downloadBackup()">
-                <i class="fas fa-download"></i> Descargar Respaldo
-            </button>
-            <button class="save-action-btn" onclick="document.getElementById('backup-upload').click()">
-                <i class="fas fa-upload"></i> Restaurar Respaldo
-            </button>
-            <button class="save-action-btn" style="color:#ef4444;border-color:#fca5a5" onclick="saveSystem.clearProgress()">
-                <i class="fas fa-trash-alt" style="color:#ef4444"></i> Borrar Todo
-            </button>
-            <div style="text-align:center;font-size:0.75rem;color:#6b7280;margin-top:0.5rem;" id="menu-last-save">No guardado aún</div>
-            <input type="file" id="backup-upload" class="hidden-file-input" accept=".json" onchange="saveSystem.restoreBackup(this)">
+            <button class="save-action-btn" onclick="saveSystem.forceSave()"><i class="fas fa-save"></i> Guardar Progreso</button>
+            <button class="save-action-btn" onclick="saveSystem.downloadBackup()"><i class="fas fa-download"></i> Descargar Respaldo</button>
+            <button class="save-action-btn" onclick="document.getElementById('backup-upload').click()"><i class="fas fa-upload"></i> Cargar Respaldo</button>
+            <input type="file" id="backup-upload" style="display:none" accept=".json" onchange="saveSystem.restoreBackup(this)">
+            <button class="save-action-btn" style="color:#ef4444;border-color:#fca5a5" onclick="saveSystem.clearProgress()"><i class="fas fa-trash"></i> Reiniciar Todo</button>
+            <div style="text-align:center;font-size:0.75rem;color:#6b7280;margin-top:0.5rem" id="menu-last-save">--</div>
         </div>
-        <button class="fab-button" onclick="toggleSaveMenu()" title="Menú de Guardado">
-            <i class="fas fa-save"></i>
-        </button>
+        <button class="fab-button" onclick="toggleSaveMenu()" title="Guardar"><i class="fas fa-save"></i></button>
     </div>
 
     <main class="container">
+        <!-- Hero -->
         <div class="hero">
             <div class="hero-content">
-                <h2>🎯 Lípidos y Membranas - Modo Interactivo</h2>
-                <p>Completa las actividades, simula membranas y asegura tu aprendizaje.</p>
-                <div class="alert alert-info" style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:white;margin-top:1rem">
-                    <i class="fas fa-shield-alt"></i> <strong>Sistema Seguro:</strong> Progreso auto-guardado. Usa el botón 💾 para descargar tu respaldo si cambias de equipo.
-                </div>
+                <h2><i class="fas fa-atom"></i> Laboratorio de Lípidos y Membranas</h2>
+                <p>Completa las actividades, simula estructuras moleculares y domina el transporte de lípidos.</p>
             </div>
         </div>
 
+        <!-- Barra de Logros -->
         <div class="achievement-bar">
-            <div style="font-weight:700;margin-bottom:0.5rem">🏆 Tus Logros</div>
+            <div style="font-weight:700;font-size:0.9rem;color:#374151"><i class="fas fa-trophy"></i> Tus Logros</div>
             <div class="achievement-list">
                 <div class="achievement" id="ach-1"><span>🎓</span> Iniciado</div>
-                <div class="achievement" id="ach-2"><span>📚</span> Avanzado</div>
-                <div class="achievement" id="ach-3"><span>⚡</span> Quiz Perfecto</div>
+                <div class="achievement" id="ach-2"><span>📚</span> Estudioso</div>
+                <div class="achievement" id="ach-3"><span>⚡</span> Perfecto</div>
                 <div class="achievement" id="ach-4"><span>🎯</span> Clasificador</div>
-                <div class="achievement" id="ach-5"><span>🧪</span> Científico</div>
-                <div class="achievement" id="ach-6"><span>💯</span> 50% Progreso</div>
+                <div class="achievement" id="ach-5"><span>🧪</span> Biofísico</div>
+                <div class="achievement" id="ach-6"><span>💯</span> 50% Camino</div>
                 <div class="achievement" id="ach-7"><span>🔬</span> Analista</div>
                 <div class="achievement" id="ach-8"><span>🚀</span> Experto</div>
-                <div class="achievement" id="ach-9"><span>👑</span> Completado</div>
+                <div class="achievement" id="ach-9"><span>🚛</span> Transportista</div>
                 <div class="achievement" id="ach-10"><span>⭐</span> Maestro</div>
             </div>
         </div>
 
+        <!-- Pestañas de Navegación -->
         <div class="tabs">
-            <div class="tab active" onclick="showTab('quizzes')">📝 Quizzes</div>
-            <div class="tab" onclick="showTab('simulator')">🧪 Simulador 3D</div>
-            <div class="tab" onclick="showTab('drag-drop')">🎯 Clasificar</div>
-            <div class="tab" onclick="showTab('ejercicios')">✍️ Ejercicios (Completo)</div>
-            <div class="tab" onclick="showTab('calculator')">🔢 Calculadora</div>
-            <div class="tab" onclick="showTab('flashcards')">🎴 Flashcards (40 Tarjetas)</div>
+            <div class="tab active" onclick="showTab('quizzes')"><i class="fas fa-list-ol"></i> Quizzes (50)</div>
+            <div class="tab" onclick="showTab('simulator')"><i class="fas fa-flask"></i> Simuladores 3D</div>
+            <div class="tab" onclick="showTab('drag-drop')"><i class="fas fa-hand-rock"></i> Clasificar</div>
+            <div class="tab" onclick="showTab('ejercicios')"><i class="fas fa-pen-fancy"></i> Ejercicios (Completo)</div>
+            <div class="tab" onclick="showTab('calculator')"><i class="fas fa-calculator"></i> Calculadoras</div>
+            <div class="tab" onclick="showTab('flashcards')"><i class="fas fa-clone"></i> Flashcards</div>
         </div>
 
-        <!-- TAB: QUIZZES -->
+        <!-- CONTENIDO: QUIZZES -->
         <div id="tab-quizzes" class="tab-content">
             <div class="card">
-                <div class="card-header" style="background:#eff6ff;color:#1e40af">📝 Quizzes de Autoevaluación (50 Preguntas)</div>
-                <div class="quiz-container" id="quiz-container"></div>
+                <div class="card-header" style="color:#1e40af;background:#eff6ff"><i class="fas fa-question-circle"></i> Evaluación de Conocimientos</div>
+                <div class="quiz-container" id="quiz-container">
+                    <!-- JS generará las preguntas aquí -->
+                </div>
             </div>
         </div>
 
-        <!-- TAB: SIMULATOR -->
+        <!-- CONTENIDO: SIMULADOR (MEMBRANAS + LIPOPROTEÍNAS) -->
         <div id="tab-simulator" class="tab-content hidden">
+            <!-- Sección 1: Membranas -->
             <div class="card">
                 <div class="card-header" style="background:#f0fdf4;color:#166534">
-                    <i class="fas fa-flask"></i> Laboratorio de Membranas
+                    <i class="fas fa-microscope"></i> Fluidez de Membrana
                 </div>
                 <div class="lipid-selector">
                     <button class="lipid-btn active" onclick="lipidSim.selectLipid('saturado')" id="btn-saturado">
-                        <i class="fas fa-ruler-horizontal" style="color: var(--color-sat)"></i> <span>Saturado</span>
+                        <i class="fas fa-ruler-horizontal" style="color:var(--color-sat)"></i> Saturado
                     </button>
                     <button class="lipid-btn" onclick="lipidSim.selectLipid('cis')" id="btn-cis">
-                        <i class="fas fa-wave-square" style="color: var(--color-cis)"></i> <span>Cis</span>
+                        <i class="fas fa-wave-square" style="color:var(--color-cis)"></i> Cis (Natural)
                     </button>
                     <button class="lipid-btn" onclick="lipidSim.selectLipid('trans')" id="btn-trans">
-                        <i class="fas fa-exclamation-triangle" style="color: var(--color-trans)"></i> <span>Trans</span>
+                        <i class="fas fa-exclamation-triangle" style="color:var(--color-trans)"></i> Trans (Ind)
                     </button>
                     <button class="lipid-btn" onclick="lipidSim.selectLipid('colesterol')" id="btn-colesterol">
-                        <i class="fas fa-gem" style="color: var(--color-chol)"></i> <span>Colesterol</span>
+                        <i class="fas fa-gem" style="color:var(--color-chol)"></i> Colesterol
                     </button>
                     <button class="lipid-btn" onclick="lipidSim.selectLipid('mixto')" id="btn-mixto">
-                        <i class="fas fa-layer-group" style="color: #4b5563"></i> <span>Mixto</span>
+                        <i class="fas fa-layer-group"></i> Membrana Real
                     </button>
                 </div>
+                
                 <div class="simulator-grid">
                     <div>
-                        <h4 style="margin-bottom:0.5rem;font-size:0.9rem;color:#555">🔬 Estructura Molecular Realista (Esqueletos de Carbono)</h4>
-                        <div class="structure-viewer"><svg class="structure-svg" id="structure-svg" viewBox="0 0 300 250"></svg></div>
-                        <div id="lipid-info"></div>
+                        <h4 style="margin-bottom:0.5rem;font-size:0.85rem;color:#6b7280;text-transform:uppercase">Estructura Molecular</h4>
+                        <div class="structure-viewer">
+                            <svg id="structure-svg" viewBox="0 0 300 250" style="width:100%;height:100%"></svg>
+                        </div>
+                        <div id="lipid-info" style="margin-top:0.5rem"></div>
                     </div>
                     <div>
-                        <h4 style="margin-bottom:0.5rem;font-size:0.9rem;color:#555">🧪 Comportamiento</h4>
-                        <div class="membrane-simulation" id="membrane-sim"><div class="bilayer" id="bilayer"></div></div>
-                        <div class="fluidity-meter">
-                            <div style="display:flex;justify-content:space-between;margin-bottom:0.25rem;font-size:0.8rem"><strong>Fluidez</strong><span id="fluidity-text-val">--</span></div>
-                            <div class="meter-bar"><div class="meter-fill" id="fluidity-fill" style="width:50%"></div></div>
+                        <h4 style="margin-bottom:0.5rem;font-size:0.85rem;color:#6b7280;text-transform:uppercase">Comportamiento Bicapa</h4>
+                        <div class="membrane-simulation">
+                            <div class="bilayer" id="bilayer"></div>
                         </div>
-                    </div>
-                </div>
-                
-                <!-- Panel del Sistema Nervioso Restaurado -->
-                <div class="nervous-system-panel">
-                    <h3 style="margin-bottom:1rem;color:#92400e;display:flex;align-items:center;gap:0.5rem">🧠 Impacto en el Sistema Nervioso</h3>
-                    <p style="margin-bottom:1rem;font-size:0.9rem;color:#4b5563">La fluidez de membrana es CRÍTICA para la función neuronal. Los ácidos grasos trans alteran esta fluidez, causando disfunción.</p>
-                    <div class="effects-grid">
-                        <div class="effect-card severe">
-                            <h4>🔴 Mielina Rígida</h4>
-                            <p>La vaina de mielina se vuelve quebradiza y aísla mal la electricidad. Fallos motores.</p>
-                        </div>
-                        <div class="effect-card severe">
-                            <h4>🔴 Receptores Bloqueados</h4>
-                            <p>Los receptores de serotonina/dopamina no pueden moverse para captar la señal.</p>
-                        </div>
-                        <div class="effect-card">
-                            <h4>⚠️ Sinapsis Lenta</h4>
-                            <p>La fusión de vesículas (liberación de neurotransmisor) se retarda.</p>
+                        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:0.5rem;font-size:0.8rem">
+                            <strong>Fluidez:</strong>
+                            <div style="width:60%;height:6px;background:#e5e7eb;border-radius:3px">
+                                <div id="fluidity-meter" style="width:0%;height:100%;background:var(--color-primary);transition:width 0.5s"></div>
+                            </div>
+                            <span id="fluidity-val">--</span>
                         </div>
                     </div>
                 </div>
 
-                <div class="info-panel warning" style="margin: 0 1.5rem 1.5rem;"><strong>💡 Conclusión Clínica:</strong> Una dieta alta en grasas trans no solo afecta el corazón, sino que literalmente "endurece" el cerebro, afectando la cognición y el estado de ánimo.</div>
+                <!-- Panel SN -->
+                <div class="nervous-system-panel">
+                    <h3 style="color:#92400e;margin-bottom:0.5rem"><i class="fas fa-brain"></i> Impacto en el Sistema Nervioso</h3>
+                    <p style="font-size:0.9rem;color:#4b5563">La fluidez de membrana es vital. El exceso de grasas trans o saturadas rigidiza las membranas neuronales, afectando la transmisión sináptica.</p>
+                    <div class="effects-grid">
+                        <div class="effect-card severe">
+                            <h4><i class="fas fa-bolt"></i> Mielina Rígida</h4>
+                            <p style="font-size:0.8rem">Fallo en el aislamiento eléctrico del axón.</p>
+                        </div>
+                        <div class="effect-card">
+                            <h4><i class="fas fa-traffic-light"></i> Receptores</h4>
+                            <p style="font-size:0.8rem">Incapacidad de moverse para captar neurotransmisores.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sección 2: Lipoproteínas (NUEVO) -->
+            <div class="card" style="border: 2px solid #3b82f6;">
+                <div class="card-header" style="background:#eff6ff; color:#1e40af;">
+                    <i class="fas fa-shuttle-van"></i> Dinámica de Lipoproteínas (Transporte Sanguíneo)
+                </div>
+                <div style="padding: 1rem;">
+                    <p style="font-size: 0.9rem; color: #4b5563; margin-bottom: 1rem; text-align:center">
+                        Las lipoproteínas son los "vehículos" que transportan lípidos en la sangre. Selecciona una:
+                    </p>
+                    
+                    <div class="lipid-selector">
+                        <button class="lipid-btn" onclick="lpSim.update('chylomicron')" id="btn-lp-chy">
+                            <i class="fas fa-hamburger" style="color: #fbbf24; font-size:1.5rem"></i> <span>Quilomicrón</span>
+                        </button>
+                        <button class="lipid-btn" onclick="lpSim.update('vldl')" id="btn-lp-vldl">
+                            <i class="fas fa-truck" style="color: #f59e0b; font-size:1.5rem"></i> <span>VLDL</span>
+                        </button>
+                        <button class="lipid-btn" onclick="lpSim.update('ldl')" id="btn-lp-ldl">
+                            <i class="fas fa-skull-crossbones" style="color: #ef4444; font-size:1.5rem"></i> <span>LDL (Malo)</span>
+                        </button>
+                        <button class="lipid-btn" onclick="lpSim.update('hdl')" id="btn-lp-hdl">
+                            <i class="fas fa-shield-alt" style="color: #22c55e; font-size:1.5rem"></i> <span>HDL (Bueno)</span>
+                        </button>
+                    </div>
+        
+                    <div class="lipoprotein-stage">
+                        <div class="lipoprotein-core" id="lp-core">
+                            <!-- Apoproteínas generadas dinámicamente -->
+                        </div>
+                        <div class="lp-label" id="lp-name">Selecciona un vehículo</div>
+                    </div>
+        
+                    <div class="component-legend">
+                        <div class="legend-item"><span class="dot" style="background:#ca8a04"></span> Triglicéridos (Núcleo)</div>
+                        <div class="legend-item"><span class="dot" style="background:#4ade80"></span> Fosfolípidos (Corteza)</div>
+                        <div class="legend-item"><span class="dot" style="background:#ef4444"></span> Apoproteínas</div>
+                        <div class="legend-item"><span class="dot" style="background:#fde047"></span> Colesterol</div>
+                    </div>
+                    
+                    <div id="lp-desc" class="info-panel" style="background:#f8fafc; padding:1rem; border-radius:0.5rem; border-left:4px solid #3b82f6; font-size: 0.9rem; margin-bottom: 1.5rem;">
+                        Explora los diferentes tipos de transporte lipídico usando los botones superiores.
+                    </div>
+                </div>
+
+                <!-- Tabla Comparativa Desplegable -->
+                <details class="lp-details">
+                    <summary class="lp-summary">
+                        <i class="fas fa-table"></i> Ver Tabla Comparativa Detallada
+                    </summary>
+                    <div class="lp-table-container">
+                        <table class="lp-table">
+                            <thead>
+                                <tr>
+                                    <th>Característica</th>
+                                    <th>Quilomicrón</th>
+                                    <th>VLDL</th>
+                                    <th>IDL</th>
+                                    <th>LDL</th>
+                                    <th>HDL</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Densidad (g/mL)</strong></td>
+                                    <td>< 0.95</td>
+                                    <td>0.95 - 1.006</td>
+                                    <td>1.006 - 1.019</td>
+                                    <td>1.019 - 1.063</td>
+                                    <td>1.063 - 1.210</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Diámetro (nm)</strong></td>
+                                    <td>75 - 1200</td>
+                                    <td>30 - 80</td>
+                                    <td>25 - 35</td>
+                                    <td>18 - 25</td>
+                                    <td>5 - 12</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Proteína (%)</strong></td>
+                                    <td>1 - 2</td>
+                                    <td>10</td>
+                                    <td>18</td>
+                                    <td>25</td>
+                                    <td>40 - 55</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Colesterol Libre (%)</strong></td>
+                                    <td>1 - 3</td>
+                                    <td>7</td>
+                                    <td>9</td>
+                                    <td>8</td>
+                                    <td>3 - 4</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Ésteres de Col. (%)</strong></td>
+                                    <td>3 - 5</td>
+                                    <td>12</td>
+                                    <td>29</td>
+                                    <td>42</td>
+                                    <td>15 - 20</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Triglicéridos (%)</strong></td>
+                                    <td>85 - 95</td>
+                                    <td>50 - 65</td>
+                                    <td>22</td>
+                                    <td>6</td>
+                                    <td>3 - 5</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Fosfolípidos (%)</strong></td>
+                                    <td>3 - 6</td>
+                                    <td>15 - 20</td>
+                                    <td>19</td>
+                                    <td>22</td>
+                                    <td>25 - 30</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Apolipoproteínas</strong></td>
+                                    <td>A-I, A-II, B-48, C, E</td>
+                                    <td>B-100, C, E</td>
+                                    <td>B-100, E</td>
+                                    <td>B-100</td>
+                                    <td>A-I, A-II, C, E</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Origen</strong></td>
+                                    <td>Intestino</td>
+                                    <td>Hígado</td>
+                                    <td>De VLDL</td>
+                                    <td>De IDL/VLDL</td>
+                                    <td>Hígado/Intestino</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Función</strong></td>
+                                    <td>Transporte lípidos dieta</td>
+                                    <td>Transporte TG endógenos</td>
+                                    <td>Intermediario</td>
+                                    <td>Transporte colesterol</td>
+                                    <td>Transporte reverso</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Vida Media</strong></td>
+                                    <td>Minutos</td>
+                                    <td>2-4 horas</td>
+                                    <td>-</td>
+                                    <td>2-3 días</td>
+                                    <td>5-6 días</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </details>
             </div>
         </div>
 
-        <!-- TAB: DRAG & DROP -->
+        <!-- CONTENIDO: DRAG & DROP -->
         <div id="tab-drag-drop" class="tab-content hidden">
             <div class="card">
-                <div class="card-header" style="background:#f0fdf4;color:#166534">🎯 Clasificación de Lípidos (Expandido)</div>
+                <div class="card-header"><i class="fas fa-sort-amount-up"></i> Clasificación de Lípidos</div>
                 <div class="drag-drop-zone">
-                    <div class="alert alert-info"><strong>Instrucciones:</strong> Arrastra cada molécula a su categoría química correcta.</div>
-                    <div class="draggables" id="draggables-lipids"></div>
+                    <p style="margin-bottom:1rem;font-size:0.9rem">Arrastra cada molécula a su categoría química correcta.</p>
+                    <div class="draggables" id="draggables-container"></div>
                     <div class="drop-zones">
                         <div class="drop-zone" data-category="acidos_grasos">
                             <div class="drop-zone-title">Ácidos Grasos</div><div class="drop-items"></div>
@@ -396,199 +619,96 @@
                         <div class="drop-zone" data-category="membrana">
                             <div class="drop-zone-title">Lípidos de Membrana</div><div class="drop-items"></div>
                         </div>
-                        <div class="drop-zone" data-category="esteroides_isoprenoides">
-                            <div class="drop-zone-title">Esteroides e Isoprenoides</div><div class="drop-items"></div>
+                        <div class="drop-zone" data-category="esteroides">
+                            <div class="drop-zone-title">Esteroides/Isoprenoides</div><div class="drop-items"></div>
                         </div>
-                        <div class="drop-zone" data-category="almacenamiento_ceras">
+                        <div class="drop-zone" data-category="almacenamiento">
                             <div class="drop-zone-title">TAGs y Ceras</div><div class="drop-items"></div>
                         </div>
                     </div>
-                    <button class="btn btn-primary" onclick="checkDragDrop()" style="margin-top:1rem">Verificar Clasificación</button>
-                    <button class="btn btn-secondary" onclick="resetDragDrop()" style="margin-top:1rem">Reiniciar</button>
+                    <button class="btn" onclick="checkDragDrop()">Verificar Clasificación</button>
                 </div>
             </div>
         </div>
 
-        <!-- TAB: EJERCICIOS (TEXTO COMPLETO) -->
+        <!-- CONTENIDO: EJERCICIOS -->
         <div id="tab-ejercicios" class="tab-content hidden">
-            <div id="preguntas-container"></div>
+            <div id="preguntas-render-zone"></div>
         </div>
 
-        <!-- TAB: CALCULATOR -->
+        <!-- CONTENIDO: CALCULADORA -->
         <div id="tab-calculator" class="tab-content hidden">
             <div class="card">
-                <div class="card-header" style="background:#faf5ff;color:#7c3aed">🔢 Calculadoras Biofísicas</div>
-                
-                <!-- Calculator 1: Iodine -->
-                <div class="calculator" style="padding:1.5rem; border-bottom:1px solid #e5e7eb; margin-bottom:1.5rem">
-                    <h3 style="margin-bottom:0.5rem;font-size:1.1rem;color:#4b5563;">1. Índice de Yodo (Grado de Insaturación)</h3>
-                    <p style="font-size:0.9rem; color:#6b7280; margin-bottom:1rem">Mide la cantidad de yodo que reacciona con los dobles enlaces. A mayor índice, más insaturaciones.</p>
-                    
-                    <div class="calc-input">
-                        <label style="display:block; margin-bottom:0.5rem; font-weight:600; font-size:0.9rem;">Selecciona un Ácido Graso:</label>
-                        <select id="calc-fatty-acid" onchange="calculateIodine()" style="width:100%; padding:0.75rem; border-radius:0.5rem; border:1px solid #d1d5db; background:white;">
-                            <option value="">-- Selecciona --</option>
-                            <option value="0">Ácido Esteárico (18:0) - Saturado</option>
-                            <option value="0">Ácido Palmítico (16:0) - Saturado</option>
-                            <option value="90">Ácido Oleico (18:1) - Monoinsaturado</option>
-                            <option value="181">Ácido Linoléico (18:2) - Poliinsaturado (ω-6)</option>
-                            <option value="273">Ácido Linolénico (18:3) - Poliinsaturado (ω-3)</option>
-                            <option value="320">Ácido Araquidónico (20:4) - Poliinsaturado (ω-6)</option>
+                <div class="card-header" style="color:#7c3aed;background:#faf5ff"><i class="fas fa-calculator"></i> Herramientas Biofísicas</div>
+                <div style="padding:1.5rem">
+                    <!-- Iodine Calc -->
+                    <div style="margin-bottom:2rem;border-bottom:1px solid #eee;padding-bottom:2rem">
+                        <h3>1. Índice de Yodo (Insaturación)</h3>
+                        <p style="font-size:0.85rem;color:#6b7280;margin-bottom:1rem">Determina el grado de insaturación de un ácido graso.</p>
+                        <select id="calc-iodine-select" class="lipid-btn" style="width:100%;text-align:left;padding:0.5rem" onchange="calcIodine()">
+                            <option value="">Selecciona un ácido graso...</option>
+                            <option value="0">Ácido Esteárico (18:0)</option>
+                            <option value="0">Ácido Palmítico (16:0)</option>
+                            <option value="90">Ácido Oleico (18:1)</option>
+                            <option value="181">Ácido Linoleico (18:2)</option>
+                            <option value="273">Ácido Linolénico (18:3)</option>
                         </select>
+                        <div id="iodine-result" style="margin-top:1rem;font-weight:bold;color:var(--color-primary)"></div>
                     </div>
-                    
-                    <div class="calc-result" id="calc-result" style="display:none; background:#f0fdf4; border:1px solid #bbf7d0; border-radius:0.5rem; padding:1rem; margin-top:1rem;">
-                        <div style="font-size:0.85rem; color:#6b7280; text-transform:uppercase; letter-spacing:0.5px;">Resultado</div>
-                        <div class="calc-result-value" id="calc-value" style="font-size:1.5rem; font-weight:700; color:#15803d; margin:0.25rem 0;">--</div>
-                        <div id="calc-interpretation" style="font-weight:500; color:#166534;"></div>
-                    </div>
-                </div>
 
-                <!-- Calculator 2: Melting Point -->
-                <div class="calculator" style="padding:1.5rem;">
-                    <h3 style="margin-bottom:0.5rem;font-size:1.1rem;color:#4b5563;">2. Estimador de Punto de Fusión</h3>
-                    <p style="font-size:0.9rem; color:#6b7280; margin-bottom:1rem">Simula cómo la longitud de la cadena y los dobles enlaces afectan la temperatura a la que una grasa se vuelve líquida.</p>
-                    
-                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:1rem; margin-bottom:1rem;">
-                        <div>
-                            <label style="display:block; margin-bottom:0.5rem; font-weight:600; font-size:0.9rem;">Carbonos:</label>
-                            <input type="number" id="calc-chain-length" min="4" max="24" value="18" oninput="calculateMeltingPoint()" style="width:100%; padding:0.5rem; border-radius:0.5rem; border:1px solid #d1d5db;">
-                        </div>
-                        <div>
-                            <label style="display:block; margin-bottom:0.5rem; font-weight:600; font-size:0.9rem;">Dobles Enlaces:</label>
-                            <input type="number" id="calc-double-bonds" min="0" max="6" value="0" oninput="calculateMeltingPoint()" style="width:100%; padding:0.5rem; border-radius:0.5rem; border:1px solid #d1d5db;">
-                        </div>
-                    </div>
-                    
-                    <div style="margin-bottom:1rem;">
-                        <label style="display:block; margin-bottom:0.5rem; font-weight:600; font-size:0.9rem;">Configuración:</label>
-                        <select id="calc-config" onchange="calculateMeltingPoint()" style="width:100%; padding:0.5rem; border-radius:0.5rem; border:1px solid #d1d5db; background:white;">
-                            <option value="cis">Cis (Natural - Curvo)</option>
-                            <option value="trans">Trans (Industrial - Recto)</option>
-                        </select>
-                    </div>
-                    
-                    <div class="calc-result" id="calc-mp-result" style="display:block; background:#f8fafc; border:1px solid #e2e8f0; border-radius:0.5rem; padding:1rem;">
-                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <!-- Melting Point Calc -->
+                    <div>
+                        <h3>2. Estimador de Punto de Fusión</h3>
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1rem">
                             <div>
-                                <div style="font-size:0.85rem; color:#6b7280;">Punto de Fusión Estimado:</div>
-                                <div class="calc-result-value" id="calc-mp-value" style="font-size:1.8rem; font-weight:700; color:#334155;">70 °C</div>
+                                <label>Carbonos (C)</label>
+                                <input type="number" id="mp-c" value="18" min="4" max="24" style="width:100%;padding:0.5rem;border:1px solid #ccc;border-radius:0.3rem" oninput="calcMP()">
                             </div>
-                            <div id="calc-mp-state" style="font-size:2.5rem;">🧱</div>
+                            <div>
+                                <label>Dobles Enlaces</label>
+                                <input type="number" id="mp-db" value="0" min="0" max="6" style="width:100%;padding:0.5rem;border:1px solid #ccc;border-radius:0.3rem" oninput="calcMP()">
+                            </div>
                         </div>
-                        <div id="calc-mp-interpretation" style="font-weight:600; color:#475569; margin-top:0.5rem; padding-top:0.5rem; border-top:1px dashed #cbd5e1;">Sólido a temperatura ambiente (25°C)</div>
+                        <div style="margin-top:1rem">
+                            <label>Configuración:</label>
+                            <select id="mp-cfg" style="padding:0.5rem;border-radius:0.3rem" onchange="calcMP()">
+                                <option value="cis">Cis (Natural)</option>
+                                <option value="trans">Trans (Industrial)</option>
+                            </select>
+                        </div>
+                        <div id="mp-result" style="margin-top:1rem;padding:1rem;background:#f8fafc;border-radius:0.5rem;text-align:center">
+                            <div id="mp-val" style="font-size:2rem;font-weight:bold">70°C</div>
+                            <div id="mp-state">Sólido</div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- TAB: FLASHCARDS -->
+        <!-- CONTENIDO: FLASHCARDS -->
         <div id="tab-flashcards" class="tab-content hidden">
-            <div class="card">
-                <div class="card-header" style="background:#fef2f2;color:#991b1b">🎴 Repaso Rápido (40 Tarjetas)</div>
-                <div style="padding:1.5rem"><div class="flashcard-grid" id="flashcard-container"></div></div>
-            </div>
+            <div class="flashcard-grid" id="flashcard-container"></div>
         </div>
 
-        <footer>
-            <p>Biofísica UACH - Versión Completa Actualizada</p>
-            <p style="font-size:0.75rem;margin-top:0.25rem;color:#9ca3af" id="footer-last-save">-</p>
-        </footer>
     </main>
 </div>
 
-<!-- Modal -->
+<!-- Modal Logros -->
 <div id="achievement-modal" class="modal">
     <div class="modal-content">
-        <div class="modal-header">🎉 ¡Logro Desbloqueado!</div>
-        <div style="text-align:center"><div style="font-size:4rem;margin:1rem 0" id="modal-badge"></div><h3 id="modal-title"></h3><p id="modal-description" style="color:#6b7280"></p><div style="margin-top:1rem;color:var(--color-primary);font-weight:700;font-size:1.5rem">+<span id="modal-points"></span> pts</div></div>
-        <div class="modal-footer"><button class="btn btn-primary" onclick="closeAchievementModal()">¡Genial!</button></div>
+        <div style="font-size:3rem;margin-bottom:1rem" id="modal-icon">🏆</div>
+        <h2 id="modal-title" style="margin-bottom:0.5rem">¡Logro Desbloqueado!</h2>
+        <p id="modal-desc" style="color:#6b7280;margin-bottom:1.5rem">Descripción</p>
+        <button class="btn" onclick="document.getElementById('achievement-modal').classList.remove('show')">¡Genial!</button>
     </div>
 </div>
 
 <script>
-// ============================================
-// SISTEMA DE GUARDADO ROBUSTO
-// ============================================
-const saveSystem = {
-    key: 'bio_uach_obj3_master',
-    keyStats: 'bio_stats_master',
-    init: function() {
-        this.load();
-        setInterval(() => this.save(true), 10000);
-        window.addEventListener('beforeunload', () => this.save(false));
-    },
-    save: function(silent) {
-        try {
-            localStorage.setItem(this.key, JSON.stringify(respuestas));
-            localStorage.setItem(this.keyStats, JSON.stringify(userStats));
-            this.updateLastSaveTime();
-            if(!silent) this.showNotification('Progreso guardado');
-        } catch(e) { console.error(e); }
-    },
-    forceSave: function() { this.save(false); toggleSaveMenu(); },
-    load: function() {
-        try {
-            const d = localStorage.getItem(this.key);
-            const s = localStorage.getItem(this.keyStats);
-            if(d) respuestas = JSON.parse(d);
-            if(s) userStats = JSON.parse(s);
-            updateStats();
-            this.updateLastSaveTime();
-            if(currentTab === 'ejercicios') renderPreguntas();
-        } catch(e) { console.error(e); }
-    },
-    downloadBackup: function() {
-        this.save(true);
-        const blob = new Blob([JSON.stringify({respuestas, userStats, date: new Date()})], {type:'application/json'});
-        const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'biofisica_backup.json'; a.click();
-        toggleSaveMenu();
-    },
-    restoreBackup: function(input) {
-        const file = input.files[0];
-        if(!file) return;
-        const r = new FileReader();
-        r.onload = e => {
-            try {
-                const b = JSON.parse(e.target.result);
-                if(b.respuestas) {
-                    respuestas = b.respuestas; userStats = b.stats || userStats;
-                    this.save(false); updateStats(); renderPreguntas();
-                    this.showNotification('Respaldo restaurado');
-                    setTimeout(() => location.reload(), 1000);
-                }
-            } catch(x) { alert('Error en archivo'); }
-        };
-        r.readAsText(file);
-        toggleSaveMenu();
-    },
-    clearProgress: function() {
-        if(confirm("¿Borrar todo?")) { localStorage.removeItem(this.key); localStorage.removeItem(this.keyStats); location.reload(); }
-    },
-    updateLastSaveTime: function() {
-        const t = 'Guardado: ' + new Date().toLocaleTimeString();
-        document.getElementById('menu-last-save').innerText = t;
-        const f = document.getElementById('footer-last-save'); if(f) f.innerText = t;
-    },
-    showNotification: function(msg) {
-        const n = document.getElementById('save-notification');
-        document.getElementById('save-message').innerText = msg;
-        n.classList.add('show'); setTimeout(() => n.classList.remove('show'), 3000);
-    }
-};
-
-function toggleSaveMenu() { document.getElementById('save-menu').classList.toggle('show'); }
-
-// ============================================
-// DATOS DE CONTENIDO (COMPLETO DEL ODT)
-// ============================================
-var respuestas = {};
-var userStats = { points: 0, badges: 0, achievements: {}, quizzesCompleted: 0 };
-var currentTab = 'quizzes';
-
-// Preguntas extraídas TEXTUALMENTE del ODT
-var preguntasData = {
-    pre: [
+/* =========================================
+   BASE DE DATOS DE PREGUNTAS (COMPLETA)
+   ========================================= */
+const preguntasData = {
+    "Preliminares": [
         "¿Qué características comunes cree usted que tienen sustancias como el aceite de cocina, la mantequilla y el colesterol para ser agrupadas como \"lípidos\"?",
         "Mencione tres funciones que conozca de los lípidos en el cuerpo humano.",
         "¿Qué diferencia cree que existe entre las grasas que son sólidas a temperatura ambiente (como la manteca) y las que son líquidas (como el aceite de oliva)?",
@@ -600,573 +720,790 @@ var preguntasData = {
         "¿Cómo cree que nuestro cuerpo digiere y absorbe las grasas que comemos, si la sangre es un medio acuoso donde las grasas no se disuelven?",
         "¿Ha oído hablar de los ácidos grasos omega-3 y omega-6? ¿En qué alimentos se encuentran comúnmente?"
     ],
-    sec31: {
-        titulo: "3.1 Introducción y funciones",
-        dev: ["Defina qué son los lípidos basándose en sus propiedades de solubilidad.", "Enumere y describa brevemente las diversas funciones que desempeñan los lípidos en los organismos vivos.", "Explique por qué los lípidos son una forma eficiente de almacenamiento de energía en comparación con los carbohidratos, como el glucógeno.", "Clasifique los lípidos en las 6 categorías principales mencionadas en el texto de McKee."],
-        app: ["El tejido adiposo, además de ser una reserva de energía, cumple una función de aislamiento térmico. Explique esta propiedad basándose en las características de los triacilgliceroles.", "Algunas aves acuáticas cubren sus plumas con secreciones de glándulas especializadas. ¿Qué tipo de lípidos esperaría encontrar en estas secreciones y cuál es su función?", "Las vitaminas A, D, E y K se conocen como liposolubles. ¿Qué implica esto para su absorción y almacenamiento en el cuerpo? ¿Qué problemas podría causar una dieta extremadamente baja en grasas?"]
-    },
-    sec32: {
-        titulo: "3.2 Ácidos grasos",
-        dev: ["Describa la estructura química general de un ácido graso. Explique el sistema de numeración y la designación de los carbonos α, β y ω (omega).", "¿Cuál es la diferencia estructural entre un ácido graso saturado y uno insaturado?", "Explique cómo la presencia de un doble enlace cis afecta la forma de la cadena hidrocarbonada de un ácido graso.", "Relacione la estructura (saturación y presencia de dobles enlaces cis) de los ácidos grasos con sus propiedades físicas, como el punto de fusión.", "Defina los términos monoinsaturado y poliinsaturado.", "¿Qué son los ácidos grasos esenciales? Nombre los dos principales para los humanos y explique por qué son esenciales.", "Explique la nomenclatura omega (ω) para los ácidos grasos insaturados, usando los ácidos grasos omega-3 y omega-6 como ejemplos."],
-        app: ["El ácido esteárico (18:0) es un sólido a temperatura ambiente, mientras que el ácido oleico (18:1Δ⁹) es líquido. Ambos tienen 18 carbonos. Explique esta diferencia.", "Los aceites vegetales pueden convertirse en grasas sólidas como la margarina mediante un proceso de hidrogenación parcial. ¿Qué ocurre químicamente en este proceso y qué tipo de ácidos grasos (un subproducto no deseado) se pueden formar?", "Ordene los siguientes ácidos grasos de menor a mayor punto de fusión y justifique su respuesta: a. Ácido palmítico (16:0) b. Ácido linolénico (18:3Δ⁹,¹²,¹⁵) c. Ácido esteárico (18:0) d. Ácido oleico (18:1Δ⁹)", "El ácido araquidónico [20:4(5,8,11,14)] es precursor de los eicosanoides. ¿Es un ácido graso omega-3 o omega-6? Justifique su respuesta."]
-    },
-    sec33: {
-        titulo: "3.3 Triacilgliceroles y ceras",
-        dev: ["Describa la estructura de un triacilglicerol (TAG). ¿Qué moléculas lo componen y qué tipo de enlace las une?", "¿Por qué los TAGs son considerados \"grasas neutras\" y son altamente hidrofóbicos?", "¿Cuál es la principal función de los triacilgliceroles en los animales? Describa las células especializadas en su almacenamiento.", "Diferencie entre grasas y aceites según su estado físico a temperatura ambiente y su composición de ácidos grasos.", "¿Qué es la saponificación? Describa la reacción química que ocurre al tratar un triacilglicerol con una base fuerte como el NaOH.", "Describa la composición química general de las ceras. ¿Qué son los ésteres de cera?", "¿Cuál es la función principal de las ceras en la naturaleza? Proporcione ejemplos en plantas y animales."],
-        app: ["Un aceite vegetal, como el de maíz, es líquido a temperatura ambiente, mientras que la grasa animal, como la de res, es sólida. ¿Qué puede inferir sobre la composición de ácidos grasos de cada uno?", "El proceso de digestión de grasas requiere que estas se emulsionen en el intestino. Explique cómo el jabón (sales de ácidos grasos) actúa como agente emulsionante para dispersar gotas de aceite en agua, relacionándolo con la digestión.", "La cera de abejas es sólida y completamente insoluble en agua, lo que permite que el panal sea impermeable. ¿Qué características estructurales de sus componentes (ésteres de cera) le confieren estas propiedades?"]
-    },
-    sec34: {
-        titulo: "3.4 Fosfolípidos",
-        dev: ["Describa la naturaleza anfipática de los fosfolípidos. Identifique sus dominios hidrofóbico e hidrofílico.", "Explique por qué los fosfolípidos forman espontáneamente una bicapa en un medio acuoso. ¿Qué fuerzas impulsan esta organización?", "¿Cuáles son las dos clases principales de fosfolípidos?", "Dibuje la estructura general de un fosfoglicérido. ¿Cuál es su molécula precursora?", "Nombre al menos cuatro alcoholes que pueden esterificarse al grupo fosfato de un fosfoglicérido y los fosfolípidos resultantes.", "¿Qué es la cardiolipina y en qué membrana celular se encuentra predominantemente? ¿Cuál es su función?", "Describa el rol de la dipalmitoilfosfatidilcolina (DPPC) como componente principal del surfactante pulmonar. ¿Qué es el síndrome de dificultad respiratoria (RDS)?"],
-        app: ["La membrana plasmática es fluida y semipermeable. Explique cómo la composición de ácidos grasos (saturados vs. insaturados) en los fosfolípidos influye en la fluidez de la membrana.", "El fosfatidilinositol 4,5-bifosfato (PIP2) es un fosfolípido de membrana que actúa en la transducción de señales. La enzima fosfolipasa C lo escinde. ¿Qué dos moléculas mensajeras se generan y cuál es su función?", "Las membranas biológicas son asimétricas en cuanto a su composición de fosfolípidos. Por ejemplo, la fosfatidilserina (PS) se encuentra principalmente en la monocapa interna de la membrana plasmática. ¿Qué importancia biológica tiene esta asimetría (p. ej., en la apoptosis)?", "Las fosfolipasas son enzimas que degradan los fosfolípidos. La fosfolipasa A2 (PLA2) es un componente del veneno de algunas serpientes. ¿Qué producto se libera por su acción sobre los fosfolípidos de membrana y cómo contribuye esto a la toxicidad del veneno?"]
-    },
-    sec35: {
-        titulo: "3.5 Esfingolípidos",
-        dev: ["¿Cuál es la molécula base (alcohol) de los esfingolípidos, que reemplaza al glicerol?", "Defina el término ceramida. ¿Qué componentes la forman y qué tipo de enlace los une?", "Describa la estructura de la esfingomielina. ¿A qué clase de lípidos pertenece? ¿En qué estructura del sistema nervioso es abundante?", "¿Qué son los glicoesfingolípidos? ¿En qué se diferencian de la esfingomielina?", "Defina y diferencie los cerebrósidos y los gangliósidos basándose en su grupo de cabeza polar.", "¿Qué son las esfingolipidosis? Describa la causa de Tay-Sachs, mencionando la enzima deficiente y el lípido que se acumula."],
-        app: ["La vaina de mielina que aísla los axones neuronales es rica en esfingomielina y galactocerebrósidos. ¿Qué propiedades confieren estos lípidos a la mielina?", "Los gangliósidos se encuentran en la superficie externa de las membranas celulares y actúan como receptores. Por ejemplo, la toxina del cólera se une al gangliósido GM1. Explique cómo la porción de carbohidrato permite esto.", "En la enfermedad de Gaucher, hay una deficiencia de β-glucosidasa. ¿En qué orgánulo celular esperaría que ocurriera la acumulación de glucocerebrósido y por qué?", "Compare y contraste la estructura de la fosfatidilcolina con la de la esfingomielina. ¿En qué se diferencian sus \"esqueletos\"?"]
-    },
-    sec36: {
-        titulo: "3.6 Isoprenoides",
-        dev: ["¿Cuál es la unidad estructural repetitiva de cinco carbonos que forma a todos los isoprenoides?", "Distinga entre terpenos y esteroides.", "Clasifique los terpenos según el número de unidades de isopreno y dé un ejemplo de cada uno.", "¿Qué son los terpenoides mixtos? Mencione dos ejemplos que sean vitaminas o coenzimas importantes.", "Describa la estructura del núcleo esteroideo (cuatro anillos fusionados).", "¿Cuál es el esterol más importante en los tejidos animales y precursor de otras moléculas? Enumere tres tipos de moléculas que se sintetizan a partir de él.", "Nombre las principales clases de hormonas esteroideas y mencione una función para cada una."],
-        app: ["El β-caroteno es el precursor de la vitamina A (retinol), esencial para la visión. Investigue cómo se convierte el β-caroteno en vitamina A.", "El colesterol es una molécula anfipática y componente de membranas. ¿Cómo se orienta en la bicapa lipídica y cuál es su efecto sobre la fluidez?", "Los ácidos biliares, como el ácido cólico, son derivados del colesterol. Compare la estructura del colesterol y el ácido cólico. ¿Qué modificaciones hacen que el ácido cólico sea un mejor agente emulsionante?", "Los glucósidos cardíacos, como la digitoxina, se usan para tratar la insuficiencia cardíaca. ¿Qué característica estructural los distingue y cuál es su mecanismo de acción?"]
-    },
-    sec37: {
-        titulo: "3.7 Eicosanoides",
-        dev: ["¿Qué son los eicosanoides y a partir de qué tipo de ácido graso se derivan principalmente?", "Nombre las tres clases principales de eicosanoides.", "¿Cómo se liberan los precursores de los eicosanoides de los fosfolípidos de la membrana? ¿Qué enzima es responsable?", "Compare a los eicosanoides con las hormonas endocrinas en términos de sitio de producción y modo de acción.", "La enzima ciclooxigenasa (COX) es clave en la síntesis de prostaglandinas. ¿Qué reacción cataliza?", "¿Qué funciones fisiológicas tienen las prostaglandinas y los tromboxanos? Mencione un rol en la inflamación y otro en la hemostasia."],
-        app: ["La aspirina y otros AINE inhiben la enzima COX. Explique cómo esta inhibición produce sus efectos antiinflamatorios.", "Existen dos isoformas: COX-1 y COX-2. ¿Qué ventaja terapéutica ofrecen los inhibidores selectivos de COX-2?", "El tromboxano A2 (TXA2) promueve agregación plaquetaria, mientras que la prostaciclina (PGI2) la inhibe. Explique cómo el balance entre estas dos moléculas mantiene la homeostasis vascular.", "Los corticosteroides son potentes antiinflamatorios que inhiben la fosfolipasa A2. Compare este mecanismo con el de la aspirina. ¿Por qué los corticosteroides tienen un efecto más amplio?"]
-    },
-    sec38: {
-        titulo: "3.8 Digestión de lípidos",
-        dev: ["Describa los desafíos de la digestión de lípidos en el ambiente acuoso del tracto gastrointestinal.", "¿Cuál es el papel de las sales biliares? Explique el proceso de emulsificación.", "¿Qué enzima pancreática hidroliza los triacilgliceroles en el intestino delgado? ¿Qué productos se obtienen?", "Una vez digeridos, ¿cómo se absorben los productos de la digestión en las células de la mucosa intestinal?", "Dentro de las células intestinales, los lípidos se reensamblan en TAGs. ¿Cómo se empaquetan y transportan? Nombre la lipoproteína.", "Describa el destino de los quilomicrones en la circulación. ¿Qué enzima libera los ácidos grasos en los tejidos periféricos?"],
-        app: ["Un paciente con una obstrucción del conducto biliar presenta esteatorrea (grasa en las heces). Relacione la falta de bilis en el intestino con este síntoma.", "La olestra es un sustituto de la grasa artificial que no puede ser hidrolizada por las lipasas humanas. ¿Por qué no se absorbe y, por lo tanto, no aporta calorías? ¿Qué efectos secundarios gastrointestinales podría causar?", "¿Por qué una dieta rica en fibra soluble puede ayudar a reducir los niveles de colesterol en sangre? (Pista: considere el efecto de la fibra sobre la reabsorción de sales biliares en el ciclo enterohepático).", "Los pacientes con deficiencia de la enzima lipoproteína lipasa (LPL) o de su cofactor ApoC-II presentan niveles extremadamente altos de triacilgliceroles en sangre después de una comida (hiperquilomicronemia familiar). Explique el mecanismo molecular de esta condición."]
-    },
-    caso: {
-        titulo: "Caso Clínico Integradora",
-        dev: ["Identifiquen los principales tipos de lípidos que probablemente predominan en la dieta del paciente (p. ej., saturados, insaturados, trans, colesterol).", "Expliquen, a nivel molecular, por qué una dieta rica en ácidos grasos saturados y trans tiende a elevar los niveles de colesterol LDL.", "Describan la función de las lipoproteínas LDL y HDL en el transporte del colesterol. Expliquen por qué el LDL se asocia con riesgo cardiovascular (aterosclerosis) y el HDL con protección.", "Expliquen el mecanismo de acción de las estatinas a nivel enzimático, identificando la enzima clave que inhiben en la ruta de síntesis del colesterol.", "Se recomienda dieta con pescado graso y aceite de oliva. ¿Qué tipo de ácidos grasos predominan (omega-3, monoinsaturados)?", "Expliquen cómo el consumo de ácidos grasos omega-3 puede ser beneficioso. Relacionen el precursor (ácido araquidónico vs. EPA) con la producción de eicosanoides (tromboxanos) y su efecto sobre la agregación plaquetaria y la inflamación."],
-        app: []
-    }
+    "3.1 Introducción y funciones": [
+        "Defina qué son los lípidos basándose en sus propiedades de solubilidad.",
+        "Enumere y describa brevemente las diversas funciones que desempeñan los lípidos en los organismos vivos.",
+        "Explique por qué los lípidos son una forma eficiente de almacenamiento de energía en comparación con los carbohidratos, como el glucógeno.",
+        "Clasifique los lípidos en las 6 categorías principales mencionadas en el texto de McKee.",
+        "[APLICACIÓN] El tejido adiposo, además de ser una reserva de energía, cumple una función de aislamiento térmico. Explique esta propiedad basándose en las características de los triacilgliceroles.",
+        "[APLICACIÓN] Algunas aves acuáticas cubren sus plumas con secreciones de glándulas especializadas. ¿Qué tipo de lípidos esperaría encontrar en estas secreciones y cuál es su función?",
+        "[APLICACIÓN] Las vitaminas A, D, E y K se conocen como liposolubles. ¿Qué implica esto para su absorción y almacenamiento en el cuerpo? ¿Qué problemas podría causar una dieta extremadamente baja en grasas?"
+    ],
+    "3.2 Ácidos grasos": [
+        "Describa la estructura química general de un ácido graso. Explique el sistema de numeración y la designación de los carbonos α, β y ω (omega).",
+        "¿Cuál es la diferencia estructural entre un ácido graso saturado y uno insaturado?",
+        "Explique cómo la presencia de un doble enlace cis afecta la forma de la cadena hidrocarbonada de un ácido graso.",
+        "Relacione la estructura (saturación y presencia de dobles enlaces cis) de los ácidos grasos con sus propiedades físicas, como el punto de fusión.",
+        "Defina los términos monoinsaturado y poliinsaturado.",
+        "¿Qué son los ácidos grasos esenciales? Nombre los dos principales para los humanos y explique por qué son esenciales.",
+        "Explique la nomenclatura omega (ω) para los ácidos grasos insaturados, usando los ácidos grasos omega-3 y omega-6 como ejemplos.",
+        "[APLICACIÓN] El ácido esteárico (18:0) es un sólido a temperatura ambiente, mientras que el ácido oleico (18:1Δ⁹) es líquido. Ambos tienen 18 carbonos. Explique esta diferencia.",
+        "[APLICACIÓN] Los aceites vegetales pueden convertirse en grasas sólidas como la margarina mediante un proceso de hidrogenación parcial. ¿Qué ocurre químicamente en este proceso y qué tipo de ácidos grasos (un subproducto no deseado) se pueden formar?",
+        "[APLICACIÓN] Ordene los siguientes ácidos grasos de menor a mayor punto de fusión y justifique su respuesta: a. Ácido palmítico (16:0) b. Ácido linolénico (18:3Δ⁹,¹²,¹⁵) c. Ácido esteárico (18:0) d. Ácido oleico (18:1Δ⁹)",
+        "[APLICACIÓN] El ácido araquidónico [20:4(5,8,11,14)] es precursor de los eicosanoides. ¿Es un ácido graso omega-3 o omega-6? Justifique su respuesta."
+    ],
+    "3.3 Triacilgliceroles y ceras": [
+        "Describa la estructura de un triacilglicerol (TAG). ¿Qué moléculas lo componen y qué tipo de enlace las une?",
+        "¿Por qué los TAGs son considerados \"grasas neutras\" y son altamente hidrofóbicos?",
+        "¿Cuál es la principal función de los triacilgliceroles en los animales? Describa las células especializadas en su almacenamiento.",
+        "Diferencie entre grasas y aceites según su estado físico a temperatura ambiente y su composición de ácidos grasos.",
+        "¿Qué es la saponificación? Describa la reacción química que ocurre al tratar un triacilglicerol con una base fuerte como el NaOH.",
+        "Describa la composición química general de las ceras. ¿Qué son los ésteres de cera?",
+        "¿Cuál es la función principal de las ceras en la naturaleza? Proporcione ejemplos en plantas y animales.",
+        "[APLICACIÓN] Un aceite vegetal, como el de maíz, es líquido a temperatura ambiente, mientras que la grasa animal, como la de res, es sólida. ¿Qué puede inferir sobre la composición de ácidos grasos de cada uno?",
+        "[APLICACIÓN] El proceso de digestión de grasas requiere que estas se emulsionen en el intestino. Explique cómo el jabón (sales de ácidos grasos) actúa como agente emulsionante para dispersar gotas de aceite en agua, relacionándolo con la digestión.",
+        "[APLICACIÓN] La cera de abejas es sólida y completamente insoluble en agua, lo que permite que el panal sea impermeable. ¿Qué características estructurales de sus componentes (ésteres de cera) le confieren estas propiedades?"
+    ],
+    "3.4 Fosfolípidos": [
+        "Describa la naturaleza anfipática de los fosfolípidos. Identifique sus dominios hidrofóbico e hidrofílico.",
+        "Explique por qué los fosfolípidos forman espontáneamente una bicapa en un medio acuoso. ¿Qué fuerzas impulsan esta organización?",
+        "¿Cuáles son las dos clases principales de fosfolípidos?",
+        "Dibuje la estructura general de un fosfoglicérido. ¿Cuál es su molécula precursora?",
+        "Nombre al menos cuatro alcoholes que pueden esterificarse al grupo fosfato de un fosfoglicérido y los fosfolípidos resultantes.",
+        "¿Qué es la cardiolipina y en qué membrana celular se encuentra predominantemente? ¿Cuál es su función?",
+        "Describa el rol de la dipalmitoilfosfatidilcolina (DPPC) como componente principal del surfactante pulmonar. ¿Qué es el síndrome de dificultad respiratoria (RDS)?",
+        "[APLICACIÓN] La membrana plasmática es fluida y semipermeable. Explique cómo la composición de ácidos grasos (saturados vs. insaturados) en los fosfolípidos influye en la fluidez de la membrana.",
+        "[APLICACIÓN] El fosfatidilinositol 4,5-bifosfato (PIP2) es un fosfolípido de membrana que actúa en la transducción de señales. La enzima fosfolipasa C lo escinde. ¿Qué dos moléculas mensajeras se generan y cuál es su función?",
+        "[APLICACIÓN] Las membranas biológicas son asimétricas en cuanto a su composición de fosfolípidos. Por ejemplo, la fosfatidilserina (PS) se encuentra principalmente en la monocapa interna de la membrana plasmática. ¿Qué importancia biológica tiene esta asimetría (p. ej., en la apoptosis)?",
+        "[APLICACIÓN] Las fosfolipasas son enzimas que degradan los fosfolípidos. La fosfolipasa A2 (PLA2) es un componente del veneno de algunas serpientes. ¿Qué producto se libera por su acción sobre los fosfolípidos de membrana y cómo contribuye esto a la toxicidad del veneno?"
+    ],
+    "3.5 Esfingolípidos": [
+        "¿Cuál es la molécula base (alcohol) de los esfingolípidos, que reemplaza al glicerol?",
+        "Defina el término ceramida. ¿Qué componentes la forman y qué tipo de enlace los une?",
+        "Describa la estructura de la esfingomielina. ¿A qué clase de lípidos pertenece? ¿En qué estructura del sistema nervioso es abundante?",
+        "¿Qué son los glicoesfingolípidos? ¿En qué se diferencian de la esfingomielina?",
+        "Defina y diferencie los cerebrósidos y los gangliósidos basándose en su grupo de cabeza polar.",
+        "¿Qué son las esfingolipidosis? Describa la causa de Tay-Sachs, mencionando la enzima deficiente y el lípido que se acumula.",
+        "[APLICACIÓN] La vaina de mielina que aísla los axones neuronales es rica en esfingomielina y galactocerebrósidos. ¿Qué propiedades confieren estos lípidos a la mielina?",
+        "[APLICACIÓN] Los gangliósidos se encuentran en la superficie externa de las membranas celulares y actúan como receptores. Por ejemplo, la toxina del cólera se une al gangliósido GM1. Explique cómo la porción de carbohidrato permite esto.",
+        "[APLICACIÓN] En la enfermedad de Gaucher, hay una deficiencia de β-glucosidasa. ¿En qué orgánulo celular esperaría que ocurriera la acumulación de glucocerebrósido y por qué?",
+        "[APLICACIÓN] Compare y contraste la estructura de la fosfatidilcolina con la de la esfingomielina. ¿En qué se diferencian sus \"esqueletos\"?"
+    ],
+    "3.6 Isoprenoides": [
+        "¿Cuál es la unidad estructural repetitiva de cinco carbonos que forma a todos los isoprenoides?",
+        "Distinga entre terpenos y esteroides.",
+        "Clasifique los terpenos según el número de unidades de isopreno y dé un ejemplo de cada uno.",
+        "¿Qué son los terpenoides mixtos? Mencione dos ejemplos que sean vitaminas o coenzimas importantes.",
+        "Describa la estructura del núcleo esteroideo (cuatro anillos fusionados).",
+        "¿Cuál es el esterol más importante en los tejidos animales y precursor de otras moléculas? Enumere tres tipos de moléculas que se sintetizan a partir de él.",
+        "Nombre las principales clases de hormonas esteroideas y mencione una función para cada una.",
+        "[APLICACIÓN] El β-caroteno es el precursor de la vitamina A (retinol), esencial para la visión. Investigue cómo se convierte el β-caroteno en vitamina A.",
+        "[APLICACIÓN] El colesterol es una molécula anfipática y componente de membranas. ¿Cómo se orienta en la bicapa lipídica y cuál es su efecto sobre la fluidez?",
+        "[APLICACIÓN] Los ácidos biliares, como el ácido cólico, son derivados del colesterol. Compare la estructura del colesterol y el ácido cólico. ¿Qué modificaciones hacen que el ácido cólico sea un mejor agente emulsionante?",
+        "[APLICACIÓN] Los glucósidos cardíacos, como la digitoxina, se usan para tratar la insuficiencia cardíaca. ¿Qué característica estructural los distingue y cuál es su mecanismo de acción?"
+    ],
+    "3.7 Eicosanoides": [
+        "¿Qué son los eicosanoides y a partir de qué tipo de ácido graso se derivan principalmente?",
+        "Nombre las tres clases principales de eicosanoides.",
+        "¿Cómo se liberan los precursores de los eicosanoides de los fosfolípidos de la membrana? ¿Qué enzima es responsable?",
+        "Compare a los eicosanoides con las hormonas endocrinas en términos de sitio de producción y modo de acción.",
+        "La enzima ciclooxigenasa (COX) es clave en la síntesis de prostaglandinas. ¿Qué reacción cataliza?",
+        "¿Qué funciones fisiológicas tienen las prostaglandinas y los tromboxanos? Mencione un rol en la inflamación y otro en la hemostasia.",
+        "[APLICACIÓN] La aspirina y otros AINE inhiben la enzima COX. Explique cómo esta inhibición produce sus efectos antiinflamatorios.",
+        "[APLICACIÓN] Existen dos isoformas: COX-1 y COX-2. ¿Qué ventaja terapéutica ofrecen los inhibidores selectivos de COX-2?",
+        "[APLICACIÓN] El tromboxano A2 (TXA2) promueve agregación plaquetaria, mientras que la prostaciclina (PGI2) la inhibe. Explique cómo el balance entre estas dos moléculas mantiene la homeostasis vascular.",
+        "[APLICACIÓN] Los corticosteroides son potentes antiinflamatorios que inhiben la fosfolipasa A2. Compare este mecanismo con el de la aspirina. ¿Por qué los corticosteroides tienen un efecto más amplio?"
+    ],
+    "3.8 Digestión de lípidos": [
+        "Describa los desafíos de la digestión de lípidos en el ambiente acuoso del tracto gastrointestinal.",
+        "¿Cuál es el papel de las sales biliares? Explique el proceso de emulsificación.",
+        "¿Qué enzima pancreática hidroliza los triacilgliceroles en el intestino delgado? ¿Qué productos se obtienen?",
+        "Una vez digeridos, ¿cómo se absorben los productos de la digestión en las células de la mucosa intestinal?",
+        "Dentro de las células intestinales, los lípidos se reensamblan en TAGs. ¿Cómo se empaquetan y transportan? Nombre la lipoproteína.",
+        "Describa el destino de los quilomicrones en la circulación. ¿Qué enzima libera los ácidos grasos en los tejidos periféricos?",
+        "[APLICACIÓN] Un paciente con una obstrucción del conducto biliar presenta esteatorrea (grasa en las heces). Relacione la falta de bilis en el intestino con este síntoma.",
+        "[APLICACIÓN] La olestra es un sustituto de la grasa artificial que no puede ser hidrolizada por las lipasas humanas. ¿Por qué no se absorbe y, por lo tanto, no aporta calorías? ¿Qué efectos secundarios gastrointestinales podría causar?",
+        "[APLICACIÓN] ¿Por qué una dieta rica en fibra soluble puede ayudar a reducir los niveles de colesterol en sangre? (Pista: considere el efecto de la fibra sobre la reabsorción de sales biliares en el ciclo enterohepático).",
+        "[APLICACIÓN] Los pacientes con deficiencia de la enzima lipoproteína lipasa (LPL) o de su cofactor ApoC-II presentan niveles extremadamente altos de triacilgliceroles en sangre después de una comida (hiperquilomicronemia familiar). Explique el mecanismo molecular de esta condición."
+    ],
+    "Caso Clínico Integradora": [
+        "Identifiquen los principales tipos de lípidos que probablemente predominan en la dieta del paciente (p. ej., saturados, insaturados, trans, colesterol).",
+        "Expliquen, a nivel molecular, por qué una dieta rica en ácidos grasos saturados y trans tiende a elevar los niveles de colesterol LDL.",
+        "Describan la función de las lipoproteínas LDL y HDL en el transporte del colesterol. Expliquen por qué el LDL se asocia con riesgo cardiovascular (aterosclerosis) y el HDL con protección.",
+        "Expliquen el mecanismo de acción de las estatinas a nivel enzimático, identificando la enzima clave que inhiben en la ruta de síntesis del colesterol.",
+        "Se recomienda dieta con pescado graso y aceite de oliva. ¿Qué tipo de ácidos grasos predominan (omega-3, monoinsaturados)?",
+        "Expliquen cómo el consumo de ácidos grasos omega-3 puede ser beneficioso. Relacionen el precursor (ácido araquidónico vs. EPA) con la producción de eicosanoides (tromboxanos) y su efecto sobre la agregación plaquetaria y la inflamación."
+    ]
 };
 
-// Quizzes EXPANDIDOS (50 Preguntas)
-var quizzes = [
-    {q: "¿Cuál es la característica fisicoquímica fundamental que define a los lípidos como grupo?", opts: ["Son polímeros formados por nucleótidos", "Son insolubles en agua y solubles en solventes orgánicos", "Son solubles en agua y forman puentes de hidrógeno fácilmente", "Todos contienen nitrógeno en su estructura"], correct: 1, explanation: "Esta propiedad, conocida como hidrofobicidad o naturaleza anfipática, es el criterio principal para clasificar biomoléculas como lípidos."},
-    {q: "¿Cuál es la función principal de los triacilgliceroles (triglicéridos) en los animales?", opts: ["Formar la bicapa lipídica de las membranas", "Actuar como hormonas señalizadoras", "Almacenamiento de energía a largo plazo", "Catalizar reacciones químicas"], correct: 2, explanation: "Los triglicéridos son la forma más concentrada de almacenamiento de energía metabólica."},
-    {q: "Estructuralmente, ¿qué diferencia a un ácido graso saturado de uno insaturado?", opts: ["El saturado contiene dobles enlaces carbono-carbono", "El saturado carece de dobles enlaces carbono-carbono", "El insaturado tiene una cadena más corta", "El saturado tiene un grupo fosfato"], correct: 1, explanation: "Los ácidos grasos saturados tienen una cadena hidrocarbonada con solo enlaces simples, lo que les da una estructura recta."},
-    {q: "¿Qué efecto tiene un doble enlace en configuración CIS sobre la estructura de un ácido graso?", opts: ["Mantiene la cadena recta y rígida", "Produce una curvatura o quiebre en la cadena", "Aumenta significativamente el punto de fusión", "Permite un empaquetamiento muy denso"], correct: 1, explanation: "La configuración CIS coloca los hidrógenos del mismo lado, provocando una angulación en la cadena que impide el empaquetamiento compacto."},
-    {q: "¿Por qué las grasas TRANS se consideran perjudiciales para la salud cardiovascular?", opts: ["Porque se comportan estructuralmente como grasas saturadas", "Porque son demasiado fluidas a temperatura corporal", "Porque el cuerpo las degrada demasiado rápido", "Porque disminuyen los niveles de colesterol LDL"], correct: 0, explanation: "Aunque tienen dobles enlaces, su configuración lineal les permite empaquetarse densamente y elevar el colesterol LDL."},
-    {q: "¿Qué nomenclatura se utiliza para indicar la posición del primer doble enlace contando desde el extremo metilo (CH3) de un ácido graso?", opts: ["Delta (Δ)", "Alfa (α)", "Omega (ω)", "Beta (β)"], correct: 2, explanation: "La nomenclatura Omega cuenta los carbonos comenzando desde el final de la cola (el extremo metilo)."},
-    {q: "¿Cuáles son los ácidos grasos esenciales para los humanos?", opts: ["Ácido palmítico y esteárico", "Ácido linoleico y ácido alfa-linolénico", "Ácido oleico y araquidónico", "Colesterol y fosfolípidos"], correct: 1, explanation: "El cuerpo humano no puede introducir dobles enlaces más allá del carbono 9, por lo que necesita ingerir estos precursores omega-6 y omega-3."},
-    {q: "¿Qué reacción química ocurre cuando se trata un triglicérido con una base fuerte (como NaOH) para producir jabón?", opts: ["Esterificación", "Saponificación", "Hidrogenación", "Oxidación"], correct: 1, explanation: "La saponificación es la hidrólisis alcalina de los enlaces éster de las grasas, produciendo glicerol y sales de ácidos grasos (jabón)."},
-    {q: "¿Cuál es la función biológica principal de las ceras?", opts: ["Señalización celular", "Impermeabilización y protección", "Transporte de oxígeno", "Catálisis enzimática"], correct: 1, explanation: "Debido a su naturaleza extremadamente hidrofóbica, las ceras recubren hojas, plumas y piel para repeler el agua."},
-    {q: "¿Qué propiedad de los fosfolípidos es crítica para la formación de membranas celulares?", opts: ["Son completamente hidrofóbicos", "Son moléculas anfipáticas", "Son solubles en agua", "Tienen estructura de anillo rígido"], correct: 1, explanation: "Tener una cabeza polar (hidrofílica) y colas apolares (hidrofóbicas) permite que se auto-organicen en bicapas en medio acuoso."},
-    {q: "En un fosfoglicérido, ¿qué componente actúa como esqueleto central?", opts: ["Esfingosina", "Glicerol", "Colesterol", "Glucosa"], correct: 1, explanation: "El glicerol proporciona los tres carbonos a los que se unen los ácidos grasos y el grupo fosfato."},
-    {q: "¿Qué fosfolípido es el componente principal del surfactante pulmonar?", opts: ["Fosfatidilinositol", "Dipalmitoilfosfatidilcolina (DPPC)", "Cardiolipina", "Esfingomielina"], correct: 1, explanation: "La DPPC reduce la tensión superficial en los alvéolos, evitando que colapsen."},
-    {q: "¿Cuál es la molécula base exclusiva de los esfingolípidos?", opts: ["Glicerol", "Esfingosina", "Isopreno", "Ácido fosfatídico"], correct: 1, explanation: "La esfingosina es un aminoalcohol de cadena larga que sirve de esqueleto para todos los esfingolípidos."},
-    {q: "La vaina de mielina, crucial para la transmisión nerviosa, es rica en:", opts: ["Triglicéridos", "Esfingomielina", "Ácidos biliares", "Cardiolipina"], correct: 1, explanation: "Como su nombre indica, es el componente fosfolípido/esfingolípido principal de la mielina."},
-    {q: "¿Qué es una ceramida?", opts: ["Un ácido graso unido a glicerol", "Esfingosina + Ácido graso", "Esfingosina + Fosfato", "Colesterol + Ácido graso"], correct: 1, explanation: "La unión de un ácido graso al grupo amino de la esfingosina mediante enlace amida forma la ceramida, base de todos los esfingolípidos."},
-    {q: "¿Cuál es la causa bioquímica de la enfermedad de Tay-Sachs?", opts: ["Deficiencia de la enzima Hexosaminidasa A", "Deficiencia de insulina", "Acumulación de colesterol", "Deficiencia de esfingomielinasa"], correct: 0, explanation: "La falta de esta enzima impide la degradación del gangliósido GM2, que se acumula en las neuronas causando daño."},
-    {q: "¿Qué lípido se acumula en los lisosomas en la enfermedad de Gaucher?", opts: ["Glucocerebrósido", "Esfingomielina", "Gangliósido GM2", "Ceramida"], correct: 0, explanation: "La deficiencia de beta-glucosidasa lleva a la acumulación de este lípido."},
-    {q: "¿Cuál es la unidad estructural básica de los terpenos y esteroides?", opts: ["Aminoácido", "Unidad de isopreno", "Ácido graso", "Glucosa"], correct: 1, explanation: "Es una unidad de 5 carbonos que se polimeriza para formar terpenos y el esqueleto de esteroides."},
-    {q: "¿Cuál es la estructura característica del colesterol y otros esteroides?", opts: ["Una cadena larga lineal", "Un núcleo de cuatro anillos fusionados", "Un anillo de benceno", "Un grupo fosfato y dos colas"], correct: 1, explanation: "El núcleo esteroideo (ciclopentanoperhidrofenantreno) consta de 3 anillos de 6 carbonos y 1 anillo de 5 carbonos."},
-    {q: "¿Qué efecto tiene el colesterol en la membrana celular a temperaturas fisiológicas?", opts: ["Aumenta excesivamente la fluidez", "Actúa como un amortiguador (buffer) de fluidez", "Destruye la bicapa lipídica", "Hace la membrana impermeable a todo"], correct: 1, explanation: "Reduce la fluidez a altas temperaturas pero evita la cristalización (congelamiento) a bajas temperaturas."},
-    {q: "Los ácidos biliares se sintetizan a partir de:", opts: ["Glucosa", "Colesterol", "Proteínas", "Vitamina C"], correct: 1, explanation: "El hígado convierte el colesterol en ácidos biliares para ayudar en la digestión de grasas."},
-    {q: "¿Qué vitamina liposoluble se deriva estructuralmente de un esteroide?", opts: ["Vitamina A", "Vitamina D", "Vitamina E", "Vitamina K"], correct: 1, explanation: "La vitamina D se sintetiza a partir de un derivado del colesterol mediante la luz UV."},
-    {q: "¿Cuál es el precursor lipídico inmediato de los eicosanoides?", opts: ["Ácido palmítico", "Ácido araquidónico", "Colesterol", "Ácido esteárico"], correct: 1, explanation: "Este ácido graso poliinsaturado de 20 carbonos se libera de la membrana para iniciar la síntesis."},
-    {q: "Las prostaglandinas actúan principalmente como:", opts: ["Hormonas sistémicas de larga duración", "Mensajeros locales (paracrinos/autocrinos)", "Reservas de energía", "Componentes estructurales de membrana"], correct: 1, explanation: "Actúan cerca del sitio donde se producen mediando inflamación y dolor."},
-    {q: "¿Qué enzima es inhibida por los AINEs (como la aspirina e ibuprofeno)?", opts: ["Lipoproteína lipasa", "Ciclooxigenasa (COX)", "Fosfolipasa A2", "HMG-CoA reductasa"], correct: 1, explanation: "La inhibición de la COX bloquea la conversión de ácido araquidónico en prostaglandinas pro-inflamatorias."},
-    {q: "¿Cuál es la función principal de los tromboxanos?", opts: ["Vasodilatación", "Promover la agregación plaquetaria y vasoconstricción", "Inducir sueño", "Digestión de lípidos"], correct: 1, explanation: "Son críticos para la formación de coágulos sanguíneos (hemostasia)."},
-    {q: "¿Cuál es el papel principal de las sales biliares en la digestión?", opts: ["Hidrolizar triglicéridos", "Emulsificar las grasas", "Transportar lípidos en sangre", "Sintetizar colesterol"], correct: 1, explanation: "Actúan como detergentes biológicos, rompiendo grandes gotas de grasa en micelas pequeñas para facilitar la acción enzimática."},
-    {q: "¿Qué enzima pancreática realiza la mayor parte de la digestión de triglicéridos?", opts: ["Amilasa", "Lipasa pancreática", "Pepsina", "Tripsina"], correct: 1, explanation: "Hidroliza los triglicéridos en ácidos grasos libres y 2-monoacilglicerol."},
-    {q: "¿Dónde se ensamblan los quilomicrones?", opts: ["En el hígado", "En el enterocito (célula intestinal)", "En el tejido adiposo", "En la sangre"], correct: 1, explanation: "Se forman para transportar los lípidos de la dieta recién absorbidos."},
-    {q: "¿Cuál es la función principal de los quilomicrones?", opts: ["Transportar colesterol del hígado a los tejidos", "Transportar lípidos exógenos (dieta) a los tejidos", "Transportar colesterol de regreso al hígado", "Almacenar energía"], correct: 1, explanation: "Llevan la grasa que comemos desde el intestino hacia músculos y tejido adiposo."},
-    {q: "¿Qué lipoproteína se conoce comúnmente como 'colesterol malo'?", opts: ["HDL", "LDL (Lipoproteína de Baja Densidad)", "Quilomicrón", "Albúmina"], correct: 1, explanation: "Transporta colesterol a los tejidos y su exceso se deposita en las arterias formando placas (aterosclerosis)."},
-    {q: "¿Por qué se considera al HDL como 'colesterol bueno'?", opts: ["Porque transporta colesterol desde los tejidos hacia el hígado", "Porque tiene bajo contenido de proteínas", "Porque deposita colesterol en las arterias", "Porque es rico en triglicéridos"], correct: 0, explanation: "Este proceso, llamado transporte reverso de colesterol, limpia las arterias."},
-    {q: "¿Qué enzima ubicada en los capilares sanguíneos hidroliza los triglicéridos de quilomicrones y VLDL?", opts: ["Lipoproteína Lipasa (LPL)", "Lipasa sensible a hormonas", "Amilasa", "Hexoquinasa"], correct: 0, explanation: "Anclada al endotelio capilar, permite que los tejidos capten ácidos grasos de las lipoproteínas circulantes."},
-    {q: "¿Qué efecto tienen las estatinas en el metabolismo lipídico?", opts: ["Inhiben la absorción intestinal de grasa", "Inhiben la enzima HMG-CoA reductasa", "Aumentan la síntesis de triglicéridos", "Destruyen los quilomicrones"], correct: 1, explanation: "Bloquean el paso limitante en la síntesis endógena de colesterol en el hígado, reduciendo así los niveles de LDL."},
-    {q: "¿Qué factor de la membrana plasmática determina principalmente su fluidez?", opts: ["La cantidad de agua", "La composición de ácidos grasos y el contenido de colesterol", "La cantidad de carbohidratos", "El espesor de la pared celular"], correct: 1, explanation: "Cadenas cortas e insaturadas aumentan la fluidez; el colesterol la modula."},
-    {q: "¿Qué son las 'balsas lipídicas' (lipid rafts)?", opts: ["Depósitos de grasa en el tejido adiposo", "Microdominios de membrana ricos en colesterol y esfingolípidos", "Vesículas de transporte intracelular", "Gotas de lípidos en sangre"], correct: 1, explanation: "Son zonas más rígidas y gruesas de la membrana que organizan proteínas de señalización."},
-    {q: "¿Qué tipo de vitamina es el beta-caroteno?", opts: ["Precursor de Vitamina A", "Vitamina C", "Vitamina B12", "Vitamina K"], correct: 0, explanation: "Es un terpeno vegetal que se escinde para formar vitamina A (retinol)."},
-    {q: "¿Qué tipo de enlace une los ácidos grasos al glicerol en un triacilglicerol?", opts: ["Enlace peptídico", "Enlace éster", "Enlace glucosídico", "Enlace fosfodiéster"], correct: 1, explanation: "Se forma entre el grupo hidroxilo del glicerol y el carboxilo del ácido graso."},
-    {q: "¿Qué tipo de enlace une el ácido graso a la esfingosina en una ceramida?", opts: ["Enlace éster", "Enlace amida", "Enlace éter", "Enlace iónico"], correct: 1, explanation: "El ácido graso se une al grupo amino de la esfingosina."},
-    {q: "¿Qué es la lecitina?", opts: ["Un nombre común para la Fosfatidilcolina", "Una proteína", "Un azúcar", "Un ácido graso libre"], correct: 0, explanation: "Es el fosfolípido más abundante en membranas eucariotas."},
-    {q: "La fosfatidilserina normalmente se encuentra en la cara interna de la membrana. Su exposición al exterior es una señal de:", opts: ["División celular", "Apoptosis (muerte celular programada)", "Entrada de glucosa", "Síntesis de proteínas"], correct: 1, explanation: "Sirve como señal de 'cómeme' para los macrófagos."},
-    {q: "¿Cuál es la causa principal del Síndrome de Dificultad Respiratoria en recién nacidos prematuros?", opts: ["Falta de surfactante pulmonar (DPPC)", "Exceso de moco", "Infección bacteriana", "Defecto cardíaco"], correct: 0, explanation: "Sin suficiente surfactante, los alvéolos colapsan debido a la tensión superficial del agua."},
-    {q: "¿Cuáles son ejemplos de ácidos grasos Omega-3?", opts: ["EPA y DHA", "Ácido oleico y palmítico", "Ácido linoleico y araquidónico", "Colesterol y cortisona"], correct: 0, explanation: "Ácido Eicosapentaenoico y Docosahexaenoico, abundantes en aceites de pescado."},
-    {q: "¿Qué diferencia física básica existe entre aceites y grasas?", opts: ["Los aceites son líquidos a temperatura ambiente, las grasas son sólidas", "Los aceites son animales, las grasas vegetales", "Los aceites tienen más calorías", "Las grasas no tienen ácidos grasos"], correct: 0, explanation: "Debido a la mayor proporción de insaturaciones en los aceites."},
-    {q: "¿Qué proceso industrial convierte aceites líquidos en grasas sólidas, generando grasas trans?", opts: ["Hidrogenación parcial", "Saponificación", "Hidrólisis", "Esterificación"], correct: 0, explanation: "Añade hidrógeno para saturar enlaces, pero colateralmente isomeriza cis a trans."},
-    {q: "¿Qué significa que una molécula sea 'anfipática'?", opts: ["Que tiene carga positiva y negativa", "Que tiene una región hidrofílica y una región hidrofóbica", "Que es soluble en todo", "Que es inestable"], correct: 1, explanation: "Esta dualidad es esencial para formar membranas y micelas."},
-    {q: "¿Qué estructura forman los productos de la digestión lipídica en el intestino para ser absorbidos?", opts: ["Bicapas planas", "Micelas mixtas", "Cristales sólidos", "Polímeros largos"], correct: 1, explanation: "Esferas con el exterior polar (sales biliares) y el interior apolar (ácidos grasos), permitiendo el transporte en el medio acuoso intestinal."},
-    {q: "¿Qué proceso patológico se inicia con la acumulación y oxidación de LDL en las arterias?", opts: ["Osteoporosis", "Aterosclerosis", "Diabetes tipo 1", "Anemia"], correct: 1, explanation: "Formación de placas de ateroma que obstruyen el flujo sanguíneo."},
-    {q: "¿Qué es la dislipidemia?", opts: ["Dolor muscular", "Alteración en los niveles de lípidos en sangre", "Falta de lípidos en la dieta", "Exceso de azúcar"], correct: 1, explanation: "Incluye colesterol alto, triglicéridos altos o HDL bajo."},
-    {q: "¿Qué función tienen los leucotrienos?", opts: ["Transporte de oxígeno", "Mediadores de la inflamación y la respuesta alérgica (broncoconstricción)", "Digestión de proteínas", "Formación de hueso"], correct: 1, explanation: "Son eicosanoides potentes implicados en el asma."}
+/* =========================================
+   BASE DE DATOS Y ESTADO
+   ========================================= */
+const state = {
+    points: 0,
+    badges: 0,
+    answers: {}, // Para ejercicios de texto
+    unlockedBadges: [],
+    quizzesCompleted: 0
+};
+
+// Preguntas del Quiz (50 ítems)
+const quizzes = [
+    {q: "¿Propiedad principal de los lípidos?", a: ["Solubles en agua", "Insolubles en agua", "Polímeros", "Inorgánicos"], c: 1},
+    {q: "¿Función principal de los TAGs?", a: ["Estructural", "Señalización", "Reserva energética", "Catalítica"], c: 2},
+    {q: "¿Diferencia de ac. graso saturado?", a: ["Tiene dobles enlaces", "Solo enlaces simples", "Es líquido", "Es corto"], c: 1},
+    {q: "¿Efecto del doble enlace CIS?", a: ["Cadena recta", "Curvatura (kink)", "Aumenta p. fusión", "Rigidez"], c: 1},
+    {q: "¿Por qué las grasas TRANS son malas?", a: ["Son rectas como saturadas", "Son muy curvas", "Se digieren rápido", "Son hidrofílicas"], c: 0},
+    {q: "¿Nomenclatura desde el metilo final?", a: ["Alfa", "Delta", "Omega", "Beta"], c: 2},
+    {q: "¿Ácidos grasos esenciales?", a: ["Oleico/Esteárico", "Linoleico/Linolénico", "Palmítico/Araquidónico", "Colesterol"], c: 1},
+    {q: "¿Reacción para hacer jabón?", a: ["Esterificación", "Saponificación", "Hidrogenación", "Oxidación"], c: 1},
+    {q: "¿Función de las ceras?", a: ["Energía rápida", "Impermeabilización", "Transporte", "Enzimas"], c: 1},
+    {q: "¿Carácter de los fosfolípidos?", a: ["Hidrofóbico", "Hidrofílico", "Anfipático", "Neutro"], c: 2},
+    {q: "¿Esqueleto de fosfoglicéridos?", a: ["Esfingosina", "Glicerol", "Colesterol", "Glucosa"], c: 1},
+    {q: "¿Componente del surfactante pulmonar?", a: ["DPPC", "Cardiolipina", "Cerebrósido", "Colesterol"], c: 0},
+    {q: "¿Esqueleto de esfingolípidos?", a: ["Glicerol", "Esfingosina", "Isopreno", "Serina"], c: 1},
+    {q: "¿Lípido abundante en mielina?", a: ["TAG", "Esfingomielina", "Sales biliares", "Vitamina D"], c: 1},
+    {q: "¿Qué es una ceramida?", a: ["Esfingosina + Ac. Graso", "Glicerol + 2 Ac. Grasos", "Colesterol + Ac. Graso", "Azúcar + Lípido"], c: 0},
+    {q: "¿Causa de Tay-Sachs?", a: ["Falta de Hexosaminidasa A", "Falta de insulina", "Exceso de colesterol", "Dieta pobre"], c: 0},
+    {q: "¿Unidad base de terpenos?", a: ["Aminoácido", "Isopreno", "Glucosa", "Nucleótido"], c: 1},
+    {q: "¿Estructura del colesterol?", a: ["Cadena lineal", "4 anillos fusionados", "Esfera hueca", "Doble hélice"], c: 1},
+    {q: "¿Efecto del colesterol en membrana?", a: ["Aumenta fluidez siempre", "Amortigua la fluidez", "La rompe", "La hace permeable"], c: 1},
+    {q: "¿Precursor de ácidos biliares?", a: ["Glucosa", "Colesterol", "Proteínas", "Vitaminas"], c: 1},
+    {q: "¿Precursor de eicosanoides?", a: ["Ac. Palmítico", "Ac. Araquidónico", "Colesterol", "Esfingosina"], c: 1},
+    {q: "¿Función de prostaglandinas?", a: ["Hormonas largas", "Inflamación/Dolor local", "Energía", "Estructura ósea"], c: 1},
+    {q: "¿Diana de la Aspirina?", a: ["LPL", "Ciclooxigenasa (COX)", "PLA2", "Insulina"], c: 1},
+    {q: "¿Función de sales biliares?", a: ["Hidrolizar", "Emulsificar", "Transportar", "Sintetizar"], c: 1},
+    {q: "¿Enzima digestiva de lípidos?", a: ["Amilasa", "Lipasa Pancreática", "Pepsina", "Tripsina"], c: 1},
+    {q: "¿Transporte de grasa dietética?", a: ["LDL", "Quilomicrón", "HDL", "Albúmina"], c: 1},
+    {q: "¿Colesterol 'Malo'?", a: ["HDL", "LDL", "VLDL", "Quilomicrón"], c: 1},
+    {q: "¿Colesterol 'Bueno'?", a: ["HDL", "LDL", "VLDL", "IDL"], c: 0},
+    {q: "¿Qué es aterosclerosis?", a: ["Huesos débiles", "Placa en arterias", "Azúcar en sangre", "Fallo renal"], c: 1},
+    {q: "¿Fármaco para bajar colesterol?", a: ["Aspirina", "Estatinas", "Insulina", "Antibióticos"], c: 1},
+    {q: "¿Señal de apoptosis en membrana?", a: ["Fosfatidilcolina fuera", "Fosfatidilserina fuera", "Colesterol dentro", "Proteínas fuera"], c: 1},
+    {q: "¿Vitamina derivada de esterol?", a: ["A", "D", "E", "K"], c: 1},
+    {q: "¿Lípido de balsas lipídicas?", a: ["TAGs", "Esfingolípidos/Colesterol", "Ac. Grasos Libres", "Vitaminas"], c: 1},
+    {q: "¿Qué son leucotrienos?", a: ["Mediadores de asma", "Hormonas sexuales", "Vitaminas", "Jabones"], c: 0},
+    {q: "¿Enlace en TAGs?", a: ["Amida", "Éster", "Glucosídico", "Peptídico"], c: 1},
+    {q: "¿Enlace en Ceramida?", a: ["Éster", "Amida", "Éter", "Fosfodiéster"], c: 1},
+    {q: "¿Lugar de síntesis de VLDL?", a: ["Intestino", "Hígado", "Tejido Adiposo", "Sangre"], c: 1},
+    {q: "¿Función de ApoC-II?", a: ["Estructural", "Activar LPL", "Unir receptor", "Antioxidante"], c: 1},
+    {q: "¿Deficiencia en Gaucher?", a: ["Glucocerebrosidasa", "Lipasa", "COX", "Hexosaminidasa"], c: 0},
+    {q: "¿Omega-3 principales?", a: ["EPA/DHA", "Oleico", "Esteárico", "Araquidónico"], c: 0},
+    {q: "¿Dónde ocurre beta-oxidación?", a: ["Citoplasma", "Mitocondria", "Núcleo", "Golgi"], c: 1},
+    {q: "¿Cuántos carbonos tiene el colesterol?", a: ["18", "27", "20", "30"], c: 1},
+    {q: "¿Lípidos son polímeros?", a: ["Sí", "No", "A veces", "Solo TAGs"], c: 1},
+    {q: "¿Qué es micela?", a: ["Doble capa", "Esfera monocapa", "Cubo", "Red"], c: 1},
+    {q: "¿Lípido más abundante en membrana?", a: ["Colesterol", "Fosfoglicéridos", "Esfingolípidos", "Ceras"], c: 1},
+    {q: "¿Qué hace la LPL?", a: ["Sintetiza grasa", "Hidroliza TAGs en sangre", "Absorbe grasa", "Forma bilis"], c: 1},
+    {q: "¿Estructura secundaria de proteínas en membrana?", a: ["Lámina beta", "Hélice alfa", "Giro", "Random"], c: 1},
+    {q: "¿Movimiento 'Flip-Flop'?", a: ["Rápido y común", "Lento y raro", "Imposible", "Continuo"], c: 1},
+    {q: "¿Lípido de reserva en plantas?", a: ["Almidón", "Aceites (TAGs)", "Ceras", "Colesterol"], c: 1},
+    {q: "¿Biofísica estudia...?", a: ["Solo química", "Principios físicos en biología", "Solo anatomía", "Matemáticas puras"], c: 1}
 ];
 
-// Drag & Drop EXPANDIDO (Nuevas categorías y elementos)
-var lipidsData = [
+// Datos Drag & Drop (Expandido)
+const dragItems = [
     // Ácidos Grasos
-    {name: "Ácido Esteárico (18:0)", category: "acidos_grasos"},
-    {name: "Ácido Oleico (18:1)", category: "acidos_grasos"},
-    {name: "Ácido Araquidónico (20:4)", category: "acidos_grasos"},
-    {name: "Ácido Linolénico (Omega-3)", category: "acidos_grasos"},
-    {name: "Ácido Palmítico (16:0)", category: "acidos_grasos"},
+    {n: "Ac. Oleico", c: "acidos_grasos"}, 
+    {n: "Ac. Esteárico", c: "acidos_grasos"}, 
+    {n: "Ac. Araquidónico", c: "acidos_grasos"},
+    {n: "Ac. Palmítico", c: "acidos_grasos"},
+    {n: "Ac. Linolénico (Omega-3)", c: "acidos_grasos"},
+    {n: "Ac. Butírico (Corto)", c: "acidos_grasos"},
     // Membrana
-    {name: "Fosfatidilcolina", category: "membrana"},
-    {name: "Esfingomielina", category: "membrana"},
-    {name: "Gangliósido GM1", category: "membrana"},
-    {name: "Cerebrósido", category: "membrana"},
-    {name: "Cardiolipina", category: "membrana"},
-    {name: "Glucocerebrósido", category: "membrana"},
-    // Esteroides/Isoprenoides
-    {name: "Colesterol", category: "esteroides_isoprenoides"},
-    {name: "Testosterona", category: "esteroides_isoprenoides"},
-    {name: "Vitamina A (Retinol)", category: "esteroides_isoprenoides"},
-    {name: "Beta-caroteno", category: "esteroides_isoprenoides"},
-    {name: "Vitamina D", category: "esteroides_isoprenoides"},
-    {name: "Sales Biliares", category: "esteroides_isoprenoides"},
-    // Almacenamiento/Ceras
-    {name: "Triacilglicerol (Grasa)", category: "almacenamiento_ceras"},
-    {name: "Cera de abeja", category: "almacenamiento_ceras"},
-    {name: "Aceite de maíz (TAG)", category: "almacenamiento_ceras"},
-    {name: "Espermaceti (Cera)", category: "almacenamiento_ceras"}
+    {n: "Fosfatidilcolina", c: "membrana"}, 
+    {n: "Esfingomielina", c: "membrana"}, 
+    {n: "Gangliósido", c: "membrana"},
+    {n: "Fosfatidilserina", c: "membrana"},
+    {n: "Cardiolipina", c: "membrana"},
+    {n: "Plasmalógeno", c: "membrana"},
+    // Esteroides
+    {n: "Colesterol", c: "esteroides"}, 
+    {n: "Testosterona", c: "esteroides"}, 
+    {n: "Vit. D", c: "esteroides"},
+    {n: "Cortisol", c: "esteroides"},
+    {n: "Aldosterona", c: "esteroides"},
+    {n: "Sales Biliares", c: "esteroides"},
+    {n: "Vitamina A (Retinol)", c: "esteroides"},
+    // Almacenamiento
+    {n: "Grasa Bovina (TAG)", c: "almacenamiento"}, 
+    {n: "Cera de Abeja", c: "almacenamiento"}, 
+    {n: "Aceite Oliva", c: "almacenamiento"},
+    {n: "Tripalmitina", c: "almacenamiento"},
+    {n: "Lanolina", c: "almacenamiento"},
+    {n: "Cera de Carnauba", c: "almacenamiento"}
 ];
 
-var flashcardsData = [
-    {front: "Lípidos", back: "Biomoléculas insolubles en agua, solubles en solventes orgánicos (apolares)."},
-    {front: "Ácido Graso Saturado", back: "Cadena hidrocarbonada con enlaces simples (recta). Sólido a T° ambiente."},
-    {front: "Ácido Graso Insaturado", back: "Tiene uno o más dobles enlaces. Líquido a T° ambiente (si es cis)."},
-    {front: "Configuración Cis", back: "Hidrógenos del mismo lado del doble enlace. Causa curvatura (fluidez)."},
-    {front: "Configuración Trans", back: "Hidrógenos en lados opuestos. Cadena recta (rígida/nociva)."},
-    {front: "Ácidos Grasos Esenciales", back: "Linoleico (ω-6) y Alfa-linolénico (ω-3). El cuerpo no los sintetiza."},
-    {front: "Triacilglicerol (TAG)", back: "Glicerol + 3 Ácidos Grasos. Principal reserva de energía."},
-    {front: "Saponificación", back: "Hidrólisis alcalina de grasas para producir jabón y glicerol."},
-    {front: "Ceras", back: "Ésteres de ácido graso y alcohol de cadena larga. Impermeabilizantes."},
-    {front: "Fosfolípidos", back: "Lípidos anfipáticos principales de membranas. Forman bicapas."},
-    {front: "Anfipático", back: "Molécula con una parte hidrofílica (polar) y otra hidrofóbica (apolar)."},
-    {front: "Surfactante Pulmonar", back: "Rico en DPPC. Reduce tensión superficial alveolar (evita colapso)."},
-    {front: "Esfingosina", back: "Aminoalcohol de cadena larga, base de los esfingolípidos."},
-    {front: "Ceramida", back: "Esfingosina + Ácido Graso (unido por enlace amida)."},
-    {front: "Esfingomielina", back: "Fosfolípido/Esfingolípido en vaina de mielina (aislante nervioso)."},
-    {front: "Cerebrósido", back: "Ceramida + 1 azúcar (glucosa o galactosa)."},
-    {front: "Gangliósido", back: "Ceramida + Oligosacárido complejo con ácido siálico."},
-    {front: "Enfermedad de Tay-Sachs", back: "Acumulación de Gangliósido GM2 por falta de Hexosaminidasa A."},
-    {front: "Enfermedad de Gaucher", back: "Acumulación de Glucocerebrósido por falta de Beta-glucosidasa."},
-    {front: "Isopreno", back: "Unidad de 5 carbonos base de terpenos y esteroides."},
-    {front: "Colesterol", back: "Esteroide de 27 carbonos. Regula fluidez de membrana."},
-    {front: "Sales Biliares", back: "Derivados del colesterol. Emulsionan grasas en el intestino."},
-    {front: "Vitamina D", back: "Derivado del colesterol sintetizado con luz UV. Regula calcio."},
-    {front: "Hormonas Esteroideas", back: "Cortisol, Aldosterona, Sex hormones. Derivan del colesterol."},
-    {front: "Ácido Araquidónico", back: "Precursor de eicosanoides (20 carbonos, ω-6)."},
-    {front: "Prostaglandinas", back: "Mediadores locales de inflamación, dolor y fiebre."},
-    {front: "Tromboxanos", back: "Promueven agregación plaquetaria y vasoconstricción."},
-    {front: "Leucotrienos", back: "Mediadores de asma y alergia (broncoconstricción)."},
-    {front: "COX (Ciclooxigenasa)", back: "Enzima que convierte araquidónico en prostaglandinas. Diana de aspirina."},
-    {front: "Lipasa Pancreática", back: "Enzima principal de digestión de TAGs en intestino."},
-    {front: "Emulsificación", back: "Proceso de romper grandes gotas de grasa en micelas (por bilis)."},
-    {front: "Quilomicrones", back: "Transportan grasa dietética (exógena) desde intestino a tejidos."},
-    {front: "VLDL", back: "Transporta grasa endógena (sintetizada en hígado) a tejidos."},
-    {front: "LDL (Malo)", back: "Transporta colesterol a tejidos. Exceso causa aterosclerosis."},
-    {front: "HDL (Bueno)", back: "Transporte reverso de colesterol (tejidos -> hígado)."},
-    {front: "LPL (Lipoproteína Lipasa)", back: "Enzima capilar que libera ácidos grasos de quilomicrones/VLDL."},
-    {front: "Aterosclerosis", back: "Acumulación de placa lipídica en paredes arteriales."},
-    {front: "Estatinas", back: "Fármacos que inhiben HMG-CoA reductasa (bajan síntesis colesterol)."},
-    {front: "Omega-3", back: "Antiinflamatorios, cardiosaludables (EPA, DHA)."},
-    {front: "Fosfatidilserina", back: "En cara interna membrana. Si sale, señala apoptosis ('cómeme')."}
+// Flashcards (Expandido a 65 conceptos)
+const flashcards = [
+    {f: "Anfipático", b: "Tiene región polar y apolar."},
+    {f: "Saturado", b: "Sin dobles enlaces. Sólido."},
+    {f: "Insaturado", b: "Con dobles enlaces. Líquido (cis)."},
+    {f: "TAG", b: "Reserva energía. 3 ac. grasos + glicerol."},
+    {f: "Fosfolípido", b: "Base de membrana. Cabeza polar + colas."},
+    {f: "Esfingosina", b: "Alcohol base de esfingolípidos."},
+    {f: "Ceramida", b: "Esfingosina + Ac. Graso."},
+    {f: "Colesterol", b: "Regula fluidez. 4 anillos."},
+    {f: "Mielina", b: "Aislante eléctrico. Rica en lípidos."},
+    {f: "Isopreno", b: "Unidad 5C de terpenos."},
+    {f: "Prostaglandina", b: "Inflamación y dolor."},
+    {f: "COX", b: "Enzima que crea prostaglandinas."},
+    {f: "Aspirina", b: "Inhibe COX irreversiblemente."},
+    {f: "Quilomicrón", b: "Transporta grasa dieta."},
+    {f: "VLDL", b: "Transporta grasa hígado->tejidos."},
+    {f: "LDL", b: "Colesterol a tejidos (Malo)."},
+    {f: "HDL", b: "Colesterol a hígado (Bueno)."},
+    {f: "Aterosclerosis", b: "Placa en arterias."},
+    {f: "Estatinas", b: "Inhiben síntesis colesterol."},
+    {f: "Saponificación", b: "Grasa + Base = Jabón."},
+    {f: "Ceras", b: "Impermeabilizantes biológicos."},
+    {f: "Omega-3", b: "Cardioprotector. Pescado."},
+    {f: "Omega-6", b: "Pro-inflamatorio en exceso."},
+    {f: "Trans", b: "Grasa industrial nociva."},
+    {f: "Micela", b: "Esfera lipídica en agua (monocapa)."},
+    {f: "Liposoma", b: "Vesícula bicapa artificial (fármacos)."},
+    {f: "Flip-Flop", b: "Movimiento raro entre capas."},
+    {f: "Difusión Lateral", b: "Movimiento común en capa."},
+    {f: "Balsa Lipídica", b: "Zona rígida membrana (Colesterol/Esfingolípidos)."},
+    {f: "Glucolípido", b: "Lípido + Azúcar (reconocimiento)."},
+    {f: "Surfactante", b: "Evita colapso pulmonar."},
+    {f: "DPPC", b: "Fosfolípido del surfactante."},
+    {f: "Tay-Sachs", b: "Acumulación gangliósidos (Hexosaminidasa A)."},
+    {f: "Gaucher", b: "Acumulación glucocerebrósidos."},
+    {f: "Niemann-Pick", b: "Acumulación esfingomielina."},
+    {f: "Sales Biliares", b: "Emulsionan grasas."},
+    {f: "Lipasa", b: "Digiere grasas (Páncreas)."},
+    {f: "LPL", b: "Limpia grasa de sangre (Capilares)."},
+    {f: "ApoB-100", b: "Proteína estructural del LDL."},
+    {f: "ApoA-1", b: "Proteína estructural del HDL."},
+    {f: "ApoC-II", b: "Cofactor activador de LPL."},
+    {f: "ApoE", b: "Ligando para receptores hepáticos."},
+    {f: "Eicosanoide", b: "Señalizador local 20C."},
+    {f: "Tromboxano A2", b: "Agregación plaquetaria (Coágulos)."},
+    {f: "Leucotrienos", b: "Broncoconstricción (Asma)."},
+    {f: "Vitamina A", b: "Retinol. Visión."},
+    {f: "Vitamina D", b: "Calcio y Hueso. (Luz solar)."},
+    {f: "Vitamina E", b: "Antioxidante de membrana."},
+    {f: "Vitamina K", b: "Coagulación sanguínea."},
+    {f: "Beta-oxidación", b: "Degradación de grasas en mitocondria."},
+    {f: "Cuerpos Cetónicos", b: "Combustible alternativo (Cerebro en ayuno)."},
+    {f: "Hidrogenación", b: "Proceso industrial Aceite -> Grasa Sólida."},
+    {f: "Rancidez", b: "Oxidación de grasas (Mal olor)."},
+    {f: "LCAT", b: "Esterifica colesterol en HDL."},
+    {f: "ACAT", b: "Esterifica colesterol en células."},
+    {f: "Quilomicrón Remanente", b: "Producto tras acción de LPL."},
+    {f: "Receptor LDL", b: "Capta colesterol en células."},
+    {f: "Dislipidemia", b: "Niveles anormales de lípidos."},
+    {f: "Ácido Linoleico", b: "Esencial Omega-6."},
+    {f: "Ácido Linolénico", b: "Esencial Omega-3."},
+    {f: "Ácido Araquidónico", b: "Precursor de eicosanoides (20C)."},
+    {f: "Esteroides", b: "Derivados del núcleo esteroideo (4 anillos)."},
+    {f: "Terpenos", b: "Polímeros de isopreno (Aromas, Vitaminas)."},
+    {f: "Fosfatidiletanolamina", b: "Fosfolípido común (Cefalina)."},
+    {f: "Gangliósido", b: "Esfingolípido complejo (Cerebro)."}
 ];
 
-var achievements = {
-    1: {icon: "🎓", title: "Primer Paso", desc: "Primera pregunta contestada", points: 10},
-    2: {icon: "📚", title: "Dedicado", desc: "10 preguntas completadas", points: 50},
-    3: {icon: "⚡", title: "Quiz Master", desc: "Quiz sin errores", points: 100},
-    4: {icon: "🎯", title: "Taxónomo", desc: "Clasificación completada", points: 75},
-    5: {icon: "🧪", title: "Científico", desc: "Simulador explorado", points: 50},
-    6: {icon: "💯", title: "Medio Camino", desc: "50% de progreso", points: 150},
-    7: {icon: "🔬", title: "Analista", desc: "Desarrollo completo", points: 200},
-    8: {icon: "🚀", title: "Práctico", desc: "Aplicación completa", points: 200},
-    9: {icon: "👑", title: "Experto", desc: "Todo completado", points: 500},
-    10: {icon: "⭐", title: "Leyenda", desc: "Puntuación máxima", points: 1000}
-};
-
-// ============================================
-// LÓGICA SIMULADOR Y APP
-// ============================================
-const lipidSim = {
-    currentType: 'saturado',
-    data: {
-        saturado: {name:'Saturado', fluidity:15, spacing:'Muy Denso', packing:'Máximo', temp:'69°C', color:'#15803d', warning:false, animClass:'fluid-low'},
-        cis: {name:'Cis (Insaturado)', fluidity:90, spacing:'Amplio', packing:'Bajo', temp:'13°C', color:'#2563eb', warning:false, animClass:'fluid-high'},
-        trans: {name:'Trans (Industrial)', fluidity:25, spacing:'Denso', packing:'Alto', temp:'44°C', color:'#dc2626', warning:true, animClass:'fluid-low'},
-        colesterol: {name:'Colesterol', fluidity:50, spacing:'Medio', packing:'Regulado', temp:'148°C', color:'#7c3aed', warning:false, animClass:'fluid-med'},
-        mixto: {name:'Membrana Real', fluidity:65, spacing:'Óptimo', packing:'Medio', temp:'Dinámico', color:'#4b5563', warning:false, animClass:'fluid-med'}
+/* =========================================
+   SISTEMA DE GUARDADO
+   ========================================= */
+const saveSystem = {
+    key: 'uach_bio_obj3_full',
+    init: function() {
+        if(localStorage.getItem(this.key)) {
+            const data = JSON.parse(localStorage.getItem(this.key));
+            state.points = data.points || 0;
+            state.badges = data.badges || 0;
+            state.unlockedBadges = data.unlockedBadges || [];
+            state.answers = data.answers || {};
+            // Restaurar estado visual
+            state.unlockedBadges.forEach(id => document.getElementById(id).classList.add('unlocked'));
+            updateStats();
+        }
     },
-    selectLipid: function(t) {
-        this.currentType = t;
-        document.querySelectorAll('.lipid-btn').forEach(b => b.classList.remove('active'));
-        document.getElementById('btn-'+t).classList.add('active');
-        this.renderSim(t); this.updateInfo(t); unlockAchievement(5);
-        this.updateStructure(t);
+    save: function(silent = false) {
+        localStorage.setItem(this.key, JSON.stringify(state));
+        const date = new Date().toLocaleTimeString();
+        document.getElementById('menu-last-save').innerText = 'Guardado: ' + date;
+        if(!silent) showToast();
     },
-    updateStructure: function(type) {
-        const svg = document.getElementById('structure-svg');
-        svg.innerHTML = ''; 
-        const color = this.data[type].color;
-        
-        // Helper to draw zigzag carbon chain
-        const drawZigZag = (startX, startY, segments, angle, isTrans=false) => {
-            let d = `M ${startX} ${startY}`;
-            let x = startX, y = startY;
-            const segLen = 15;
-            for(let i=0; i<segments; i++) {
-                x += segLen;
-                y += (i%2===0 ? -5 : 5);
-                d += ` L ${x} ${y}`;
-            }
-            const path = document.createElementNS("http://www.w3.org/2000/svg", 'path');
-            path.setAttribute('d', d);
-            path.setAttribute('fill', 'none');
-            path.setAttribute('stroke', color);
-            path.setAttribute('stroke-width', '4');
-            path.setAttribute('stroke-linecap', 'round');
-            path.setAttribute('stroke-linejoin', 'round');
-            return path;
+    forceSave: function() { this.save(false); toggleSaveMenu(); },
+    clearProgress: function() {
+        if(confirm("¿Seguro que quieres borrar todo tu progreso?")) {
+            localStorage.removeItem(this.key);
+            location.reload();
+        }
+    },
+    downloadBackup: function() {
+        const blob = new Blob([JSON.stringify(state)], {type:'application/json'});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a'); a.href=url; a.download='biofisica_backup.json';
+        a.click();
+    },
+    restoreBackup: function(input) {
+        const file = input.files[0];
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            try {
+                const data = JSON.parse(e.target.result);
+                localStorage.setItem(saveSystem.key, JSON.stringify(data));
+                location.reload();
+            } catch(err) { alert("Archivo inválido"); }
         };
-
-        const head = document.createElementNS("http://www.w3.org/2000/svg", 'circle');
-        head.setAttribute('cx', 30); head.setAttribute('cy', 125); head.setAttribute('r', 12);
-        head.setAttribute('fill', '#fbbf24');
-        svg.appendChild(head);
-
-        if(type === 'saturado') {
-            svg.appendChild(drawZigZag(42, 125, 14, 0));
-            // Add Text
-            const t = document.createElementNS("http://www.w3.org/2000/svg", 'text');
-            t.setAttribute('x', 150); t.setAttribute('y', 200); t.setAttribute('text-anchor', 'middle');
-            t.textContent = "Cadena Saturada (Recta)"; t.setAttribute('fill', '#374151');
-            svg.appendChild(t);
-        } else if (type === 'cis') {
-            // Part 1
-            const p1 = document.createElementNS("http://www.w3.org/2000/svg", 'path');
-            p1.setAttribute('d', 'M 42 125 L 57 120 L 72 125 L 87 120 L 102 125'); // Approx zigzag
-            p1.setAttribute('stroke', color); p1.setAttribute('stroke-width', '4'); p1.setAttribute('fill','none');
-            svg.appendChild(p1);
-            // Double bond bend
-            const p2 = document.createElementNS("http://www.w3.org/2000/svg", 'path');
-            p2.setAttribute('d', 'M 102 125 L 120 150 L 135 145 L 150 155'); // Bending down
-            p2.setAttribute('stroke', color); p2.setAttribute('stroke-width', '4'); p2.setAttribute('fill','none');
-            svg.appendChild(p2);
-             const t = document.createElementNS("http://www.w3.org/2000/svg", 'text');
-            t.setAttribute('x', 150); t.setAttribute('y', 200); t.setAttribute('text-anchor', 'middle');
-            t.textContent = "Doble Enlace Cis (Quiebre)"; t.setAttribute('fill', '#374151');
-            svg.appendChild(t);
-        } else if (type === 'trans') {
-             // Zigzag straight but with double bond
-            const p = document.createElementNS("http://www.w3.org/2000/svg", 'path');
-            let d = 'M 42 125';
-            let y = 125;
-            for(let i=0; i<14; i++){
-                d += ` L ${42 + (i+1)*15} ${y + (i%2===0?-5:5)}`;
-            }
-            p.setAttribute('d', d);
-            p.setAttribute('stroke', color); p.setAttribute('stroke-width', '4'); p.setAttribute('fill','none');
-            svg.appendChild(p);
-            // Double bond marker
-            const db = document.createElementNS("http://www.w3.org/2000/svg", 'line');
-            db.setAttribute('x1', 110); db.setAttribute('y1', 115); db.setAttribute('x2', 125); db.setAttribute('y2', 125);
-            db.setAttribute('stroke', 'red'); db.setAttribute('stroke-width', '2');
-            svg.appendChild(db);
-             const t = document.createElementNS("http://www.w3.org/2000/svg", 'text');
-            t.setAttribute('x', 150); t.setAttribute('y', 200); t.setAttribute('text-anchor', 'middle');
-            t.textContent = "Trans (Recta - Falso Saturado)"; t.setAttribute('fill', '#dc2626');
-            svg.appendChild(t);
-        } else if (type === 'colesterol') {
-            // 4 rings
-            const g = document.createElementNS("http://www.w3.org/2000/svg", 'g');
-            g.setAttribute('transform', 'translate(60,80) scale(1.5)');
-            const rings = document.createElementNS("http://www.w3.org/2000/svg", 'path');
-            rings.setAttribute('d', 'M0 20 L15 10 L30 20 L15 30 Z M30 20 L45 10 L60 20 L45 30 Z M60 20 L75 10 L90 20 L75 30 Z M75 10 L75 -5 L90 5'); // Simplified steroid nucleus
-            rings.setAttribute('fill', 'none'); rings.setAttribute('stroke', color); rings.setAttribute('stroke-width', '2');
-            g.appendChild(rings);
-            svg.appendChild(g);
-             const t = document.createElementNS("http://www.w3.org/2000/svg", 'text');
-            t.setAttribute('x', 150); t.setAttribute('y', 200); t.setAttribute('text-anchor', 'middle');
-            t.textContent = "Anillos Rígidos"; t.setAttribute('fill', '#374151');
-            svg.appendChild(t);
-        }
-    },
-    renderSim: function(t) {
-        const b = document.getElementById('bilayer'); b.innerHTML='';
-        const d = this.data[t];
-        let types = [];
-        for(let i=0;i<14;i++) types.push(t==='mixto' ? (Math.random()<.4?'saturado':Math.random()<.8?'cis':'colesterol') : t);
-        
-        const up = document.createElement('div'); up.className='layer upper';
-        const down = document.createElement('div'); down.className='layer';
-        
-        types.forEach(type => {
-            up.appendChild(this.createMol(type));
-            down.appendChild(this.createMol(type));
-        });
-        b.appendChild(up); b.appendChild(down);
-        
-        document.getElementById('fluidity-fill').style.width = d.fluidity+'%';
-        document.getElementById('fluidity-text-val').textContent = d.fluidity<40?'Baja':d.fluidity>80?'Alta':'Media';
-    },
-    createMol: function(t) {
-        const m = document.createElement('div'); m.className=`lipid-molecule ${this.data[t].animClass}`;
-        const h = document.createElement('div'); h.className='head';
-        if(t==='colesterol') h.style.background='#ddd6fe';
-        const tc = document.createElement('div'); tc.className='tail-container';
-        if(t==='colesterol') {
-            const tl = document.createElement('div'); tl.className='tail cholesterol'; tc.appendChild(tl);
-        } else {
-            const t1 = document.createElement('div'); t1.className=`tail ${t==='saturado'||t==='trans'?'straight':'cis'}`;
-            const t2 = document.createElement('div'); t2.className=`tail ${t==='trans'?'trans':(t==='saturado'?'straight':'cis')}`;
-            if(t==='cis') t2.style.transform='rotate(-20deg) translateX(-3px)';
-            tc.appendChild(t1); tc.appendChild(t2);
-        }
-        m.appendChild(h); m.appendChild(tc);
-        return m;
-    },
-    updateInfo: function(t) {
-        const d = this.data[t];
-        document.getElementById('lipid-info').innerHTML = `<div class="info-panel ${d.warning?'warning':''}"><strong>${d.name}</strong><br>P. Fusión: ${d.temp} | Empaque: ${d.packing}</div>`;
+        reader.readAsText(file);
     }
 };
 
+/* =========================================
+   LÓGICA DE INTERFAZ
+   ========================================= */
 function init() {
     saveSystem.init();
-    lipidSim.selectLipid('saturado');
-    renderQuizzes(); renderDragDrop(); renderFlashcards(); renderPreguntas();
-    updateStats();
-    setTimeout(() => { document.getElementById('loading').classList.add('hidden'); document.getElementById('app').classList.remove('hidden'); }, 500);
-}
-
-function showTab(t) {
-    currentTab = t;
-    document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
-    document.querySelectorAll('.tab-content').forEach(x => x.classList.add('hidden'));
-    document.querySelector(`.tab[onclick="showTab('${t}')"]`).classList.add('active');
-    document.getElementById('tab-'+t).classList.remove('hidden');
-    if(t==='ejercicios') renderPreguntas();
-}
-
-// Renderizados
-function renderQuizzes() {
-    let h = '';
-    quizzes.forEach((q,i) => {
-        h += `<div class="quiz-question" id="quiz-${i}"><div class="quiz-q">${i+1}. ${q.q}</div>`;
-        q.opts.forEach((o,j) => h+=`<div class="quiz-option" onclick="checkQuiz(${i},${j})">${o}</div>`);
-        h += `<div id="qfeed-${i}" class="quiz-feedback"></div></div>`;
-    });
-    document.getElementById('quiz-container').innerHTML = h;
-}
-function checkQuiz(i,j) {
-    const q = quizzes[i];
-    const feed = document.getElementById(`qfeed-${i}`);
-    const opts = document.querySelectorAll(`#quiz-${i} .quiz-option`);
-    opts.forEach(o => o.style.pointerEvents='none');
+    renderQuizzes();
+    renderDragDrop();
+    renderExercises();
+    renderFlashcards();
+    lipidSim.selectLipid('saturado'); 
+    lpSim.update('chylomicron'); // Inicializar lipoproteína por defecto
     
-    if(j===q.correct) {
-        opts[j].classList.add('correct'); feed.className='quiz-feedback correct';
-        feed.innerHTML = `<strong>¡Correcto!</strong> ${q.explanation}`;
-        addPoints(10);
-    } else {
-        opts[j].classList.add('incorrect'); opts[q.correct].classList.add('correct');
-        feed.className='quiz-feedback incorrect';
-        feed.innerHTML = `<strong>Incorrecto.</strong> ${q.explanation}`;
+    setTimeout(() => {
+        document.getElementById('loading').classList.add('hidden');
+        document.getElementById('app').classList.remove('hidden');
+    }, 800);
+}
+
+function showTab(id) {
+    document.querySelectorAll('.tab-content').forEach(d => d.classList.add('hidden'));
+    document.getElementById('tab-'+id).classList.remove('hidden');
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelector(`.tab[onclick="showTab('${id}')"]`).classList.add('active');
+}
+
+function showToast() {
+    const t = document.getElementById('save-notification');
+    t.style.opacity = '1';
+    setTimeout(() => t.style.opacity = '0', 2000);
+}
+
+function toggleSaveMenu() {
+    document.getElementById('save-menu').classList.toggle('show');
+}
+
+function updateStats() {
+    document.getElementById('stat-points').innerText = state.points;
+    document.getElementById('stat-badges').innerText = state.badges + '/10';
+    document.getElementById('progress-fill').style.width = Math.min(100, (state.points/1000)*100) + '%';
+    
+    // Check logros
+    if(state.points > 0) unlock('ach-1');
+    if(state.points >= 100) unlock('ach-2');
+    if(state.points >= 500) unlock('ach-6');
+    if(state.points >= 1000) unlock('ach-10');
+}
+
+function unlock(id) {
+    if(!state.unlockedBadges.includes(id)) {
+        state.unlockedBadges.push(id);
+        state.badges++;
+        document.getElementById(id).classList.add('unlocked');
+        // Modal
+        const el = document.getElementById(id);
+        const title = {
+            'ach-1': 'Iniciado', 'ach-2': 'Estudioso', 'ach-3': 'Perfecto',
+            'ach-4': 'Clasificador', 'ach-5': 'Biofísico', 'ach-6': 'Medio Camino',
+            'ach-7': 'Analista', 'ach-8': 'Experto', 'ach-9': 'Transportista', 'ach-10': 'Maestro'
+        };
+        document.getElementById('modal-title').innerText = title[id];
+        document.getElementById('modal-desc').innerText = "¡Has desbloqueado una nueva medalla!";
+        document.getElementById('achievement-modal').classList.add('show');
+        saveSystem.save(true);
     }
+}
+
+function addPoints(n) {
+    state.points += n;
+    updateStats();
     saveSystem.save(true);
 }
 
-function renderDragDrop() {
+/* =========================================
+   SIMULADOR DE LÍPIDOS (MEMBRANA)
+   ========================================= */
+const lipidSim = {
+    data: {
+        saturado: { color: '#15803d', fluid: 10, msg: 'Rígido, Empaque Denso', class: 'fluid-low' },
+        cis: { color: '#2563eb', fluid: 90, msg: 'Fluido, Empaque Laxo (Codos)', class: 'fluid-high' },
+        trans: { color: '#dc2626', fluid: 20, msg: 'Rígido Artificial (Peligroso)', class: 'fluid-low' },
+        colesterol: { color: '#7c3aed', fluid: 50, msg: 'Amortiguador de Fluidez', class: 'fluid-med' },
+        mixto: { color: '#4b5563', fluid: 65, msg: 'Equilibrio Fisiológico', class: 'fluid-med' }
+    },
+    selectLipid: function(type) {
+        document.querySelectorAll('.lipid-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById('btn-'+type).classList.add('active');
+        
+        const d = this.data[type];
+        
+        // Update SVG
+        const svg = document.getElementById('structure-svg');
+        svg.innerHTML = '';
+        this.drawStructure(svg, type, d.color);
+        
+        // Update Meter
+        document.getElementById('fluidity-meter').style.width = d.fluid + '%';
+        document.getElementById('fluidity-val').innerText = d.msg;
+        document.getElementById('lipid-info').innerHTML = `<strong>Características:</strong> ${d.msg}`;
+        
+        // Animate Bilayer
+        this.renderBilayer(type, d.class);
+        
+        if(type === 'mixto') unlock('ach-5');
+    },
+    drawStructure: function(svg, type, color) {
+        // Cabeza
+        const head = `<circle cx="50" cy="50" r="15" fill="#fbbf24" stroke="${color}" stroke-width="2"/>`;
+        let tails = '';
+        if(type === 'saturado') {
+            tails = `<path d="M40 65 L40 200 M60 65 L60 200" stroke="${color}" stroke-width="8" stroke-linecap="round"/>`;
+        } else if(type === 'cis') {
+            tails = `<path d="M40 65 L40 200 M60 65 L60 120 L90 150 L100 200" stroke="${color}" stroke-width="8" fill="none" stroke-linecap="round"/>`;
+        } else if(type === 'trans') {
+            tails = `<path d="M40 65 L40 200 M60 65 L60 200" stroke="${color}" stroke-width="8" stroke-dasharray="10,5"/>`; // Dashed for fake straight
+        } else if(type === 'colesterol') {
+            tails = `<path d="M40 65 L80 65 L80 100 L40 100 Z M40 100 L80 100 L80 135 L40 135 Z" fill="none" stroke="${color}" stroke-width="3"/> <line x1="60" y1="135" x2="60" y2="200" stroke="${color}" stroke-width="4"/>`;
+        } else {
+             tails = `<text x="20" y="150" fill="#666">Mezcla compleja</text>`;
+        }
+        svg.innerHTML = head + tails;
+    },
+    renderBilayer: function(type, animClass) {
+        const con = document.getElementById('bilayer');
+        con.innerHTML = '';
+        const row1 = document.createElement('div'); row1.className = 'layer upper';
+        const row2 = document.createElement('div'); row2.className = 'layer';
+        
+        for(let i=0; i<10; i++) {
+            row1.appendChild(this.createMol(type, animClass));
+            row2.appendChild(this.createMol(type, animClass));
+        }
+        con.appendChild(row1); con.appendChild(row2);
+    },
+    createMol: function(type, animClass) {
+        const m = document.createElement('div');
+        m.className = `lipid-molecule ${animClass}`;
+        // Simplificado para visualización
+        m.innerHTML = `<div class="head"></div><div class="tail-container"><div class="tail ${type}"></div><div class="tail ${type}"></div></div>`;
+        return m;
+    }
+};
+
+/* =========================================
+   SIMULADOR DE LIPOPROTEÍNAS (NUEVO)
+   ========================================= */
+const lpSim = {
+    data: {
+        chylomicron: {
+            name: "Quilomicrón",
+            size: "240px",
+            color: "radial-gradient(circle, #fef08a 80%, #ca8a04 100%)",
+            desc: "<strong>Origen:</strong> Intestino.<br><strong>Función:</strong> Transporte de lípidos de la dieta.",
+            stats: {
+                tg: "85-95%", prot: "1-2%", chol_esters: "3-5%", chol_free: "1-3%", phos: "3-6%",
+                apos: ["A-I", "A-II", "B-48", "C", "E"]
+            }
+        },
+        vldl: {
+            name: "VLDL",
+            size: "160px",
+            color: "radial-gradient(circle, #fde047 60%, #a16207 100%)",
+            desc: "<strong>Origen:</strong> Hígado.<br><strong>Función:</strong> Transporte de TAGs endógenos.",
+            stats: {
+                tg: "50-65%", prot: "10%", chol_esters: "12%", chol_free: "7%", phos: "15-20%",
+                apos: ["B-100", "C", "E"]
+            }
+        },
+        ldl: {
+            name: "LDL (Colesterol Malo)",
+            size: "100px",
+            color: "radial-gradient(circle, #f87171 20%, #b91c1c 100%)",
+            desc: "<strong>Origen:</strong> IDL/VLDL.<br><strong>Función:</strong> Transporte de colesterol a tejidos.",
+            stats: {
+                tg: "6%", prot: "25%", chol_esters: "42%", chol_free: "8%", phos: "22%",
+                apos: ["B-100"]
+            }
+        },
+        hdl: {
+            name: "HDL (Colesterol Bueno)",
+            size: "60px",
+            color: "radial-gradient(circle, #4ade80 10%, #166534 100%)",
+            desc: "<strong>Origen:</strong> Hígado/Intestino.<br><strong>Función:</strong> Transporte reverso de colesterol.",
+            stats: {
+                tg: "3-5%", prot: "40-55%", chol_esters: "15-20%", chol_free: "3-4%", phos: "25-30%",
+                apos: ["A-I", "A-II", "C", "E"]
+            }
+        }
+    },
+    update: function(type) {
+        const lp = this.data[type];
+        const core = document.getElementById('lp-core');
+        
+        // Cambiar tamaño y color
+        core.style.width = lp.size;
+        core.style.height = lp.size;
+        core.style.background = lp.color;
+        
+        // Actualizar Apoproteínas Visuales
+        core.innerHTML = ''; // Limpiar anteriores
+        
+        // Colores para Apos
+        const apoColors = {
+            "B-48": "#1d4ed8", "B-100": "#1e40af", // Azules oscuros
+            "A-I": "#be123c", "A-II": "#e11d48",   // Rojos/Rosas
+            "C": "#047857", "E": "#7c3aed"         // Verde, Morado
+        };
+
+        const apos = lp.stats.apos;
+        const total = apos.length;
+        
+        apos.forEach((apo, index) => {
+            const el = document.createElement('div');
+            el.className = 'apoprotein';
+            el.innerText = apo;
+            
+            // Posicionar alrededor del círculo
+            const angle = (index / total) * 2 * Math.PI; // Distribución radial
+            const radius = 55; // % desde el centro (borde es 50%, un poco afuera)
+            const x = 50 + radius * Math.cos(angle); 
+            const y = 50 + radius * Math.sin(angle);
+            
+            el.style.left = x + '%';
+            el.style.top = y + '%';
+            el.style.transform = 'translate(-50%, -50%)'; // Centrar elemento
+            el.style.backgroundColor = apoColors[apo] || '#ef4444';
+            
+            // Estilo específico si es integral grande (B-100/B-48)
+            if(apo.includes('B-')) {
+                el.style.borderRadius = '4px'; // Más rectangular
+                el.style.padding = '6px 10px';
+                el.style.zIndex = '10';
+            }
+            
+            core.appendChild(el);
+        });
+
+        // Actualizar textos básicos
+        document.getElementById('lp-name').innerText = lp.name;
+        
+        // Generar HTML de Estadísticas
+        const statsHtml = `
+            <div style="margin-bottom:1rem; border-bottom:1px solid #e5e7eb; padding-bottom:1rem;">
+                <div style="font-size:0.9rem; color:#4b5563; margin-bottom:0.8rem">${lp.desc}</div>
+                
+                <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); gap:0.5rem; text-align:center;">
+                    <div style="background:white; padding:0.5rem; border-radius:0.5rem; border:1px solid #e5e7eb; box-shadow:0 1px 2px rgba(0,0,0,0.05)">
+                        <div style="font-size:0.7rem; color:#6b7280; text-transform:uppercase;">Triglicéridos</div>
+                        <div style="font-weight:bold; color:#ca8a04; font-size:1.1rem">${lp.stats.tg}</div>
+                    </div>
+                    <div style="background:white; padding:0.5rem; border-radius:0.5rem; border:1px solid #e5e7eb; box-shadow:0 1px 2px rgba(0,0,0,0.05)">
+                        <div style="font-size:0.7rem; color:#6b7280; text-transform:uppercase;">Proteínas</div>
+                        <div style="font-weight:bold; color:#ef4444; font-size:1.1rem">${lp.stats.prot}</div>
+                    </div>
+                    <div style="background:white; padding:0.5rem; border-radius:0.5rem; border:1px solid #e5e7eb; box-shadow:0 1px 2px rgba(0,0,0,0.05)">
+                        <div style="font-size:0.7rem; color:#6b7280; text-transform:uppercase;">Col. Ester</div>
+                        <div style="font-weight:bold; color:#f59e0b; font-size:1.1rem">${lp.stats.chol_esters}</div>
+                    </div>
+                     <div style="background:white; padding:0.5rem; border-radius:0.5rem; border:1px solid #e5e7eb; box-shadow:0 1px 2px rgba(0,0,0,0.05)">
+                        <div style="font-size:0.7rem; color:#6b7280; text-transform:uppercase;">Fosfolípidos</div>
+                        <div style="font-weight:bold; color:#10b981; font-size:1.1rem">${lp.stats.phos}</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="background:#eff6ff; padding:0.75rem; border-radius:0.5rem; border:1px solid #bfdbfe;">
+                <div style="font-size:0.75rem; font-weight:bold; color:#1e40af; text-transform:uppercase; margin-bottom:0.25rem">Apolipoproteínas Clave</div>
+                <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+                    ${lp.stats.apos.map(apo => `<span style="background:white; padding:2px 8px; border-radius:12px; font-size:0.8rem; color:#1e3a8a; border:1px solid #93c5fd; font-weight:600">${apo}</span>`).join('')}
+                </div>
+            </div>
+        `;
+
+        document.getElementById('lp-desc').innerHTML = statsHtml;
+        
+        // Actualizar botones UI
+        document.querySelectorAll('[id^="btn-lp-"]').forEach(btn => btn.classList.remove('active'));
+        document.getElementById('btn-lp-' + (type === 'chylomicron' ? 'chy' : type)).classList.add('active');
+        
+        unlock('ach-9'); // Desbloquea logro Transportista
+    }
+};
+
+/* =========================================
+   QUIZ LOGIC
+   ========================================= */
+function renderQuizzes() {
+    const con = document.getElementById('quiz-container');
     let h = '';
-    lipidsData.forEach((l,i) => h+=`<div class="draggable" draggable="true" id="d-${i}" data-cat="${l.category}">${l.name}</div>`);
-    document.getElementById('draggables-lipids').innerHTML = h;
-    
-    document.querySelectorAll('.draggable').forEach(d => {
-        d.addEventListener('dragstart', e => e.dataTransfer.setData('id', e.target.id));
+    quizzes.forEach((q, i) => {
+        h += `<div class="quiz-question" id="q-${i}">
+            <div class="quiz-q">${i+1}. ${q.q}</div>
+            ${q.a.map((opt, j) => `<div class="quiz-option" onclick="checkQuiz(${i}, ${j})">${opt}</div>`).join('')}
+            <div id="fb-${i}" class="quiz-feedback hidden"></div>
+        </div>`;
     });
+    con.innerHTML = h;
+}
+
+function checkQuiz(i, j) {
+    const q = quizzes[i];
+    const opts = document.querySelectorAll(`#q-${i} .quiz-option`);
+    const fb = document.getElementById(`fb-${i}`);
+    
+    opts.forEach(o => o.style.pointerEvents = 'none');
+    
+    if(j === q.c) {
+        opts[j].classList.add('correct');
+        fb.innerHTML = "¡Correcto! +10 puntos";
+        fb.className = "quiz-feedback correct";
+        addPoints(10);
+        state.quizzesCompleted++;
+    } else {
+        opts[j].classList.add('incorrect');
+        opts[q.c].classList.add('correct');
+        fb.innerHTML = "Incorrecto.";
+        fb.className = "quiz-feedback incorrect";
+    }
+    
+    if(state.quizzesCompleted === quizzes.length) unlock('ach-10');
+    if(state.quizzesCompleted === 1 && j===q.c) unlock('ach-3'); // Simulado para demo
+}
+
+/* =========================================
+   DRAG & DROP
+   ========================================= */
+function renderDragDrop() {
+    const con = document.getElementById('draggables-container');
+    con.innerHTML = dragItems.map((item, i) => 
+        `<div class="draggable" draggable="true" id="d-${i}" data-cat="${item.c}">${item.n}</div>`
+    ).join('');
+    
+    // Listeners
+    document.querySelectorAll('.draggable').forEach(d => {
+        d.addEventListener('dragstart', e => e.dataTransfer.setData('text', e.target.id));
+    });
+    
     document.querySelectorAll('.drop-zone').forEach(z => {
         z.addEventListener('dragover', e => { e.preventDefault(); z.classList.add('over'); });
         z.addEventListener('dragleave', () => z.classList.remove('over'));
         z.addEventListener('drop', e => {
-            e.preventDefault(); z.classList.remove('over');
-            const id = e.dataTransfer.getData('id');
-            z.querySelector('.drop-items').appendChild(document.getElementById(id));
+            e.preventDefault();
+            z.classList.remove('over');
+            const id = e.dataTransfer.getData('text');
+            const el = document.getElementById(id);
+            if(el) z.querySelector('.drop-items').appendChild(el);
         });
     });
 }
+
 function checkDragDrop() {
     let ok = 0;
     document.querySelectorAll('.draggable').forEach(d => {
-        const z = d.parentElement.parentElement;
-        if(z.dataset.category === d.dataset.cat) {
-            d.classList.add('placed'); d.draggable=false; ok++;
-            d.style.border='1px solid #22c55e';
-        } else {
-            d.style.border='1px solid #ef4444';
+        const zone = d.parentElement.parentElement;
+        if(zone.classList.contains('drop-zone')) {
+            if(zone.dataset.category === d.dataset.cat) {
+                d.classList.add('placed');
+                d.draggable = false;
+                ok++;
+            } else {
+                d.style.borderColor = 'red';
+            }
         }
     });
-    addPoints(ok*5);
-    if(ok === lipidsData.length) unlockAchievement(4);
-    alert(`Clasificaste ${ok} correctamente.`);
-    saveSystem.save(true);
+    addPoints(ok * 5);
+    alert(`Has clasificado correctamente ${ok} elementos.`);
+    if(ok >= 5) unlock('ach-4');
 }
-function resetDragDrop() { renderDragDrop(); }
 
-function renderPreguntas() {
-    let h = '';
-    // Preliminares
-    h += `<div class="card"><div class="card-header">3.0 Preliminares</div><div class="question-list">`;
-    preguntasData.pre.forEach((p,i) => h += mkQ(`pre-${i}`, p, i+1));
-    h += `</div></div>`;
+/* =========================================
+   EJERCICIOS Y FLASHCARDS
+   ========================================= */
+function renderExercises() {
+    const container = document.getElementById('preguntas-render-zone');
+    let html = '';
+    let counter = 1;
+
+    for (const sectionTitle in preguntasData) {
+        html += `<div class="card"><div class="card-header">${sectionTitle}</div><div class="quiz-container">`;
+        
+        preguntasData[sectionTitle].forEach((q, index) => {
+            const qId = `${sectionTitle.replace(/\s/g, '')}-${index}`;
+            const val = state.answers[qId] || '';
+            const isCompleted = val.length > 10 ? 'completed' : '';
+            
+            html += `
+                <div class="question-item ${isCompleted}" id="q-box-${qId}">
+                    <p><strong>${counter}. ${q}</strong></p>
+                    <textarea oninput="saveEx('${qId}', this.value)" placeholder="Escribe tu respuesta aquí...">${val}</textarea>
+                </div>
+            `;
+            counter++;
+        });
+        html += `</div></div>`;
+    }
     
-    // Secciones
-    const secs = ['sec31','sec32','sec33','sec34','sec35','sec36','sec37','sec38'];
-    secs.forEach(k => {
-        const s = preguntasData[k];
-        h += `<div class="card"><div class="card-header">${s.titulo}</div><div class="question-list">`;
-        h += `<h4 style="color:#6b7280;margin-bottom:1rem">Desarrollo</h4>`;
-        s.dev.forEach((p,i) => h += mkQ(`${k}-d-${i}`, p, i+1));
-        if(s.app.length) {
-            h += `<h4 style="color:#6b7280;margin:1.5rem 0 1rem 0;border-top:1px solid #eee;padding-top:1rem">Aplicación</h4>`;
-            s.app.forEach((p,i) => h += mkQ(`${k}-a-${i}`, p, i+1));
-        }
-        h += `</div></div>`;
-    });
-    
-    // Caso
-    const c = preguntasData.caso;
-    h += `<div class="card"><div class="card-header" style="background:#fff7ed;color:#9a3412">${c.titulo}</div><div class="question-list">`;
-    c.dev.forEach((p,i) => h += mkQ(`caso-${i}`, p, i+1));
-    h += `</div></div>`;
-    
-    document.getElementById('preguntas-container').innerHTML = h;
+    container.innerHTML = html;
 }
-function mkQ(id, txt, n) {
-    const val = respuestas[id] || '';
-    const cls = val.length > 10 ? 'completed' : '';
-    return `<div class="question-item ${cls}" id="q-${id}"><span class="question-text">${n}. ${txt}</span><textarea oninput="saveAns('${id}',this.value)">${val}</textarea></div>`;
-}
-function saveAns(id, val) {
-    respuestas[id] = val;
-    const el = document.getElementById('q-'+id);
-    if(val.length > 10) el.classList.add('completed'); else el.classList.remove('completed');
+
+function saveEx(id, val) {
+    state.answers[id] = val;
     saveSystem.save(true);
     
-    let total = 0, done = 0;
-    for(let k in preguntasData) {
-        if(Array.isArray(preguntasData[k])) total += preguntasData[k].length;
-        else total += (preguntasData[k].dev.length + preguntasData[k].app.length);
-    }
-    for(let k in respuestas) if(respuestas[k].length>10) done++;
-    if(done > 10) unlockAchievement(2);
-    if(done > total*0.5) unlockAchievement(6);
-}
-
-// Logros y Stats
-function addPoints(p) { userStats.points += p; updateStats(); }
-function unlockAchievement(id) {
-    if(userStats.achievements[id]) return;
-    userStats.achievements[id] = true;
-    userStats.badges++;
-    addPoints(achievements[id].points);
-    const m = document.getElementById('achievement-modal');
-    document.getElementById('modal-title').innerText = achievements[id].title;
-    document.getElementById('modal-description').innerText = achievements[id].desc;
-    document.getElementById('modal-points').innerText = achievements[id].points;
-    document.getElementById('modal-badge').innerText = achievements[id].icon;
-    m.classList.add('show');
-}
-function closeAchievementModal() { document.getElementById('achievement-modal').classList.remove('show'); }
-function updateStats() {
-    document.getElementById('stat-points').innerText = userStats.points;
-    document.getElementById('stat-badges').innerText = userStats.badges + '/10';
-    document.getElementById('progress-fill').style.width = Math.min(100, (userStats.points/1000)*100) + '%';
-}
-
-// Flashcards
-function renderFlashcards() {
-    let h = '';
-    flashcardsData.forEach(c => {
-        h += `<div class="flashcard" onclick="this.classList.toggle('flipped')">
-            <div class="flashcard-icon">🧬</div>
-            <div class="flashcard-front">${c.front}</div>
-            <div class="flashcard-back">${c.back}</div>
-            <div style="margin-top:1rem;font-size:0.75rem;color:#9ca3af;text-transform:uppercase;letter-spacing:1px">Click para voltear</div>
-        </div>`;
-    });
-    document.getElementById('flashcard-container').innerHTML = h;
-}
-
-// Calculadora Iodine
-function calculateIodine() {
-    const v = document.getElementById('calc-fatty-acid').value;
-    const r = document.getElementById('calc-result');
-    
-    if(v === "") { 
-        r.style.display='none'; 
-        return; 
-    }
-    
-    r.style.display='block';
-    document.getElementById('calc-value').innerText = "Índice: " + v;
-    
-    let interp = "";
-    if(v == 0) interp = "Saturado (Sin dobles enlaces)";
-    else if(v < 100) interp = "Monoinsaturado (1 doble enlace)";
-    else interp = "Poliinsaturado (Múltiples dobles enlaces)";
-    
-    document.getElementById('calc-interpretation').innerText = interp;
-}
-
-// Calculadora Melting Point
-function calculateMeltingPoint() {
-    const c = parseInt(document.getElementById('calc-chain-length').value) || 0;
-    const b = parseInt(document.getElementById('calc-double-bonds').value) || 0;
-    const cfg = document.getElementById('calc-config').value;
-    
-    // Algoritmo simplificado para propósitos educativos
-    // Base: 18:0 (Esteárico) es approx 70°C. 
-    // Cada carbono extra añade ~2-3°C (simplificado).
-    // Cada doble enlace CIS reduce drásticamente (~ -30°C el primero, menos los siguientes).
-    // Trans reduce mucho menos.
-    
-    let baseline = 70; // Para C18
-    let carbonEffect = (c - 18) * 5; // Ajuste por longitud
-    
-    let bondEffect = 0;
-    if (b > 0) {
-        if (cfg === 'cis') {
-            bondEffect = -(b * 25); // Cis baja mucho el PF
-            if(b > 1) bondEffect -= 10; // Efecto acumulativo
-        } else {
-            bondEffect = -(b * 5); // Trans baja poco (se parece a saturado)
-        }
-    }
-    
-    let mp = baseline + carbonEffect + bondEffect;
-    
-    // Limites lógicos para la demo
-    if (c < 4) mp = -50; 
-    
-    const valEl = document.getElementById('calc-mp-value');
-    const stateEl = document.getElementById('calc-mp-state');
-    const intEl = document.getElementById('calc-mp-interpretation');
-    const resEl = document.getElementById('calc-mp-result');
-    
-    valEl.innerText = "~" + mp.toFixed(1) + " °C";
-    
-    if(mp > 25) {
-        stateEl.innerText = "🧱";
-        intEl.innerText = "Sólido a temperatura ambiente (25°C)";
-        intEl.style.color = "#b91c1c"; // Rojo/Duro
+    const box = document.getElementById(`q-box-${id}`);
+    if (val.length > 20) {
+        box.classList.add('completed');
+        unlock('ach-7'); // Logro Analista
     } else {
-        stateEl.innerText = "💧";
-        intEl.innerText = "Líquido a temperatura ambiente (25°C)";
-        intEl.style.color = "#0369a1"; // Azul/Liquido
+        box.classList.remove('completed');
     }
 }
 
+function renderFlashcards() {
+    const con = document.getElementById('flashcard-container');
+    con.innerHTML = flashcards.map(f => `
+        <div class="flashcard" onclick="this.classList.toggle('flipped')">
+            <div class="flashcard-inner">
+                <div class="flashcard-front">
+                    <div style="font-size:2rem">🧬</div>
+                    <h3>${f.f}</h3>
+                    <small>Click para voltear</small>
+                </div>
+                <div class="flashcard-back">
+                    <p>${f.b}</p>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+/* =========================================
+   CALCULADORAS
+   ========================================= */
+function calcIodine() {
+    const val = document.getElementById('calc-iodine-select').value;
+    const res = document.getElementById('iodine-result');
+    if(!val) return;
+    const n = parseInt(val);
+    let txt = "";
+    if(n === 0) txt = "Saturado (0 dobles enlaces).";
+    else if(n < 100) txt = "Monoinsaturado.";
+    else txt = "Poliinsaturado.";
+    res.innerText = `Índice: ${n} - ${txt}`;
+}
+
+function calcMP() {
+    const c = parseInt(document.getElementById('mp-c').value);
+    const db = parseInt(document.getElementById('mp-db').value);
+    const cfg = document.getElementById('mp-cfg').value;
+    
+    // Algoritmo simulado
+    let temp = (c * 3) + 10; // Base por carbonos
+    if(cfg === 'cis') temp -= (db * 20); // Cis baja mucho
+    else temp -= (db * 5); // Trans baja poco
+    
+    document.getElementById('mp-val').innerText = temp + "°C";
+    const state = temp > 25 ? "Sólido 🧱" : "Líquido 💧";
+    document.getElementById('mp-state').innerText = state;
+    document.getElementById('mp-state').style.color = temp > 25 ? "#b91c1c" : "#0284c7";
+}
+
+// Iniciar app
 document.addEventListener('DOMContentLoaded', init);
 </script>
 </body>
