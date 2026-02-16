@@ -11,7 +11,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        /* Base de estilos mantenida y optimizada */
+        /* Estilos Base Institucionales */
         * {
             margin: 0;
             padding: 0;
@@ -28,6 +28,7 @@
             --light-gray: #e2e8f0;
             --success: #10b981;
             --white: #ffffff;
+            --overlay: rgba(0, 0, 0, 0.8);
         }
 
         body {
@@ -78,6 +79,36 @@
             font-size: 0.9em;
         }
 
+        /* Banner de información */
+        .info-banner {
+            background: #fffbeb;
+            border-left: 5px solid var(--accent);
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .info-content {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .btn-text {
+            color: var(--primary);
+            text-decoration: underline;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* Module Grid */
         .modules-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
@@ -161,12 +192,19 @@
             padding-left: 5px;
         }
 
+        .date-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-top: 5px;
+        }
+
         .status-badge {
-            font-size: 0.75em;
+            font-size: 0.7em;
             padding: 4px 10px;
             border-radius: 12px;
-            margin-top: 4px;
             display: inline-block;
+            font-weight: 500;
         }
 
         .available {
@@ -174,7 +212,13 @@
             color: #065f46;
         }
 
-        /* Botones y Acciones */
+        .exam-badge {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+
+        /* Botones */
         .actions-container {
             display: flex;
             flex-direction: column;
@@ -219,12 +263,98 @@
             color: var(--white);
         }
 
-        .info-banner {
-            background: #fffbeb;
-            border-left: 5px solid var(--accent);
+        /* Modales */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--overlay);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
             padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 30px;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: white;
+            width: 100%;
+            max-width: 750px;
+            max-height: 85vh;
+            border-radius: 20px;
+            overflow-y: auto;
+            position: relative;
+            padding: 40px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            animation: modalIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+        }
+
+        @keyframes modalIn {
+            from { transform: scale(0.95); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--light-gray);
+            border: none;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+
+        .topic-list {
+            margin-top: 15px;
+        }
+
+        .topic-item {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border-left: 5px solid var(--accent);
+        }
+
+        .topic-item h4 {
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-size: 1.15em;
+            font-weight: 700;
+        }
+
+        .subpoints-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .subpoint {
+            font-size: 0.85em;
+            color: var(--gray);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .subpoint::before {
+            content: "";
+            width: 6px;
+            height: 6px;
+            background: var(--accent);
+            border-radius: 50%;
+            flex-shrink: 0;
         }
 
         footer {
@@ -234,60 +364,59 @@
             font-size: 0.9em;
         }
 
-        /* Iconos simples con SVG para no depender de librerías externas */
         .icon {
             width: 18px;
             height: 18px;
             fill: currentColor;
         }
     </style>
-    <script>
-        // Función original para la guía TXT
-        function downloadBioPortfolio(blockNumber) {
-            const blockContent = {
-                1: [
-                    { name: 'tema1_materia.html', title: 'Estructura de la Materia' },
-                    { name: 'tema2_soluciones.html', title: 'Soluciones Químicas' },
-                    { name: 'tema3_lipidos.html', title: 'Bioquímica de Lípidos' }
-                ],
-                2: [
-                    { name: 'tema4_nucleicos.html', title: 'Ácidos Nucleicos' },
-                    { name: 'tema5_proteinas.html', title: 'Proteínas y Plegamiento' },
-                    { name: 'tema6_gases.html', title: 'Leyes de los Gases' }
-                ],
-                3: [
-                    { name: 'tema7_fluidos.html', title: 'Mecánica de Fluidos' },
-                    { name: 'tema8_enzimas.html', title: 'Cinética Enzimática' },
-                    { name: 'tema9_carbohidratos.html', title: 'Carbohidratos y Metabolismo' }
-                ]
-            };
-
-            const files = blockContent[blockNumber];
-            const readme = `
-PORTAFOLIO DE EVIDENCIAS - BLOQUE ${blockNumber}
-Fundamentos de Biofísica | FMyCB UACH
-
-CONTENIDO:
-${files.map(f => `- ${f.title}`).join('\n')}
-
-INSTRUCCIONES:
-1. Completar ejercicios en el simulador.
-2. Generar código de verificación.
-3. Adjuntar captura y archivo .txt en la plataforma institucional.
-
-Actualizado a: Julio 2025
-            `.trim();
-
-            const blob = new Blob([readme], { type: 'text/plain' });
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = `Biofisica_Bloque${blockNumber}_Guia.txt`;
-            link.click();
-        }
-    </script>
 </head>
 
 <body>
+    <!-- Modal del Programa Analítico (General) -->
+    <div id="syllabusModal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeAllModals()">×</button>
+            <div class="institution" style="margin-bottom: 15px;">Ficha Técnica del Curso</div>
+            <h2>Fundamentos de Biofísica</h2>
+            <div style="background: #f8fafc; padding: 20px; border-radius: 12px; margin: 20px 0; display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <div><small>Semestre:</small><br><strong>Selectivo</strong></div>
+                <div><small>Área:</small><br><strong>Básica</strong></div>
+                <div><small>Créditos:</small><br><strong>5</strong></div>
+                <div><small>Horas Totales:</small><br><strong>80 h Semestre</strong></div>
+            </div>
+            <h3>Competencias</h3>
+            <p style="font-size: 0.9em; margin-top:10px;">• Excelencia y Desarrollo Humano (B1EDH)<br>• Transformación Digital (B4TD)<br>• Investigación en Salud (P3IS)</p>
+            <h3 style="margin-top:20px;">Esquema de Evaluación</h3>
+            <p style="font-size: 0.9em; margin-top:10px;">• 1° Parcial: 25 Febrero (30%)<br>• 2° Parcial: 15 Abril (30%)<br>• Examen Final: 20 Mayo (40%)</p>
+        </div>
+    </div>
+
+    <!-- Modal Detallado de Bloque -->
+    <div id="blockDetailModal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeAllModals()">×</button>
+            <div id="blockModalHeader">
+                <span id="blockBadge" class="institution">Bloque X</span>
+                <h2 id="blockTitle" style="margin-top: 10px;">Título del Bloque</h2>
+            </div>
+            
+            <div id="blockContentArea" style="margin-top: 25px;">
+                <h3 style="font-size: 0.9em; color: var(--gray); text-transform: uppercase; letter-spacing: 1.5px; border-bottom: 1px solid var(--light-gray); padding-bottom: 10px; margin-bottom: 20px;">Temario Detallado del Programa</h3>
+                <div id="topicsContainer" class="topic-list">
+                    <!-- Los temas y puntos se cargan dinámicamente -->
+                </div>
+            </div>
+
+            <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid var(--light-gray);">
+                <button id="downloadBtn" class="btn btn-primary">
+                    <svg class="icon" viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+                    Descargar Check-list de Estudio (.txt)
+                </button>
+            </div>
+        </div>
+    </div>
+
     <div class="container">
         <header>
             <h1>Fundamentos de Biofísica</h1>
@@ -296,8 +425,16 @@ Actualizado a: Julio 2025
         </header>
 
         <div class="info-banner">
-            <strong>🔬 Metodología Glocal:</strong> Este portal integra simuladores virtuales y análisis de casos
-            clínicos para fortalecer el pensamiento crítico y el método científico.
+            <div class="info-content">
+                <strong>🔬 Metodología Glocal:</strong> Aprendizaje centrado en el alumno, simuladores y casos clínicos.
+                <span class="btn-text" onclick="openSyllabus()">
+                    <svg class="icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                    Ficha Técnica y Evaluación
+                </span>
+            </div>
+            <a href="material/PROGRAMA_DESARROLLADO.pdf" target="_blank" class="btn btn-outline-accent" style="width: auto; padding: 10px 20px;">
+                PDF Programa
+            </a>
         </div>
 
         <div class="modules-grid">
@@ -306,24 +443,24 @@ Actualizado a: Julio 2025
                 <div class="module-header">
                     <div class="module-number">1</div>
                     <div>
-                        <div class="module-title">Fundamentos y Biomoléculas</div>
-                        <span class="status-badge available">26 Ene - 20 Feb</span>
+                        <div class="module-title">Biofísica y Biomoléculas</div>
+                        <div class="date-badges">
+                            <span class="status-badge available">26 Ene - 20 Feb</span>
+                            <span class="status-badge exam-badge">Parcial: 25 Feb</span>
+                        </div>
                     </div>
                 </div>
                 <ul class="module-lessons">
-                    <li><a href="objeto1.html">Estructura de la materia y Enlaces</a></li>
-                    <li><a href="objeto2.html">Soluciones y Unidades de concentración</a></li>
-                    <li><a href="objeto3.html">Lípidos y Bicapa Lipídica</a></li>
+                    <li><a href="objeto1.html">Estructura de la materia</a></li>
+                    <li><a href="objeto2.html">Soluciones y Mezclas</a></li>
+                    <li><a href="objeto3.html">Bioquímica de Lípidos</a></li>
                 </ul>
                 <div class="actions-container">
-                    <button onclick="downloadBioPortfolio(1)" class="btn btn-primary">
-                        <svg class="icon" viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
-                        Descargar Guía Bloque 1
+                    <button onclick="showBlockDetails(1)" class="btn btn-primary">
+                        Ver Temario Bloque 1
                     </button>
-                    <!-- Enlace a las presentaciones comprimidas -->
                     <a href="material/presentaciones_bloque1.zip" class="btn btn-outline-accent">
-                        <svg class="icon" viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm-2 16l-4-4h2.5v-3h3v3H16l-4 4zm1-10V3.5L18.5 8H13z"/></svg>
-                        Presentaciones Bloque 1 (.zip)
+                        Presentaciones (.zip)
                     </a>
                 </div>
             </div>
@@ -334,22 +471,23 @@ Actualizado a: Julio 2025
                     <div class="module-number">2</div>
                     <div>
                         <div class="module-title">Macromoléculas y Gases</div>
-                        <span class="status-badge available">Semanas 6-9</span>
+                        <div class="date-badges">
+                            <span class="status-badge available">2 Mar - 10 Abr</span>
+                            <span class="status-badge exam-badge">Parcial: 15 Abr</span>
+                        </div>
                     </div>
                 </div>
                 <ul class="module-lessons">
                     <li><a href="adn_arn.html">Ácidos Nucleicos</a></li>
-                    <li><a href="proteinas_pymol.html">Proteínas (Plegamiento)</a></li>
-                    <li><a href="leyes_gases.html">Leyes de los gases</a></li>
+                    <li><a href="proteinas_pymol.html">Proteínas (Estructura)</a></li>
+                    <li><a href="leyes_gases.html">Biofísica de Gases</a></li>
                 </ul>
                 <div class="actions-container">
-                    <button onclick="downloadBioPortfolio(2)" class="btn btn-primary">
-                        <svg class="icon" viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
-                        Descargar Guía Bloque 2
+                    <button onclick="showBlockDetails(2)" class="btn btn-primary">
+                        Ver Temario Bloque 2
                     </button>
                     <a href="material/presentaciones_bloque2.zip" class="btn btn-outline-accent">
-                        <svg class="icon" viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm-2 16l-4-4h2.5v-3h3v3H16l-4 4zm1-10V3.5L18.5 8H13z"/></svg>
-                        Presentaciones Bloque 2 (.zip)
+                        Presentaciones (.zip)
                     </a>
                 </div>
             </div>
@@ -359,34 +497,150 @@ Actualizado a: Julio 2025
                 <div class="module-header">
                     <div class="module-number">3</div>
                     <div>
-                        <div class="module-title">Catálisis y Metabolismo</div>
-                        <span class="status-badge available">Semanas 11-15</span>
+                        <div class="module-title">Fluidos y Catálisis</div>
+                        <div class="date-badges">
+                            <span class="status-badge available">20 Abr - 15 May</span>
+                            <span class="status-badge exam-badge">Final: 20 May</span>
+                        </div>
                     </div>
                 </div>
                 <ul class="module-lessons">
                     <li><a href="fluidos_reynolds.html">Mecánica de Fluidos</a></li>
                     <li><a href="enzimas_michaelis.html">Cinética Enzimática</a></li>
-                    <li><a href="carbohidratos.html">Carbohidratos</a></li>
+                    <li><a href="carbohidratos.html">Bioquímica de Carbohidratos</a></li>
                 </ul>
                 <div class="actions-container">
-                    <button onclick="downloadBioPortfolio(3)" class="btn btn-primary">
-                        <svg class="icon" viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
-                        Descargar Guía Bloque 3
+                    <button onclick="showBlockDetails(3)" class="btn btn-primary">
+                        Ver Temario Bloque 3
                     </button>
                     <a href="material/presentaciones_bloque3.zip" class="btn btn-outline-accent">
-                        <svg class="icon" viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm-2 16l-4-4h2.5v-3h3v3H16l-4 4zm1-10V3.5L18.5 8H13z"/></svg>
-                        Presentaciones Bloque 3 (.zip)
+                        Presentaciones (.zip)
                     </a>
                 </div>
             </div>
         </div>
 
         <footer>
-            <p><strong>Programa Analítico 2025</strong> | Basado en: Chang (Química), Behar (Biofísica) y McKee
-                (Bioquímica) </p>
-            <p style="margin-top: 10px;">Facultad de Medicina y Ciencias Biomédicas - UACH</p>
+            <p><strong>Programa Analítico 2025</strong> | Facultad de Medicina y Ciencias Biomédicas - UACH</p>
         </footer>
     </div>
+
+    <script>
+        // Datos exhaustivos extraídos del PDF PROGRAMA_DESARROLLADO
+        const blockData = {
+            1: {
+                title: "Bloque 1: Fundamentos Químicos y Biomoléculas",
+                topics: [
+                    { 
+                        name: "Objeto 1. Estructura de la Materia (Biofísica)", 
+                        points: ["Estructura atómica", "Clasificación periódica", "Estados de agregación", "Tipos de enlace químico", "Unidades del sistema internacional"] 
+                    },
+                    { 
+                        name: "Objeto 2. Soluciones Químicas y Mezclas", 
+                        points: ["Propiedades generales de soluciones acuosas", "Tipos de soluciones", "Unidades de concentración", "Propiedades coligativas"] 
+                    },
+                    { 
+                        name: "Objeto 3. Lípidos (Bioquímica)", 
+                        points: ["Introducción y funciones", "Ácidos grasos (saturados e insaturados)", "Triacilgliceroles y ceras", "Fosfolípidos: componentes de membrana", "Esfingolípidos (cerebrósidos y gangliósidos)", "Isoprenoides (terpenos y esteroides)", "Eicosanoides", "Digestión de lípidos"] 
+                    }
+                ]
+            },
+            2: {
+                title: "Bloque 2: Macromoléculas y Principios Biofísicos",
+                topics: [
+                    { 
+                        name: "Objeto 4. Ácidos Nucleicos (Bioquímica)", 
+                        points: ["Introducción y visión general", "Bases nitrogenadas: purinas y pirimidinas", "Estructura de nucleótidos y nucleósidos", "Estructura y características del ADN", "Estructura y características del ARN"] 
+                    },
+                    { 
+                        name: "Objeto 5. Proteínas (Bioquímica)", 
+                        points: ["Introducción y funciones", "Aminoácidos y péptidos", "Niveles estructurales (1°, 2°, 3°, 4°)", "Plegamiento y localización", "Modificaciones postraduccionales", "Importancia en enfermedades", "Digestión de proteínas"] 
+                    },
+                    { 
+                        name: "Objeto 6. Leyes de los Gases (Biofísica)", 
+                        points: ["Leyes de los gases", "Teoría cinética molecular", "Desviación del comportamiento ideal", "Aplicaciones en respiración celular"] 
+                    }
+                ]
+            },
+            3: {
+                title: "Bloque 3: Catálisis y Metabolismo Energético",
+                topics: [
+                    { 
+                        name: "Objeto 7. Mecánica de Fluidos (Biofísica)", 
+                        points: ["Propiedades básicas de fluidos", "Principio de Bernoulli", "Fluidos newtonianos y no newtonianos", "Tipos de flujo (laminar y turbulento)", "Número de Reynolds"] 
+                    },
+                    { 
+                        name: "Objeto 8. Enzimas (Bioquímica)", 
+                        points: ["Conceptos y clasificación", "Cinética enzimática (Km y Vmax)", "Inhibición enzimática", "Regulación alostérica", "Modificación covalente", "Importancia en enfermedades"] 
+                    },
+                    { 
+                        name: "Objeto 9. Carbohidratos (Bioquímica)", 
+                        points: ["Introducción y funciones", "Monosacáridos (Enantiómeros y anómeros)", "Disacáridos y oligosacáridos", "Polisacáridos (Homo y heteropolisacáridos)", "Importancia en enfermedades (Síndrome metabólico)", "Digestión de carbohidratos"] 
+                    }
+                ]
+            }
+        };
+
+        function showBlockDetails(blockNum) {
+            const data = blockData[blockNum];
+            document.getElementById('blockBadge').innerText = `Contenido del Bloque ${blockNum}`;
+            document.getElementById('blockTitle').innerText = data.title;
+            
+            const container = document.getElementById('topicsContainer');
+            container.innerHTML = '';
+            
+            data.topics.forEach(topic => {
+                const item = document.createElement('div');
+                item.className = 'topic-item';
+                
+                let pointsHTML = '<div class="subpoints-grid">';
+                topic.points.forEach(p => {
+                    pointsHTML += `<div class="subpoint">${p}</div>`;
+                });
+                pointsHTML += '</div>';
+
+                item.innerHTML = `<h4>${topic.name}</h4>${pointsHTML}`;
+                container.appendChild(item);
+            });
+
+            document.getElementById('downloadBtn').onclick = () => downloadBioPortfolio(blockNum);
+            document.getElementById('blockDetailModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function openSyllabus() {
+            document.getElementById('syllabusModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeAllModals() {
+            document.querySelectorAll('.modal-overlay').forEach(m => m.style.display = 'none');
+            document.body.style.overflow = 'auto';
+        }
+
+        function downloadBioPortfolio(blockNumber) {
+            const data = blockData[blockNumber];
+            let content = `TEMARIO DETALLADO - BLOQUE ${blockNumber}\n${data.title}\n\n`;
+            
+            data.topics.forEach(t => {
+                content += `${t.name.toUpperCase()}\n`;
+                t.points.forEach(p => content += ` [ ] ${p}\n`);
+                content += `\n`;
+            });
+
+            content += `\nINSTRUCCIONES: Marca los temas que ya dominas. Completa tus simuladores y sube tus evidencias a plataforma.`;
+
+            const blob = new Blob([content], { type: 'text/plain' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `Checklist_Biofisica_Bloque${blockNumber}.txt`;
+            link.click();
+        }
+
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal-overlay')) closeAllModals();
+        }
+    </script>
 </body>
 
 </html>
