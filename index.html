@@ -357,11 +357,118 @@
             flex-shrink: 0;
         }
 
-        footer {
-            text-align: center;
+        /* --- SECCIÓN: CRONOGRAMA ACADÉMICO --- */
+        .timeline-section {
+            background: var(--white);
+            border-radius: 20px;
             padding: 40px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            margin-bottom: 40px;
+        }
+
+        .timeline-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .timeline-header h2 {
+            color: var(--primary);
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .timeline-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .timeline-month {
+            border: 1px solid var(--light-gray);
+            border-radius: 15px;
+            padding: 15px;
+            background: #fcfcfc;
+        }
+
+        .month-name {
+            font-weight: 700;
+            color: var(--secondary);
+            text-transform: uppercase;
+            font-size: 0.85em;
+            margin-bottom: 15px;
+            display: block;
+            border-bottom: 2px solid var(--light-gray);
+            padding-bottom: 5px;
+        }
+
+        .week-item {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 12px;
+            position: relative;
+        }
+
+        .week-number {
+            font-size: 0.65em;
+            font-weight: 700;
+            color: var(--white);
+            background: var(--gray);
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 3px;
+        }
+
+        .week-date {
+            font-size: 0.7em;
             color: var(--gray);
-            font-size: 0.9em;
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .week-content {
+            font-size: 0.85em;
+            color: var(--dark);
+        }
+
+        .week-content strong {
+            display: block;
+            color: var(--primary);
+        }
+
+        /* Destacar exámenes */
+        .week-item.exam {
+            background: #fff5f5;
+            border: 1px solid #fed7d7;
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        .week-item.exam .week-number {
+            background: var(--primary);
+        }
+
+        /* Destacar vacaciones */
+        .week-item.holiday {
+            background: #f0fdf4;
+            border: 1px solid #dcfce7;
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        .week-item.holiday .week-number {
+            background: var(--success);
+        }
+
+        .week-item.holiday .week-content strong {
+            color: var(--success);
         }
 
         .icon {
@@ -369,11 +476,18 @@
             height: 18px;
             fill: currentColor;
         }
+
+        footer {
+            text-align: center;
+            padding: 40px;
+            color: var(--gray);
+            font-size: 0.9em;
+        }
     </style>
 </head>
 
 <body>
-    <!-- Modal del Programa Analítico (General) -->
+    <!-- Modal Programa Analítico -->
     <div id="syllabusModal" class="modal-overlay">
         <div class="modal-content">
             <button class="close-modal" onclick="closeAllModals()">×</button>
@@ -385,9 +499,7 @@
                 <div><small>Créditos:</small><br><strong>5</strong></div>
                 <div><small>Horas Totales:</small><br><strong>80 h Semestre</strong></div>
             </div>
-            <h3>Competencias</h3>
-            <p style="font-size: 0.9em; margin-top:10px;">• Excelencia y Desarrollo Humano (B1EDH)<br>• Transformación Digital (B4TD)<br>• Investigación en Salud (P3IS)</p>
-            <h3 style="margin-top:20px;">Esquema de Evaluación</h3>
+            <h3>Esquema de Evaluación</h3>
             <p style="font-size: 0.9em; margin-top:10px;">• 1° Parcial: 25 Febrero (30%)<br>• 2° Parcial: 15 Abril (30%)<br>• Examen Final: 20 Mayo (40%)</p>
         </div>
     </div>
@@ -400,19 +512,9 @@
                 <span id="blockBadge" class="institution">Bloque X</span>
                 <h2 id="blockTitle" style="margin-top: 10px;">Título del Bloque</h2>
             </div>
-            
-            <div id="blockContentArea" style="margin-top: 25px;">
-                <h3 style="font-size: 0.9em; color: var(--gray); text-transform: uppercase; letter-spacing: 1.5px; border-bottom: 1px solid var(--light-gray); padding-bottom: 10px; margin-bottom: 20px;">Temario Detallado del Programa</h3>
-                <div id="topicsContainer" class="topic-list">
-                    <!-- Los temas y puntos se cargan dinámicamente -->
-                </div>
-            </div>
-
+            <div id="topicsContainer" class="topic-list"></div>
             <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid var(--light-gray);">
-                <button id="downloadBtn" class="btn btn-primary">
-                    <svg class="icon" viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
-                    Descargar Check-list de Estudio (.txt)
-                </button>
+                <button id="downloadBtn" class="btn btn-primary">Descargar Check-list (.txt)</button>
             </div>
         </div>
     </div>
@@ -426,15 +528,10 @@
 
         <div class="info-banner">
             <div class="info-content">
-                <strong>🔬 Metodología Glocal:</strong> Aprendizaje centrado en el alumno, simuladores y casos clínicos.
-                <span class="btn-text" onclick="openSyllabus()">
-                    <svg class="icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
-                    Ficha Técnica y Evaluación
-                </span>
+                <strong>🔬 Metodología Glocal:</strong> Aprendizaje basado en simulación y casos clínicos reales.
+                <span class="btn-text" onclick="openSyllabus()">Ver Ficha Técnica</span>
             </div>
-            <a href="material/PROGRAMA_DESARROLLADO.pdf" target="_blank" class="btn btn-outline-accent" style="width: auto; padding: 10px 20px;">
-                PDF Programa
-            </a>
+            <a href="material/PROGRAMA_DESARROLLADO.pdf" target="_blank" class="btn btn-outline-accent" style="width: auto; padding: 10px 20px;">PDF Programa</a>
         </div>
 
         <div class="modules-grid">
@@ -456,12 +553,8 @@
                     <li><a href="objeto3.html">Bioquímica de Lípidos</a></li>
                 </ul>
                 <div class="actions-container">
-                    <button onclick="showBlockDetails(1)" class="btn btn-primary">
-                        Ver Temario Bloque 1
-                    </button>
-                    <a href="material/presentaciones_bloque1.zip" class="btn btn-outline-accent">
-                        Presentaciones (.zip)
-                    </a>
+                    <button onclick="showBlockDetails(1)" class="btn btn-primary">Ver Temario Bloque 1</button>
+                    <a href="material/presentaciones_bloque1.zip" class="btn btn-outline-accent">Presentaciones (.zip)</a>
                 </div>
             </div>
 
@@ -483,12 +576,8 @@
                     <li><a href="leyes_gases.html">Biofísica de Gases</a></li>
                 </ul>
                 <div class="actions-container">
-                    <button onclick="showBlockDetails(2)" class="btn btn-primary">
-                        Ver Temario Bloque 2
-                    </button>
-                    <a href="material/presentaciones_bloque2.zip" class="btn btn-outline-accent">
-                        Presentaciones (.zip)
-                    </a>
+                    <button onclick="showBlockDetails(2)" class="btn btn-primary">Ver Temario Bloque 2</button>
+                    <a href="material/presentaciones_bloque2.zip" class="btn btn-outline-accent">Presentaciones (.zip)</a>
                 </div>
             </div>
 
@@ -510,15 +599,168 @@
                     <li><a href="carbohidratos.html">Bioquímica de Carbohidratos</a></li>
                 </ul>
                 <div class="actions-container">
-                    <button onclick="showBlockDetails(3)" class="btn btn-primary">
-                        Ver Temario Bloque 3
-                    </button>
-                    <a href="material/presentaciones_bloque3.zip" class="btn btn-outline-accent">
-                        Presentaciones (.zip)
-                    </a>
+                    <button onclick="showBlockDetails(3)" class="btn btn-primary">Ver Temario Bloque 3</button>
+                    <a href="material/presentaciones_bloque3.zip" class="btn btn-outline-accent">Presentaciones (.zip)</a>
                 </div>
             </div>
         </div>
+
+        <!-- SECCIÓN: CRONOGRAMA SEMANAL ACTUALIZADO -->
+        <section class="timeline-section">
+            <div class="timeline-header">
+                <h2>
+                    <svg class="icon" viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/></svg>
+                    Cronograma de Avance Programático 2025
+                </h2>
+                <p style="color: var(--gray); font-size: 0.9em;">Ruta de aprendizaje del 26 de Enero al 31 de Mayo</p>
+            </div>
+
+            <div class="timeline-grid">
+                <!-- Bloque 1: Enero / Febrero -->
+                <div class="timeline-month">
+                    <span class="month-name">Enero - Febrero</span>
+                    <div class="week-item">
+                        <div class="week-number">1</div>
+                        <div class="week-content">
+                            <span class="week-date">26 Ene - 01 Feb</span>
+                            <strong>Objeto 1</strong>Estructura de la materia
+                        </div>
+                    </div>
+                    <div class="week-item">
+                        <div class="week-number">2</div>
+                        <div class="week-content">
+                            <span class="week-date">02 Feb - 08 Feb</span>
+                            <strong>Objeto 1</strong>Enlaces y Sistema Int.
+                        </div>
+                    </div>
+                    <div class="week-item">
+                        <div class="week-number">3</div>
+                        <div class="week-content">
+                            <span class="week-date">09 Feb - 15 Feb</span>
+                            <strong>Objeto 2</strong>Soluciones y Mezclas
+                        </div>
+                    </div>
+                    <div class="week-item">
+                        <div class="week-number">4</div>
+                        <div class="week-content">
+                            <span class="week-date">16 Feb - 22 Feb</span>
+                            <strong>Objeto 3</strong>Bioquímica de Lípidos
+                        </div>
+                    </div>
+                    <div class="week-item exam">
+                        <div class="week-number">5</div>
+                        <div class="week-content">
+                            <span class="week-date">23 Feb - 01 Mar</span>
+                            <strong>🚨 25 FEBRERO</strong>1er EXAMEN PARCIAL
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bloque 2: Marzo / Abril (Incluye Vacaciones, H y 12) -->
+                <div class="timeline-month">
+                    <span class="month-name">Marzo - Abril</span>
+                    <div class="week-item">
+                        <div class="week-number">6</div>
+                        <div class="week-content">
+                            <span class="week-date">02 Mar - 08 Mar</span>
+                            <strong>Objeto 4</strong>Ácidos Nucleicos (ADN/ARN)
+                        </div>
+                    </div>
+                    <div class="week-item">
+                        <div class="week-number">7</div>
+                        <div class="week-content">
+                            <span class="week-date">09 Mar - 15 Mar</span>
+                            <strong>Objeto 4</strong>Estructura Molecular
+                        </div>
+                    </div>
+                    <div class="week-item">
+                        <div class="week-number">8</div>
+                        <div class="week-content">
+                            <span class="week-date">16 Mar - 22 Mar</span>
+                            <strong>Objeto 5</strong>Aminoácidos y Péptidos
+                        </div>
+                    </div>
+                    <div class="week-item">
+                        <div class="week-number">9</div>
+                        <div class="week-content">
+                            <span class="week-date">23 Mar - 29 Mar</span>
+                            <strong>Objeto 6</strong>Biofísica de Gases
+                        </div>
+                    </div>
+                    
+                    <!-- Vacaciones de 2 semanas -->
+                    <div class="week-item holiday">
+                        <div class="week-number">H</div>
+                        <div class="week-content">
+                            <span class="week-date">30 Mar - 05 Abr</span>
+                            <strong>🌴 VACACIONES</strong>Semana Santa (P.1)
+                        </div>
+                    </div>
+                    <div class="week-item holiday">
+                        <div class="week-number">H</div>
+                        <div class="week-content">
+                            <span class="week-date">06 Abr - 12 Abr</span>
+                            <strong>🌴 VACACIONES</strong>Semana de Pascua (P.2)
+                        </div>
+                    </div>
+
+                    <div class="week-item exam">
+                        <div class="week-number">10</div>
+                        <div class="week-content">
+                            <span class="week-date">13 Abr - 19 Abr</span>
+                            <strong>🚨 15 ABRIL</strong>2do EXAMEN PARCIAL
+                        </div>
+                    </div>
+                    <div class="week-item">
+                        <div class="week-number">11</div>
+                        <div class="week-content">
+                            <span class="week-date">20 Abr - 26 Abr</span>
+                            <strong>Objeto 7</strong>Mecánica de Fluidos
+                        </div>
+                    </div>
+                    <div class="week-item">
+                        <div class="week-number">12</div>
+                        <div class="week-content">
+                            <span class="week-date">27 Abr - 03 May</span>
+                            <strong>Objeto 7</strong>Bernoulli y Reynolds
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bloque 3: Mayo Solo -->
+                <div class="timeline-month">
+                    <span class="month-name">Mayo</span>
+                    <div class="week-item">
+                        <div class="week-number">13</div>
+                        <div class="week-content">
+                            <span class="week-date">04 May - 10 May</span>
+                            <strong>Objeto 8</strong>Cinética Enzimática
+                        </div>
+                    </div>
+                    <div class="week-item">
+                        <div class="week-number">14</div>
+                        <div class="week-content">
+                            <span class="week-date">11 May - 17 May</span>
+                            <strong>Objeto 9</strong>Carbohidratos
+                        </div>
+                    </div>
+                    <div class="week-item exam">
+                        <div class="week-number">15</div>
+                        <div class="week-content">
+                            <span class="week-date">18 May - 24 May</span>
+                            <strong>🚨 20 MAYO</strong>EXAMEN FINAL
+                        </div>
+                    </div>
+                    <div class="week-item">
+                        <div class="week-number">16</div>
+                        <div class="week-content">
+                            <span class="week-date">25 May - 31 May</span>
+                            <strong>CIERRE</strong>Entrega de actas finales
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
         <footer>
             <p><strong>Programa Analítico 2025</strong> | Facultad de Medicina y Ciencias Biomédicas - UACH</p>
@@ -526,83 +768,48 @@
     </div>
 
     <script>
-        // Datos exhaustivos extraídos del PDF PROGRAMA_DESARROLLADO
         const blockData = {
             1: {
                 title: "Bloque 1: Fundamentos Químicos y Biomoléculas",
                 topics: [
-                    { 
-                        name: "Objeto 1. Estructura de la Materia (Biofísica)", 
-                        points: ["Estructura atómica", "Clasificación periódica", "Estados de agregación", "Tipos de enlace químico", "Unidades del sistema internacional"] 
-                    },
-                    { 
-                        name: "Objeto 2. Soluciones Químicas y Mezclas", 
-                        points: ["Propiedades generales de soluciones acuosas", "Tipos de soluciones", "Unidades de concentración", "Propiedades coligativas"] 
-                    },
-                    { 
-                        name: "Objeto 3. Lípidos (Bioquímica)", 
-                        points: ["Introducción y funciones", "Ácidos grasos (saturados e insaturados)", "Triacilgliceroles y ceras", "Fosfolípidos: componentes de membrana", "Esfingolípidos (cerebrósidos y gangliósidos)", "Isoprenoides (terpenos y esteroides)", "Eicosanoides", "Digestión de lípidos"] 
-                    }
+                    { name: "Objeto 1. Estructura de la Materia", points: ["Estructura atómica", "Clasificación periódica", "Estados de agregación", "Tipos de enlace químico", "Unidades del SI"] },
+                    { name: "Objeto 2. Soluciones y Mezclas", points: ["Propiedades de soluciones acuosas", "Tipos de soluciones", "Unidades de concentración", "Propiedades coligativas"] },
+                    { name: "Objeto 3. Lípidos", points: ["Funciones", "Ácidos grasos", "Triacilgliceroles", "Fosfolípidos", "Esfingolípidos", "Isoprenoides", "Digestión de lípidos"] }
                 ]
             },
             2: {
                 title: "Bloque 2: Macromoléculas y Principios Biofísicos",
                 topics: [
-                    { 
-                        name: "Objeto 4. Ácidos Nucleicos (Bioquímica)", 
-                        points: ["Introducción y visión general", "Bases nitrogenadas: purinas y pirimidinas", "Estructura de nucleótidos y nucleósidos", "Estructura y características del ADN", "Estructura y características del ARN"] 
-                    },
-                    { 
-                        name: "Objeto 5. Proteínas (Bioquímica)", 
-                        points: ["Introducción y funciones", "Aminoácidos y péptidos", "Niveles estructurales (1°, 2°, 3°, 4°)", "Plegamiento y localización", "Modificaciones postraduccionales", "Importancia en enfermedades", "Digestión de proteínas"] 
-                    },
-                    { 
-                        name: "Objeto 6. Leyes de los Gases (Biofísica)", 
-                        points: ["Leyes de los gases", "Teoría cinética molecular", "Desviación del comportamiento ideal", "Aplicaciones en respiración celular"] 
-                    }
+                    { name: "Objeto 4. Ácidos Nucleicos", points: ["Bases nitrogenadas", "Nucleótidos", "ADN y ARN estructura", "Visión general molecular"] },
+                    { name: "Objeto 5. Proteínas", points: ["Aminoácidos", "Péptidos", "Niveles estructurales", "Plegamiento", "Importancia clínica", "Digestión"] },
+                    { name: "Objeto 6. Leyes de los Gases", points: ["Leyes fundamentales", "Teoría cinética", "Comportamiento ideal/real", "Respiración celular"] }
                 ]
             },
             3: {
                 title: "Bloque 3: Catálisis y Metabolismo Energético",
                 topics: [
-                    { 
-                        name: "Objeto 7. Mecánica de Fluidos (Biofísica)", 
-                        points: ["Propiedades básicas de fluidos", "Principio de Bernoulli", "Fluidos newtonianos y no newtonianos", "Tipos de flujo (laminar y turbulento)", "Número de Reynolds"] 
-                    },
-                    { 
-                        name: "Objeto 8. Enzimas (Bioquímica)", 
-                        points: ["Conceptos y clasificación", "Cinética enzimática (Km y Vmax)", "Inhibición enzimática", "Regulación alostérica", "Modificación covalente", "Importancia en enfermedades"] 
-                    },
-                    { 
-                        name: "Objeto 9. Carbohidratos (Bioquímica)", 
-                        points: ["Introducción y funciones", "Monosacáridos (Enantiómeros y anómeros)", "Disacáridos y oligosacáridos", "Polisacáridos (Homo y heteropolisacáridos)", "Importancia en enfermedades (Síndrome metabólico)", "Digestión de carbohidratos"] 
-                    }
+                    { name: "Objeto 7. Mecánica de Fluidos", points: ["Principio de Bernoulli", "Newtonianos y no newtonianos", "Flujo laminar/turbulento", "Número de Reynolds"] },
+                    { name: "Objeto 8. Enzimas", points: ["Cinética Michaelis-Menten", "Km y Vmax", "Inhibición", "Regulación alostérica", "Importancia en enfermedades"] },
+                    { name: "Objeto 9. Carbohidratos", points: ["Monosacáridos y Disacáridos", "Polisacáridos", "Síndrome metabólico", "Digestión de carbohidratos"] }
                 ]
             }
         };
 
         function showBlockDetails(blockNum) {
             const data = blockData[blockNum];
-            document.getElementById('blockBadge').innerText = `Contenido del Bloque ${blockNum}`;
+            document.getElementById('blockBadge').innerText = `Bloque ${blockNum}`;
             document.getElementById('blockTitle').innerText = data.title;
-            
             const container = document.getElementById('topicsContainer');
             container.innerHTML = '';
-            
             data.topics.forEach(topic => {
                 const item = document.createElement('div');
                 item.className = 'topic-item';
-                
                 let pointsHTML = '<div class="subpoints-grid">';
-                topic.points.forEach(p => {
-                    pointsHTML += `<div class="subpoint">${p}</div>`;
-                });
+                topic.points.forEach(p => pointsHTML += `<div class="subpoint">${p}</div>`);
                 pointsHTML += '</div>';
-
                 item.innerHTML = `<h4>${topic.name}</h4>${pointsHTML}`;
                 container.appendChild(item);
             });
-
             document.getElementById('downloadBtn').onclick = () => downloadBioPortfolio(blockNum);
             document.getElementById('blockDetailModal').style.display = 'flex';
             document.body.style.overflow = 'hidden';
@@ -620,26 +827,20 @@
 
         function downloadBioPortfolio(blockNumber) {
             const data = blockData[blockNumber];
-            let content = `TEMARIO DETALLADO - BLOQUE ${blockNumber}\n${data.title}\n\n`;
-            
+            let content = `CHECKLIST - BLOQUE ${blockNumber}\n${data.title}\n\n`;
             data.topics.forEach(t => {
-                content += `${t.name.toUpperCase()}\n`;
+                content += `${t.name}\n`;
                 t.points.forEach(p => content += ` [ ] ${p}\n`);
                 content += `\n`;
             });
-
-            content += `\nINSTRUCCIONES: Marca los temas que ya dominas. Completa tus simuladores y sube tus evidencias a plataforma.`;
-
             const blob = new Blob([content], { type: 'text/plain' });
             const link = document.createElement('a');
             link.href = URL.createObjectURL(blob);
-            link.download = `Checklist_Biofisica_Bloque${blockNumber}.txt`;
+            link.download = `Checklist_B${blockNumber}.txt`;
             link.click();
         }
 
-        window.onclick = function(event) {
-            if (event.target.classList.contains('modal-overlay')) closeAllModals();
-        }
+        window.onclick = (e) => { if (e.target.classList.contains('modal-overlay')) closeAllModals(); }
     </script>
 </body>
 
