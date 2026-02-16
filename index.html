@@ -128,365 +128,155 @@
             border: 1px solid var(--light-gray);
         }
 
-        .module-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--primary);
-        }
+        .module-card:hover { transform: translateY(-5px); border-color: var(--primary); }
 
-        .module-header {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
+        .module-header { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
 
         .module-number {
-            background: var(--primary);
-            color: white;
-            width: 45px;
-            height: 45px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            flex-shrink: 0;
+            background: var(--primary); color: white; width: 45px; height: 45px;
+            border-radius: 10px; display: flex; align-items: center; justify-content: center;
+            font-weight: 700; flex-shrink: 0;
         }
 
-        .module-title {
-            font-size: 1.2em;
-            font-weight: 700;
-            color: var(--primary);
-        }
+        .module-title { font-size: 1.2em; font-weight: 700; color: var(--primary); }
 
-        .module-lessons {
-            list-style: none;
-            margin-bottom: 20px;
-            flex-grow: 1;
-        }
+        .module-lessons { list-style: none; margin-bottom: 20px; flex-grow: 1; }
+        .module-lessons li { padding: 10px 0; border-bottom: 1px solid var(--light-gray); font-size: 0.9em; display: flex; align-items: center; }
+        .module-lessons li::before { content: "•"; color: var(--primary); font-weight: bold; margin-right: 8px; }
+        .module-lessons a { color: var(--dark); text-decoration: none; font-weight: 500; transition: 0.2s; }
 
-        .module-lessons li {
-            padding: 10px 0;
-            border-bottom: 1px solid var(--light-gray);
-            font-size: 0.9em;
-            display: flex;
-            align-items: center;
-        }
-
-        .module-lessons li::before {
-            content: "•";
-            color: var(--primary);
-            font-weight: bold;
-            margin-right: 8px;
-        }
-
-        .module-lessons a {
-            color: var(--dark);
-            text-decoration: none;
-            font-weight: 500;
-            transition: 0.2s;
-        }
-
-        .module-lessons a:hover {
-            color: var(--primary);
-            padding-left: 5px;
-        }
-
-        .date-badges {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 5px;
-            margin-top: 5px;
-        }
-
-        .status-badge {
-            font-size: 0.7em;
-            padding: 4px 10px;
-            border-radius: 12px;
-            display: inline-block;
-            font-weight: 500;
-        }
-
-        .available {
-            background: #d1fae5;
-            color: #065f46;
-        }
-
-        .exam-badge {
-            background: #fee2e2;
-            color: #991b1b;
-            border: 1px solid #fecaca;
-        }
+        .date-badges { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 5px; }
+        .status-badge { font-size: 0.7em; padding: 4px 10px; border-radius: 12px; display: inline-block; font-weight: 500; }
+        .available { background: #d1fae5; color: #065f46; }
+        .exam-badge { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
 
         /* Botones */
-        .actions-container {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-top: 10px;
-        }
-
+        .actions-container { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
         .btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            width: 100%;
-            padding: 12px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.9em;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            border: none;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            width: 100%; padding: 12px; border-radius: 8px; text-decoration: none;
+            font-weight: 600; font-size: 0.9em; transition: all 0.3s ease; cursor: pointer; border: none;
         }
-
-        .btn-primary {
-            background: var(--primary);
-            color: var(--white);
-        }
-
-        .btn-primary:hover {
-            background: var(--secondary);
-            box-shadow: 0 4px 12px rgba(139, 0, 0, 0.2);
-        }
-
-        .btn-outline-accent {
-            background: transparent;
-            color: var(--accent);
-            border: 2px solid var(--accent);
-        }
-
-        .btn-outline-accent:hover {
-            background: var(--accent);
-            color: var(--white);
-        }
+        .btn-primary { background: var(--primary); color: var(--white); }
+        .btn-outline-accent { background: transparent; color: var(--accent); border: 2px solid var(--accent); }
 
         /* Modales */
         .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--overlay);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            padding: 20px;
-            backdrop-filter: blur(5px);
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--overlay); display: none; justify-content: center; align-items: center;
+            z-index: 1000; padding: 20px; backdrop-filter: blur(5px);
         }
-
         .modal-content {
-            background: white;
-            width: 100%;
-            max-width: 750px;
-            max-height: 85vh;
-            border-radius: 20px;
-            overflow-y: auto;
-            position: relative;
-            padding: 40px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
-            animation: modalIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+            background: white; width: 100%; max-width: 850px; max-height: 85vh;
+            border-radius: 20px; overflow-y: auto; position: relative; padding: 40px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3); animation: modalIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.1);
         }
-
-        @keyframes modalIn {
-            from { transform: scale(0.95); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
-
+        @keyframes modalIn { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
         .close-modal {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: var(--light-gray);
-            border: none;
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 1.2em;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 10;
+            position: absolute; top: 20px; right: 20px; background: var(--light-gray);
+            border: none; width: 35px; height: 35px; border-radius: 50%;
+            cursor: pointer; font-size: 1.2em; display: flex; align-items: center; justify-content: center; z-index: 10;
         }
+        .topic-item { background: #f8fafc; padding: 20px; border-radius: 12px; margin-bottom: 20px; border-left: 5px solid var(--accent); }
+        .subpoints-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 8px; margin-top: 10px; }
+        .subpoint { font-size: 0.85em; color: var(--gray); display: flex; align-items: center; gap: 8px; }
+        .subpoint::before { content: ""; width: 6px; height: 6px; background: var(--accent); border-radius: 50%; flex-shrink: 0; }
 
-        .topic-list {
-            margin-top: 15px;
-        }
+        /* Timeline Section */
+        .timeline-section { background: var(--white); border-radius: 20px; padding: 40px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); margin-bottom: 40px; }
+        .timeline-header { text-align: center; margin-bottom: 30px; }
+        .timeline-header h2 { color: var(--primary); font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .timeline-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+        .timeline-month { border: 1px solid var(--light-gray); border-radius: 15px; padding: 15px; background: #fcfcfc; }
+        .month-name { font-weight: 700; color: var(--secondary); text-transform: uppercase; font-size: 0.85em; margin-bottom: 15px; display: block; border-bottom: 2px solid var(--light-gray); padding-bottom: 5px; }
+        .week-item { display: flex; gap: 12px; margin-bottom: 12px; }
+        .week-number { font-size: 0.65em; font-weight: 700; color: var(--white); background: var(--gray); width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 3px; }
+        .week-date { font-size: 0.7em; color: var(--gray); display: block; margin-bottom: 2px; }
+        .week-content { font-size: 0.85em; color: var(--dark); }
+        .week-content strong { display: block; color: var(--primary); }
+        .week-item.exam { background: #fff5f5; border: 1px solid #fed7d7; padding: 10px; border-radius: 8px; }
+        .week-item.holiday { background: #f0fdf4; border: 1px solid #dcfce7; padding: 10px; border-radius: 8px; }
 
-        .topic-item {
-            background: #f8fafc;
-            padding: 20px;
-            border-radius: 12px;
-            margin-bottom: 20px;
-            border-left: 5px solid var(--accent);
-        }
+        /* Reglamento UI */
+        .reglamento-banner { background: var(--primary); color: white; padding: 12px; text-align: center; border-radius: 10px; margin-bottom: 20px; display: none; animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(139, 0, 0, 0.4); } 100% { box-shadow: 0 0 0 10px rgba(139, 0, 0, 0); } }
+        .rules-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 15px; margin-top: 20px; }
+        .rule-card { background: #f8fafc; padding: 18px; border-radius: 12px; border-top: 4px solid var(--primary); }
+        .rule-card h4 { color: var(--primary); margin-bottom: 10px; font-size: 1em; display: flex; align-items: center; gap: 10px; }
+        .rule-card p { font-size: 0.8em; color: var(--gray); line-height: 1.5; }
+        .conformidad-panel { background: #fffbeb; padding: 25px; border-radius: 15px; margin-top: 30px; border: 2px dashed var(--accent); text-align: center; }
+        .student-input { width: 100%; max-width: 400px; padding: 12px; border-radius: 8px; border: 1px solid var(--light-gray); margin-bottom: 15px; font-family: inherit; font-size: 1em; outline: none; }
 
-        .topic-item h4 {
-            color: var(--primary);
-            margin-bottom: 10px;
-            font-size: 1.15em;
-            font-weight: 700;
-        }
+        /* Panel Docente */
+        .teacher-view { margin-top: 40px; background: var(--white); border-radius: 20px; padding: 30px; border: 1px solid var(--light-gray); }
+        .teacher-table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 0.9em; }
+        .teacher-table th, .teacher-table td { text-align: left; padding: 12px; border-bottom: 1px solid var(--light-gray); }
 
-        .subpoints-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 8px;
-            margin-top: 10px;
-        }
-
-        .subpoint {
-            font-size: 0.85em;
-            color: var(--gray);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .subpoint::before {
-            content: "";
-            width: 6px;
-            height: 6px;
-            background: var(--accent);
-            border-radius: 50%;
-            flex-shrink: 0;
-        }
-
-        /* --- SECCIÓN: CRONOGRAMA ACADÉMICO --- */
-        .timeline-section {
-            background: var(--white);
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-            margin-bottom: 40px;
-        }
-
-        .timeline-header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .timeline-header h2 {
-            color: var(--primary);
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .timeline-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 20px;
-        }
-
-        .timeline-month {
-            border: 1px solid var(--light-gray);
-            border-radius: 15px;
-            padding: 15px;
-            background: #fcfcfc;
-        }
-
-        .month-name {
-            font-weight: 700;
-            color: var(--secondary);
-            text-transform: uppercase;
-            font-size: 0.85em;
-            margin-bottom: 15px;
-            display: block;
-            border-bottom: 2px solid var(--light-gray);
-            padding-bottom: 5px;
-        }
-
-        .week-item {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 12px;
-            position: relative;
-        }
-
-        .week-number {
-            font-size: 0.65em;
-            font-weight: 700;
-            color: var(--white);
-            background: var(--gray);
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            margin-top: 3px;
-        }
-
-        .week-date {
-            font-size: 0.7em;
-            color: var(--gray);
-            display: block;
-            margin-bottom: 2px;
-        }
-
-        .week-content {
-            font-size: 0.85em;
-            color: var(--dark);
-        }
-
-        .week-content strong {
-            display: block;
-            color: var(--primary);
-        }
-
-        /* Destacar exámenes */
-        .week-item.exam {
-            background: #fff5f5;
-            border: 1px solid #fed7d7;
-            padding: 10px;
-            border-radius: 8px;
-        }
-
-        .week-item.exam .week-number {
-            background: var(--primary);
-        }
-
-        /* Destacar vacaciones */
-        .week-item.holiday {
-            background: #f0fdf4;
-            border: 1px solid #dcfce7;
-            padding: 10px;
-            border-radius: 8px;
-        }
-
-        .week-item.holiday .week-number {
-            background: var(--success);
-        }
-
-        .week-item.holiday .week-content strong {
-            color: var(--success);
-        }
-
-        .icon {
-            width: 18px;
-            height: 18px;
-            fill: currentColor;
-        }
-
-        footer {
-            text-align: center;
-            padding: 40px;
-            color: var(--gray);
-            font-size: 0.9em;
-        }
+        .icon { width: 18px; height: 18px; fill: currentColor; }
+        footer { text-align: center; padding: 40px; color: var(--gray); font-size: 0.9em; }
     </style>
 </head>
 
 <body>
+    <!-- Banner de Alerta de Reglamento -->
+    <div id="reglamentoAlert" class="reglamento-banner">
+        <p>⚠️ <strong>Atención Estudiante:</strong> Tienes pendiente la firma de los lineamientos del curso. 
+        <span onclick="openReglamento()" style="text-decoration: underline; cursor: pointer; font-weight: 700; margin-left: 10px;">Firmar conformidad ahora</span></p>
+    </div>
+
+    <!-- Modal del Reglamento -->
+    <div id="reglamentoModal" class="modal-overlay">
+        <div class="modal-content" style="max-width: 900px;">
+            <button class="close-modal" onclick="closeAllModals()">×</button>
+            <div style="text-align: center; margin-bottom: 30px;">
+                <div class="institution">FMyCB UACH | Temas Selectos de Biofísica y Bioquímica</div>
+                <h2 style="margin-top: 15px; color: var(--primary);">Reglamento General del Curso</h2>
+                <p style="font-size: 0.9em; color: var(--gray);">Favor de leer cuidadosamente los puntos críticos antes de firmar.</p>
+            </div>
+
+            <div class="rules-grid">
+                <div class="rule-card">
+                    <h4>Asistencia (80%)</h4>
+                    <p>Mínimo del 80% para derecho a examen. La clase inicia al entrar el docente; no se permite el ingreso posterior. Justificantes en máximo 3 días hábiles.</p>
+                </div>
+                <div class="rule-card">
+                    <h4>Electrónicos</h4>
+                    <p>Prohibido el uso de celulares, tablets o smartwatches. Su uso no autorizado causará <strong>2 faltas inmediatas</strong> y posible baja de examen.</p>
+                </div>
+                <div class="rule-card">
+                    <h4>Responsabilidad</h4>
+                    <p>Debes venir preparado para la sesión. Si no presentas la tarea satisfactoriamente, el docente puede pedirte que te retires con falta registrada.</p>
+                </div>
+                <div class="rule-card" style="border-top-color: var(--accent);">
+                    <h4>Ponderación</h4>
+                    <p>Calificación 100% Exámenes Virtuales (30% + 30% + 40%). Requiere 80% de actividades académicas entregadas para tener derecho a examen.</p>
+                </div>
+                <div class="rule-card" style="border-top-color: var(--accent);">
+                    <h4>Perfil Plataforma</h4>
+                    <p>Obligatorio completar perfil en capacitacion.uach.mx con MAYÚSCULAS y foto digital de frente (sin lentes oscuros ni accesorios).</p>
+                </div>
+                <div class="rule-card" style="border-top-color: var(--accent);">
+                    <h4>Ética en Examen</h4>
+                    <p>Cualquier uso de acordeones, memorias o celulares en examen anulará el mismo con calificación de <strong>0.0</strong> automática.</p>
+                </div>
+            </div>
+
+            <div class="conformidad-panel">
+                <p style="margin-bottom: 15px; font-weight: 600;">He leído y acepto cumplir los lineamientos del semestre selectivo 2025:</p>
+                <input type="text" id="studentName" class="student-input" placeholder="Nombre Apellido Apellido" required>
+                <div style="display: flex; justify-content: center; gap: 15px;">
+                    <button id="btnConfirmReg" onclick="aceptarReglamento()" class="btn btn-primary" style="width: auto; padding: 10px 30px;">
+                        Confirmar y Enviar Firma
+                    </button>
+                    <a href="material/LINEAMIENTOS_TEMAS_SELECTOS.pdf" target="_blank" class="btn btn-outline-accent" style="width: auto;">
+                        Ver PDF Oficial
+                    </a>
+                </div>
+                <p id="regError" style="color: red; font-size: 0.8em; margin-top: 10px; display: none;">Por favor ingresa tu nombre completo.</p>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal Programa Analítico -->
     <div id="syllabusModal" class="modal-overlay">
         <div class="modal-content">
@@ -499,7 +289,9 @@
                 <div><small>Créditos:</small><br><strong>5</strong></div>
                 <div><small>Horas Totales:</small><br><strong>80 h Semestre</strong></div>
             </div>
-            <h3>Esquema de Evaluación</h3>
+            <h3>Competencias</h3>
+            <p style="font-size: 0.9em; margin-top:10px;">• Excelencia y Desarrollo Humano (B1EDH)<br>• Transformación Digital (B4TD)<br>• Investigación en Salud (P3IS)</p>
+            <h3 style="margin-top:20px;">Esquema de Evaluación</h3>
             <p style="font-size: 0.9em; margin-top:10px;">• 1° Parcial: 25 Febrero (30%)<br>• 2° Parcial: 15 Abril (30%)<br>• Examen Final: 20 Mayo (40%)</p>
         </div>
     </div>
@@ -512,9 +304,9 @@
                 <span id="blockBadge" class="institution">Bloque X</span>
                 <h2 id="blockTitle" style="margin-top: 10px;">Título del Bloque</h2>
             </div>
-            <div id="topicsContainer" class="topic-list"></div>
+            <div id="topicsContainer" class="topic-list" style="margin-top: 25px;"></div>
             <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid var(--light-gray);">
-                <button id="downloadBtn" class="btn btn-primary">Descargar Check-list (.txt)</button>
+                <button id="downloadBtn" class="btn btn-primary">Descargar Check-list de Estudio (.txt)</button>
             </div>
         </div>
     </div>
@@ -528,10 +320,16 @@
 
         <div class="info-banner">
             <div class="info-content">
-                <strong>🔬 Metodología Glocal:</strong> Aprendizaje basado en simulación y casos clínicos reales.
-                <span class="btn-text" onclick="openSyllabus()">Ver Ficha Técnica</span>
+                <strong>🔬 Metodología Glocal:</strong> Aprendizaje centrado en el alumno, simuladores y casos clínicos.
+                <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap;">
+                    <span class="btn-text" onclick="openSyllabus()">Ver Ficha Técnica</span>
+                    <span class="btn-text" onclick="openReglamento()">Lineamientos del Curso</span>
+                    <span id="regStatusBadge" class="status-badge" style="background: #fee2e2; color: #991b1b;">Lectura Pendiente</span>
+                </div>
             </div>
-            <a href="material/PROGRAMA_DESARROLLADO.pdf" target="_blank" class="btn btn-outline-accent" style="width: auto; padding: 10px 20px;">PDF Programa</a>
+            <a href="material/PROGRAMA_DESARROLLADO.pdf" target="_blank" class="btn btn-outline-accent" style="width: auto; padding: 10px 20px;">
+                PDF Programa
+            </a>
         </div>
 
         <div class="modules-grid">
@@ -605,243 +403,166 @@
             </div>
         </div>
 
-        <!-- SECCIÓN: CRONOGRAMA SEMANAL ACTUALIZADO -->
         <section class="timeline-section">
             <div class="timeline-header">
-                <h2>
-                    <svg class="icon" viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/></svg>
-                    Cronograma de Avance Programático 2025
-                </h2>
-                <p style="color: var(--gray); font-size: 0.9em;">Ruta de aprendizaje del 26 de Enero al 31 de Mayo</p>
+                <h2>Cronograma de Avance Programático 2025</h2>
+                <p style="color: var(--gray); font-size: 0.9em;">Ruta del 26 de Enero al 31 de Mayo</p>
             </div>
-
             <div class="timeline-grid">
-                <!-- Bloque 1: Enero / Febrero -->
                 <div class="timeline-month">
                     <span class="month-name">Enero - Febrero</span>
-                    <div class="week-item">
-                        <div class="week-number">1</div>
-                        <div class="week-content">
-                            <span class="week-date">26 Ene - 01 Feb</span>
-                            <strong>Objeto 1</strong>Estructura de la materia
-                        </div>
-                    </div>
-                    <div class="week-item">
-                        <div class="week-number">2</div>
-                        <div class="week-content">
-                            <span class="week-date">02 Feb - 08 Feb</span>
-                            <strong>Objeto 1</strong>Enlaces y Sistema Int.
-                        </div>
-                    </div>
-                    <div class="week-item">
-                        <div class="week-number">3</div>
-                        <div class="week-content">
-                            <span class="week-date">09 Feb - 15 Feb</span>
-                            <strong>Objeto 2</strong>Soluciones y Mezclas
-                        </div>
-                    </div>
-                    <div class="week-item">
-                        <div class="week-number">4</div>
-                        <div class="week-content">
-                            <span class="week-date">16 Feb - 22 Feb</span>
-                            <strong>Objeto 3</strong>Bioquímica de Lípidos
-                        </div>
-                    </div>
-                    <div class="week-item exam">
-                        <div class="week-number">5</div>
-                        <div class="week-content">
-                            <span class="week-date">23 Feb - 01 Mar</span>
-                            <strong>🚨 25 FEBRERO</strong>1er EXAMEN PARCIAL
-                        </div>
-                    </div>
+                    <div class="week-item"><div class="week-number">1</div><div class="week-content"><span class="week-date">26 Ene-01 Feb</span><strong>Objeto 1</strong>Estructura materia</div></div>
+                    <div class="week-item"><div class="week-number">2</div><div class="week-content"><span class="week-date">02-08 Feb</span><strong>Objeto 1</strong>Enlaces/SI</div></div>
+                    <div class="week-item"><div class="week-number">3</div><div class="week-content"><span class="week-date">09-15 Feb</span><strong>Objeto 2</strong>Soluciones/Mezclas</div></div>
+                    <div class="week-item"><div class="week-number">4</div><div class="week-content"><span class="week-date">16-22 Feb</span><strong>Objeto 3</strong>Lípidos</div></div>
+                    <div class="week-item exam"><div class="week-number">5</div><div class="week-content"><span class="week-date">23 Feb-01 Mar</span><strong>🚨 25 FEB</strong>1er PARCIAL</div></div>
                 </div>
-
-                <!-- Bloque 2: Marzo / Abril (Incluye Vacaciones, H y 12) -->
                 <div class="timeline-month">
                     <span class="month-name">Marzo - Abril</span>
-                    <div class="week-item">
-                        <div class="week-number">6</div>
-                        <div class="week-content">
-                            <span class="week-date">02 Mar - 08 Mar</span>
-                            <strong>Objeto 4</strong>Ácidos Nucleicos (ADN/ARN)
-                        </div>
-                    </div>
-                    <div class="week-item">
-                        <div class="week-number">7</div>
-                        <div class="week-content">
-                            <span class="week-date">09 Mar - 15 Mar</span>
-                            <strong>Objeto 4</strong>Estructura Molecular
-                        </div>
-                    </div>
-                    <div class="week-item">
-                        <div class="week-number">8</div>
-                        <div class="week-content">
-                            <span class="week-date">16 Mar - 22 Mar</span>
-                            <strong>Objeto 5</strong>Aminoácidos y Péptidos
-                        </div>
-                    </div>
-                    <div class="week-item">
-                        <div class="week-number">9</div>
-                        <div class="week-content">
-                            <span class="week-date">23 Mar - 29 Mar</span>
-                            <strong>Objeto 6</strong>Biofísica de Gases
-                        </div>
-                    </div>
-                    
-                    <!-- Vacaciones de 2 semanas -->
-                    <div class="week-item holiday">
-                        <div class="week-number">H</div>
-                        <div class="week-content">
-                            <span class="week-date">30 Mar - 05 Abr</span>
-                            <strong>🌴 VACACIONES</strong>Semana Santa (P.1)
-                        </div>
-                    </div>
-                    <div class="week-item holiday">
-                        <div class="week-number">H</div>
-                        <div class="week-content">
-                            <span class="week-date">06 Abr - 12 Abr</span>
-                            <strong>🌴 VACACIONES</strong>Semana de Pascua (P.2)
-                        </div>
-                    </div>
-
-                    <div class="week-item exam">
-                        <div class="week-number">10</div>
-                        <div class="week-content">
-                            <span class="week-date">13 Abr - 19 Abr</span>
-                            <strong>🚨 15 ABRIL</strong>2do EXAMEN PARCIAL
-                        </div>
-                    </div>
-                    <div class="week-item">
-                        <div class="week-number">11</div>
-                        <div class="week-content">
-                            <span class="week-date">20 Abr - 26 Abr</span>
-                            <strong>Objeto 7</strong>Mecánica de Fluidos
-                        </div>
-                    </div>
-                    <div class="week-item">
-                        <div class="week-number">12</div>
-                        <div class="week-content">
-                            <span class="week-date">27 Abr - 03 May</span>
-                            <strong>Objeto 7</strong>Bernoulli y Reynolds
-                        </div>
-                    </div>
+                    <div class="week-item"><div class="week-number">6</div><div class="week-content"><span class="week-date">02-08 Mar</span><strong>Objeto 4</strong>Ácidos Nucleicos</div></div>
+                    <div class="week-item"><div class="week-number">7</div><div class="week-content"><span class="week-date">09-15 Mar</span><strong>Objeto 4</strong>Estructura ADN/ARN</div></div>
+                    <div class="week-item"><div class="week-number">8</div><div class="week-content"><span class="week-date">16-22 Mar</span><strong>Objeto 5</strong>Proteínas</div></div>
+                    <div class="week-item"><div class="week-number">9</div><div class="week-content"><span class="week-date">23-29 Mar</span><strong>Objeto 6</strong>Biofísica Gases</div></div>
+                    <div class="week-item holiday"><div class="week-number">H</div><div class="week-content"><span class="week-date">30 Mar-05 Abr</span><strong>🌴 VACACIONES</strong>S. Santa</div></div>
+                    <div class="week-item holiday"><div class="week-number">H</div><div class="week-content"><span class="week-date">06-12 Abr</span><strong>🌴 VACACIONES</strong>S. Pascua</div></div>
+                    <div class="week-item exam"><div class="week-number">10</div><div class="week-content"><span class="week-date">13-19 Abr</span><strong>🚨 15 ABR</strong>2do PARCIAL</div></div>
+                    <div class="week-item"><div class="week-number">11</div><div class="week-content"><span class="week-date">20-26 Abr</span><strong>Objeto 7</strong>Mecánica Fluidos</div></div>
+                    <div class="week-item"><div class="week-number">12</div><div class="week-content"><span class="week-date">27 Abr-03 May</span><strong>Objeto 7</strong>Bernoulli/Reynolds</div></div>
                 </div>
-
-                <!-- Bloque 3: Mayo Solo -->
                 <div class="timeline-month">
                     <span class="month-name">Mayo</span>
-                    <div class="week-item">
-                        <div class="week-number">13</div>
-                        <div class="week-content">
-                            <span class="week-date">04 May - 10 May</span>
-                            <strong>Objeto 8</strong>Cinética Enzimática
-                        </div>
-                    </div>
-                    <div class="week-item">
-                        <div class="week-number">14</div>
-                        <div class="week-content">
-                            <span class="week-date">11 May - 17 May</span>
-                            <strong>Objeto 9</strong>Carbohidratos
-                        </div>
-                    </div>
-                    <div class="week-item exam">
-                        <div class="week-number">15</div>
-                        <div class="week-content">
-                            <span class="week-date">18 May - 24 May</span>
-                            <strong>🚨 20 MAYO</strong>EXAMEN FINAL
-                        </div>
-                    </div>
-                    <div class="week-item">
-                        <div class="week-number">16</div>
-                        <div class="week-content">
-                            <span class="week-date">25 May - 31 May</span>
-                            <strong>CIERRE</strong>Entrega de actas finales
-                        </div>
-                    </div>
+                    <div class="week-item"><div class="week-number">13</div><div class="week-content"><span class="week-date">04-10 May</span><strong>Objeto 8</strong>Enzimas</div></div>
+                    <div class="week-item"><div class="week-number">14</div><div class="week-content"><span class="week-date">11-17 May</span><strong>Objeto 9</strong>Carbohidratos</div></div>
+                    <div class="week-item exam"><div class="week-number">15</div><div class="week-content"><span class="week-date">18-24 May</span><strong>🚨 20 MAY</strong>EXAMEN FINAL</div></div>
+                    <div class="week-item"><div class="week-number">16</div><div class="week-content"><span class="week-date">25-31 May</span><strong>CIERRE</strong>Entrega actas</div></div>
                 </div>
             </div>
         </section>
+
+        <!-- Panel Docente -->
+        <section id="teacherPanel" class="teacher-view" style="display: none;">
+            <h3>Panel Docente: Firmas Registradas</h3>
+            <table class="teacher-table">
+                <thead><tr><th>Estudiante</th><th>Fecha y Hora</th></tr></thead>
+                <tbody id="signaturesBody"></tbody>
+            </table>
+        </section>
+
+        <div style="text-align: center; margin-top: 20px;">
+            <span onclick="toggleTeacherView()" style="font-size: 0.7em; color: var(--light-gray); cursor: pointer;">Acceso Docente</span>
+        </div>
 
         <footer>
             <p><strong>Programa Analítico 2025</strong> | Facultad de Medicina y Ciencias Biomédicas - UACH</p>
         </footer>
     </div>
 
-    <script>
-        const blockData = {
-            1: {
-                title: "Bloque 1: Fundamentos Químicos y Biomoléculas",
-                topics: [
-                    { name: "Objeto 1. Estructura de la Materia", points: ["Estructura atómica", "Clasificación periódica", "Estados de agregación", "Tipos de enlace químico", "Unidades del SI"] },
-                    { name: "Objeto 2. Soluciones y Mezclas", points: ["Propiedades de soluciones acuosas", "Tipos de soluciones", "Unidades de concentración", "Propiedades coligativas"] },
-                    { name: "Objeto 3. Lípidos", points: ["Funciones", "Ácidos grasos", "Triacilgliceroles", "Fosfolípidos", "Esfingolípidos", "Isoprenoides", "Digestión de lípidos"] }
-                ]
-            },
-            2: {
-                title: "Bloque 2: Macromoléculas y Principios Biofísicos",
-                topics: [
-                    { name: "Objeto 4. Ácidos Nucleicos", points: ["Bases nitrogenadas", "Nucleótidos", "ADN y ARN estructura", "Visión general molecular"] },
-                    { name: "Objeto 5. Proteínas", points: ["Aminoácidos", "Péptidos", "Niveles estructurales", "Plegamiento", "Importancia clínica", "Digestión"] },
-                    { name: "Objeto 6. Leyes de los Gases", points: ["Leyes fundamentales", "Teoría cinética", "Comportamiento ideal/real", "Respiración celular"] }
-                ]
-            },
-            3: {
-                title: "Bloque 3: Catálisis y Metabolismo Energético",
-                topics: [
-                    { name: "Objeto 7. Mecánica de Fluidos", points: ["Principio de Bernoulli", "Newtonianos y no newtonianos", "Flujo laminar/turbulento", "Número de Reynolds"] },
-                    { name: "Objeto 8. Enzimas", points: ["Cinética Michaelis-Menten", "Km y Vmax", "Inhibición", "Regulación alostérica", "Importancia en enfermedades"] },
-                    { name: "Objeto 9. Carbohidratos", points: ["Monosacáridos y Disacáridos", "Polisacáridos", "Síndrome metabólico", "Digestión de carbohidratos"] }
-                ]
+    <!-- FIREBASE & LOGIC -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getFirestore, collection, addDoc, onSnapshot, query, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+
+        // Tus credenciales reales
+        const firebaseConfig = {
+            apiKey: "AIzaSyBBEQbRKHJF3QowMdtsu-y2QoMxVMe3FRw",
+            authDomain: "tsbb-uach.firebaseapp.com",
+            projectId: "tsbb-uach",
+            storageBucket: "tsbb-uach.firebasestorage.app",
+            messagingSenderId: "520501633377",
+            appId: "1:520501633377:web:7a1bb2c0d1cea5a046a520"
+        };
+        const appId = "tsbb-uach-prod";
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+
+        async function init() {
+            await signInAnonymously(auth);
+            const signed = localStorage.getItem('uach_reg_signed');
+            if (!signed) document.getElementById('reglamentoAlert').style.display = 'block';
+            else updateBadge(true);
+        }
+        init();
+
+        window.aceptarReglamento = async () => {
+            const name = document.getElementById('studentName').value.trim();
+            if (name.length < 5) { document.getElementById('regError').style.display = 'block'; return; }
+            const btn = document.getElementById('btnConfirmReg');
+            btn.disabled = true; btn.innerText = "Registrando...";
+
+            try {
+                // Ruta para firmas según reglas
+                const colRef = collection(db, 'artifacts', appId, 'public', 'data', 'firmas_reglamento');
+                await addDoc(colRef, { nombre: name, fecha: serverTimestamp() });
+                localStorage.setItem('uach_reg_signed', 'true');
+                closeAllModals();
+                updateBadge(true);
+            } catch (err) { alert("Error al conectar. Intenta de nuevo."); btn.disabled = false; btn.innerText = "Reintentar"; }
+        };
+
+        window.toggleTeacherView = () => {
+            const panel = document.getElementById('teacherPanel');
+            const isHidden = panel.style.display === 'none';
+            panel.style.display = isHidden ? 'block' : 'none';
+            if (isHidden) {
+                const colRef = collection(db, 'artifacts', appId, 'public', 'data', 'firmas_reglamento');
+                onSnapshot(colRef, (snapshot) => {
+                    const tbody = document.getElementById('signaturesBody');
+                    tbody.innerHTML = '';
+                    snapshot.docs.sort((a,b) => b.data().fecha - a.data().fecha).forEach(doc => {
+                        const d = doc.data();
+                        tbody.innerHTML += `<tr><td>${d.nombre}</td><td>${d.fecha ? new Date(d.fecha.toDate()).toLocaleString() : 'Cargando...'}</td></tr>`;
+                    });
+                });
             }
         };
 
-        function showBlockDetails(blockNum) {
-            const data = blockData[blockNum];
-            document.getElementById('blockBadge').innerText = `Bloque ${blockNum}`;
+        function updateBadge(signed) {
+            if(signed) {
+                const b = document.getElementById('regStatusBadge');
+                b.innerText = 'Reglamento Firmado'; b.style.background = '#d1fae5'; b.style.color = '#065f46';
+                document.getElementById('reglamentoAlert').style.display = 'none';
+            }
+        }
+    </script>
+
+    <script>
+        // Datos detallados del temario
+        const blockData = {
+            1: { title: "Bloque 1: Fundamentos Químicos", topics: [{ name: "Objeto 1. Estructura de la Materia", points: ["Estructura atómica", "Clasificación periódica", "Estados de agregación", "Tipos de enlace químico", "Unidades del sistema internacional"] }, { name: "Objeto 2. Soluciones y Mezclas", points: ["Propiedades de soluciones acuosas", "Tipos de soluciones", "Unidades de concentración", "Propiedades coligativas"] }, { name: "Objeto 3. Lípidos (Bioquímica)", points: ["Funciones y Ácidos grasos", "Triacilgliceroles y ceras", "Componentes de membrana", "Isoprenoides y Eicosanoides", "Digestión de lípidos"] }] },
+            2: { title: "Bloque 2: Macromoléculas", topics: [{ name: "Objeto 4. Ácidos Nucleicos", points: ["Bases nitrogenadas", "Nucleótidos y nucleósidos", "ADN y ARN estructura"] }, { name: "Objeto 5. Proteínas", points: ["Aminoácidos y péptidos", "Niveles estructurales (1-4)", "Plegamiento molecular", "Enfermedades y digestión"] }, { name: "Objeto 6. Leyes de los Gases", points: ["Teoría cinética molecular", "Leyes gases ideales", "Desviación gases reales", "Respiración celular"] }] },
+            3: { title: "Bloque 3: Catálisis", topics: [{ name: "Objeto 7. Mecánica de Fluidos", points: ["Principio de Bernoulli", "Fluidos newtonianos", "Flujo laminar y turbulento", "Número de Reynolds"] }, { name: "Objeto 8. Enzimas (Bioquímica)", points: ["Clasificación", "Cinética Michaelis-Menten", "Inhibición enzimática", "Regulación alostérica"] }, { name: "Objeto 9. Carbohidratos", points: ["Monosacáridos y Disacáridos", "Polisacáridos", "Síndrome metabólico", "Digestión carbohidratos"] }] }
+        };
+
+        window.openReglamento = () => { document.getElementById('reglamentoModal').style.display = 'flex'; document.body.style.overflow = 'hidden'; }
+        window.openSyllabus = () => { document.getElementById('syllabusModal').style.display = 'flex'; document.body.style.overflow = 'hidden'; }
+        window.closeAllModals = () => { document.querySelectorAll('.modal-overlay').forEach(m => m.style.display = 'none'); document.body.style.overflow = 'auto'; }
+        
+        window.showBlockDetails = (n) => {
+            const data = blockData[n];
+            document.getElementById('blockBadge').innerText = `Contenido Bloque ${n}`;
             document.getElementById('blockTitle').innerText = data.title;
             const container = document.getElementById('topicsContainer');
             container.innerHTML = '';
-            data.topics.forEach(topic => {
-                const item = document.createElement('div');
-                item.className = 'topic-item';
-                let pointsHTML = '<div class="subpoints-grid">';
-                topic.points.forEach(p => pointsHTML += `<div class="subpoint">${p}</div>`);
-                pointsHTML += '</div>';
-                item.innerHTML = `<h4>${topic.name}</h4>${pointsHTML}`;
-                container.appendChild(item);
+            data.topics.forEach(t => {
+                let html = `<div class="topic-item"><h4>${t.name}</h4><div class="subpoints-grid">`;
+                t.points.forEach(p => html += `<div class="subpoint">${p}</div>`);
+                container.innerHTML += html + `</div></div>`;
             });
-            document.getElementById('downloadBtn').onclick = () => downloadBioPortfolio(blockNum);
+            document.getElementById('downloadBtn').onclick = () => {
+                let txt = `CHECKLIST BIOFISICA B${n} - ${data.title}\n\n`;
+                data.topics.forEach(t => { txt += `${t.name.toUpperCase()}\n`; t.points.forEach(p => txt += ` [ ] ${p}\n`); txt += `\n`; });
+                const blob = new Blob([txt], {type: 'text/plain'});
+                const link = document.createElement('a'); link.href = URL.createObjectURL(blob);
+                link.download = `Checklist_B${n}.txt`; link.click();
+            };
             document.getElementById('blockDetailModal').style.display = 'flex';
             document.body.style.overflow = 'hidden';
-        }
-
-        function openSyllabus() {
-            document.getElementById('syllabusModal').style.display = 'flex';
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeAllModals() {
-            document.querySelectorAll('.modal-overlay').forEach(m => m.style.display = 'none');
-            document.body.style.overflow = 'auto';
-        }
-
-        function downloadBioPortfolio(blockNumber) {
-            const data = blockData[blockNumber];
-            let content = `CHECKLIST - BLOQUE ${blockNumber}\n${data.title}\n\n`;
-            data.topics.forEach(t => {
-                content += `${t.name}\n`;
-                t.points.forEach(p => content += ` [ ] ${p}\n`);
-                content += `\n`;
-            });
-            const blob = new Blob([content], { type: 'text/plain' });
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = `Checklist_B${blockNumber}.txt`;
-            link.click();
-        }
+        };
 
         window.onclick = (e) => { if (e.target.classList.contains('modal-overlay')) closeAllModals(); }
     </script>
 </body>
-
 </html>
