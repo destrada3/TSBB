@@ -598,6 +598,7 @@ Evalúa la respuesta del estudiante en español de forma breve y constructiva (m
                 const reader  = res.body.getReader();
                 const decoder = new TextDecoder();
                 let   buffer  = '';
+                let   thinking = false; // true mientras estamos dentro de <think>...</think>
 
                 while (true) {
                     const { done, value } = await reader.read();
@@ -605,15 +606,19 @@ Evalúa la respuesta del estudiante en español de forma breve y constructiva (m
 
                     buffer += decoder.decode(value, { stream: true });
                     const lines = buffer.split('\n');
-                    buffer = lines.pop(); // guardar línea incompleta
+                    buffer = lines.pop();
 
                     for (const line of lines) {
                         if (!line.trim()) continue;
                         try {
                             const json = JSON.parse(line);
-                            // Ignorar tokens de razonamiento <think>...</think>
-                            const token = json.message?.content || '';
-                            streamEl.textContent += token;
+                            let token = json.message?.content || '';
+                            if (!token) continue;
+
+                            // Acumular en rawBuf para detectar <think> que llegan en varios tokens
+                            if (token.includes('<think>'))  { thinking = true;  token = token.split('<think>')[1] || ''; }
+                            if (token.includes('</think>')) { thinking = false; token = token.split('</think>')[1] || ''; }
+                            if (!thinking && token) streamEl.textContent += token;
                         } catch { /* línea malformada, ignorar */ }
                     }
                 }
