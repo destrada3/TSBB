@@ -679,11 +679,12 @@ Evalúa la respuesta del estudiante en español de forma breve y constructiva (m
                 content[sec].forEach((q, i) => {
                     const ansId = `ans-${sec}-${i}`;
                     const btnId = `btn-${ansId}`;
+                    const qEsc = q.replace(/&/g,'&amp;').replace(/"/g,'&quot;');
                     container.innerHTML +=
                         `<div>
                             <p style="font-weight:600; font-size:0.9em; margin-bottom:5px;">${q}</p>
                             <div class="answer-box" id="${ansId}" contenteditable="true"></div>
-                            <button class="ai-btn" id="${btnId}" onclick="reviewWithAI(${JSON.stringify(q)}, '${ansId}')">
+                            <button class="ai-btn" id="${btnId}" data-question="${qEsc}" data-ansid="${ansId}" onclick="reviewWithAI(this.dataset.question, this.dataset.ansid)">
                                 🤖 Revisar con IA
                             </button>
                         </div>`;
