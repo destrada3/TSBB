@@ -542,12 +542,10 @@
 
         // ── Configuración IA ─────────────────────────────────────────
         const OLLAMA_URL   = 'https://prophetccfw.ddns.net/ollama/api/chat';
-        const SYSTEM_PROMPT = `Eres un tutor experto en química general y bioquímica para estudiantes de Medicina de nivel preparatoria/bachillerato (programa TSBB).
-Evalúa la respuesta del estudiante en español de forma breve y constructiva (máximo 5 oraciones):
-1. Indica si la respuesta es correcta, incompleta o incorrecta.
-2. Señala los conceptos clave que el estudiante mencionó bien.
-3. Indica qué le faltó o qué corregir sin dar la respuesta completa.
-4. Usa un tono motivador y académico.`;
+        const SYSTEM_PROMPT = `Eres un tutor experto en química general y bioquímica para estudiantes de Medicina (programa TSBB).
+Evalúa la respuesta del estudiante siguiendo ESTRICTAMENTE estas reglas:
+- Si la respuesta es correcta o esencialmente correcta: responde ÚNICAMENTE con la palabra CORRECTO, sin nada más.
+- Si la respuesta es incorrecta o incompleta: da retroalimentación breve y constructiva en español (máximo 4 oraciones). Señala qué faltó o qué corregir sin revelar la respuesta completa. Usa tono motivador y académico.`;
 
         function getModel() {
             return document.getElementById('ai-model-select')?.value || 'llama3.2:latest';
@@ -571,13 +569,10 @@ Evalúa la respuesta del estudiante en español de forma breve y constructiva (m
                 fbEl.className = 'ai-feedback';
                 btnEl.after(fbEl);
             }
-            const modelName = getModel().split(':')[0];
-            fbEl.innerHTML = `🤖 <strong>Retroalimentación IA (${modelName}):</strong><br><br><span id="stream-${ansId}"></span><span class="cursor">▋</span>`;
+            fbEl.innerHTML = `<span class="cursor">▋</span>`;
 
             btnEl.textContent = '⏳ Generando...';
             btnEl.disabled = true;
-
-            const streamEl = document.getElementById('stream-' + ansId);
 
             try {
                 const res = await fetch(OLLAMA_URL, {
@@ -598,7 +593,8 @@ Evalúa la respuesta del estudiante en español de forma breve y constructiva (m
                 const reader  = res.body.getReader();
                 const decoder = new TextDecoder();
                 let   buffer  = '';
-                let   thinking = false; // true mientras estamos dentro de <think>...</think>
+                let   thinking = false;
+                let   fullText = ''; // acumula la respuesta completa (sin <think>)
 
                 while (true) {
                     const { done, value } = await reader.read();
@@ -615,16 +611,20 @@ Evalúa la respuesta del estudiante en español de forma breve y constructiva (m
                             let token = json.message?.content || '';
                             if (!token) continue;
 
-                            // Acumular en rawBuf para detectar <think> que llegan en varios tokens
                             if (token.includes('<think>'))  { thinking = true;  token = token.split('<think>')[1] || ''; }
                             if (token.includes('</think>')) { thinking = false; token = token.split('</think>')[1] || ''; }
-                            if (!thinking && token) streamEl.textContent += token;
+                            if (!thinking && token) fullText += token;
                         } catch { /* línea malformada, ignorar */ }
                     }
                 }
 
-                // Quitar el cursor parpadeante al terminar
-                fbEl.querySelector('.cursor')?.remove();
+                // Mostrar resultado según si es correcto o no
+                const correcto = fullText.trim().toUpperCase().startsWith('CORRECTO');
+                if (correcto) {
+                    fbEl.innerHTML = `<span style="color:#16a34a; font-weight:700; font-size:1.1em;">✅ ¡Correcto!</span>`;
+                } else {
+                    fbEl.innerHTML = `🤖 <strong>Retroalimentación:</strong><br><br>${fullText.trim().replace(/\n/g, '<br>')}`;
+                }
 
             } catch (e) {
                 fbEl.innerHTML = `⚠️ <strong>Error:</strong> No se pudo conectar con la IA.<br><small>${e.message}</small>`;
