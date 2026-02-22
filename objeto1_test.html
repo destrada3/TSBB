@@ -401,9 +401,9 @@
                 <div class="ai-model-selector">
                     <span>🧠 Modelo:</span>
                     <select id="ai-model-select">
-                        <option value="openthinker:7b" selected>OpenThinker 7B (predeterminado)</option>
+                        <option value="llama3.2:latest" selected>Llama 3.2 (predeterminado)</option>
+                        <option value="openthinker:7b">OpenThinker 7B</option>
                         <option value="openthinker:32b">OpenThinker 32B (avanzado)</option>
-                        <option value="llama3.2:latest">Llama 3.2 (rápido)</option>
                         <option value="gemma2:latest">Gemma 2 (preciso)</option>
                         <option value="mistral:latest">Mistral (equilibrado)</option>
                         <option value="deepseek-r1:latest">DeepSeek R1 (razonamiento)</option>
@@ -548,7 +548,7 @@ Evalúa la respuesta del estudiante siguiendo ESTRICTAMENTE estas reglas:
 - Si la respuesta es incorrecta o incompleta: da retroalimentación breve y constructiva en español (máximo 4 oraciones). Señala qué faltó o qué corregir sin revelar la respuesta completa. Usa tono motivador y académico.`;
 
         function getModel() {
-            return document.getElementById('ai-model-select')?.value || 'llama3.2:latest';
+            return document.getElementById('ai-model-select')?.value || 'llama3.2:latest'; // fallback
         }
 
         async function reviewWithAI(questionText, ansId) {
