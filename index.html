@@ -207,6 +207,15 @@
         .conformidad-panel { background: #fffbeb; padding: 25px; border-radius: 15px; margin-top: 30px; border: 2px dashed var(--accent); text-align: center; }
         .student-input { width: 100%; max-width: 400px; padding: 12px; border-radius: 8px; border: 1px solid var(--light-gray); margin-bottom: 15px; font-family: inherit; font-size: 1em; outline: none; }
 
+        /* Banner de Alerta Parcial */
+        .alerta-parcial {
+            animation: alertaBlink 1s infinite alternate;
+        }
+        @keyframes alertaBlink {
+            0% { background-color: #dc2626; box-shadow: 0 4px 15px rgba(220, 38, 38, 0.8); }
+            100% { background-color: #7f1d1d; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4); }
+        }
+        
         /* Panel Docente */
         .teacher-view { margin-top: 40px; background: var(--white); border-radius: 20px; padding: 30px; border: 1px solid var(--light-gray); }
         .teacher-table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 0.9em; }
@@ -303,6 +312,13 @@
         </div>
     </div>
 
+    <!-- BANNER DE AVISO -->
+    <div class="text-white text-center py-3 px-4 font-bold text-base md:text-lg sticky top-0 z-50 flex items-center justify-center gap-2 alerta-parcial">
+        <span>🚨</span>
+        <span>PRÓXIMO EXAMEN 25 de FEBRERO - <a href="guia_primer_parcial.html" style="text-decoration: underline; color: #fde047; text-underline-offset: 2px;">consulta la guía aquí</a></span>
+        <span>🚨</span>
+    </div>
+    
     <!-- Modal Detallado de Bloque -->
     <div id="blockDetailModal" class="modal-overlay">
         <div class="modal-content">
