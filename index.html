@@ -11,6 +11,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
+        
         /* Estilos Base Institucionales */
         * {
             margin: 0;
@@ -78,7 +79,23 @@
             font-weight: 600;
             font-size: 0.9em;
         }
+        
+         /* Banner Parpadeante Suavizado */
+         .alerta-parcial {
+            animation: alertaBlink 1.5s infinite alternate ease-in-out;
+        }
 
+        @keyframes alertaBlink {
+            0% {
+                background-color: #ef4444;
+                box-shadow: 0 4px 15px rgba(239, 68, 68, 0.6);
+            }
+            100% {
+                background-color: #991b1b;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+            }
+        }
+        
         /* Banner de información */
         .info-banner {
             background: #fffbeb;
@@ -206,15 +223,6 @@
         .rule-card p { font-size: 0.8em; color: var(--gray); line-height: 1.5; }
         .conformidad-panel { background: #fffbeb; padding: 25px; border-radius: 15px; margin-top: 30px; border: 2px dashed var(--accent); text-align: center; }
         .student-input { width: 100%; max-width: 400px; padding: 12px; border-radius: 8px; border: 1px solid var(--light-gray); margin-bottom: 15px; font-family: inherit; font-size: 1em; outline: none; }
-
-        /* Banner de Alerta Parcial */
-        .alerta-parcial {
-            animation: alertaBlink 1s infinite alternate;
-        }
-        @keyframes alertaBlink {
-            0% { background-color: #dc2626; box-shadow: 0 4px 15px rgba(220, 38, 38, 0.8); }
-            100% { background-color: #7f1d1d; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4); }
-        }
         
         /* Panel Docente */
         .teacher-view { margin-top: 40px; background: var(--white); border-radius: 20px; padding: 30px; border: 1px solid var(--light-gray); }
@@ -227,18 +235,21 @@
 </head>
 
 <body>
-    <!-- Banner de Alerta de Reglamento -->
-    <div id="reglamentoAlert" class="reglamento-banner">
-        <p>⚠️ <strong>Atención Estudiante:</strong> Tienes pendiente la firma de los lineamientos del curso. 
-        <span onclick="openReglamento()" style="text-decoration: underline; cursor: pointer; font-weight: 700; margin-left: 10px;">Firmar conformidad ahora</span></p>
-    </div>
-
-    <!-- BANNER DE AVISO -->
-    <div class="bg-red-600 text-white text-center py-3 px-4 font-bold text-sm md:text-base sticky top-0 z-50 shadow-md flex items-center justify-center gap-2 animate-pulse">
-        <span>🚨</span>
-        <span>PRÓXIMO EXAMEN 25 de FEBRERO - <a href="guia_primer_parcial.html">consulta la guía aquí</a></span>
-        <span>🚨</span>
-    </div>
+        <!-- BANNER DE AVISO -->
+        <div
+            class="text-white text-center py-3 px-4 font-bold text-base md:text-lg sticky top-0 z-50 flex items-center justify-center gap-3 alerta-parcial backdrop-blur-sm"
+        >
+            <span class="text-2xl animate-bounce">🚨</span>
+            <span class="tracking-wide"
+                >PRÓXIMO EXAMEN 25 de FEBRERO -
+                <a
+                    href="#"
+                    class="text-yellow-300 hover:text-yellow-100 transition-colors underline decoration-yellow-400/50 underline-offset-4"
+                    >consulta la guía aquí</a
+                ></span
+            >
+            <span class="text-2xl animate-bounce">🚨</span>
+        </div>
 
     <!-- Modal del Reglamento -->
     <div id="reglamentoModal" class="modal-overlay">
@@ -347,13 +358,6 @@
                 PDF Programa
             </a>
         </div>
-        
-    <!-- BANNER DE AVISO -->
-    <div class="text-white text-center py-3 px-4 font-bold text-base md:text-lg sticky top-0 z-50 flex items-center justify-center gap-2 alerta-parcial">
-        <span>🚨</span>
-        <span>PRÓXIMO EXAMEN 25 de FEBRERO - <a href="guia_primer_parcial.html" style="text-decoration: underline; color: #fde047; text-underline-offset: 2px;">consulta la guía aquí</a></span>
-        <span>🚨</span>
-    </div>
         
         <div class="modules-grid">
             <!-- Bloque 1 -->
