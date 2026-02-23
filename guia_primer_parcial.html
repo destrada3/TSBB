@@ -1,430 +1,581 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es" class="scroll-smooth">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guía de Estudio - Biofísica y Bioquímica</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        uach: {
-                            blue: '#1e3a8a',
-                            gold: '#eab308',
-                            light: '#3b82f6'
-                        }
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Guía de Estudio Modales - Biofísica y Bioquímica</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script>
+            tailwind.config = {
+                darkMode: "class",
+                theme: {
+                    extend: {
+                        colors: {
+                            uach: {
+                                blue: "#1e3a8a",
+                                gold: "#eab308",
+                                light: "#3b82f6",
+                            },
+                        },
+                        boxShadow: {
+                            glow: "0 0 15px rgba(59, 130, 246, 0.5)",
+                            "glow-success": "0 0 15px rgba(16, 185, 129, 0.4)",
+                        },
                     },
-                    boxShadow: {
-                        'glow': '0 0 15px rgba(59, 130, 246, 0.5)',
-                        'glow-success': '0 0 15px rgba(16, 185, 129, 0.4)',
-                    }
-                }
+                },
+            };
+        </script>
+        <style>
+            @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap");
+
+            body {
+                font-family: "Inter", sans-serif;
             }
-        }
-    </script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-        
-        body { 
-            font-family: 'Inter', sans-serif; 
-        }
-        
-        /* Ajuste de Resaltado Tipo "Marca-textos" */
-        .highlight { 
-            @apply text-uach-blue font-bold bg-blue-50/80 px-1.5 py-0.5 rounded-md dark:bg-blue-900/40 dark:text-blue-300 transition-colors duration-300; 
-        }
-        
-        /* Estado de Tarjeta Estudiada (Completada) */
-        .card-studied { 
-            @apply border-emerald-500 bg-emerald-50/30 dark:bg-emerald-900/10 dark:border-emerald-500 shadow-sm transition-all duration-500 ease-out; 
-        }
-        
-        .card-studied .highlight {
-            @apply text-emerald-800 bg-emerald-100/50 dark:text-emerald-300 dark:bg-emerald-800/30;
-        }
 
-        /* Banner Parpadeante Suavizado */
-        .alerta-parcial {
-            animation: alertaBlink 1.5s infinite alternate ease-in-out;
-        }
-        
-        @keyframes alertaBlink {
-            0% { background-color: #ef4444; box-shadow: 0 4px 15px rgba(239, 68, 68, 0.6); }
-            100% { background-color: #991b1b; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4); }
-        }
+            /* Ajuste de Resaltado Tipo "Marca-textos" */
+            .highlight {
+                @apply text-uach-blue font-bold bg-blue-50/80 px-1.5 py-0.5 rounded-md dark:bg-blue-900/40 dark:text-blue-300 transition-colors duration-300;
+            }
 
-        /* Checkbox Personalizado Animado */
-        .study-checkbox {
-            appearance: none;
-            @apply w-7 h-7 border-2 border-gray-300 dark:border-gray-500 rounded-lg cursor-pointer transition-all duration-300 relative bg-white dark:bg-gray-700;
-        }
-        .study-checkbox:checked {
-            @apply bg-emerald-500 border-emerald-500 dark:bg-emerald-500 dark:border-emerald-500;
-        }
-        .study-checkbox:checked::after {
-            content: '';
-            position: absolute;
-            left: 8px;
-            top: 4px;
-            width: 6px;
-            height: 12px;
-            border: solid white;
-            border-width: 0 2.5px 2.5px 0;
-            transform: rotate(45deg);
-            animation: checkmarkIn 0.2s ease-in-out forwards;
-        }
-        @keyframes checkmarkIn {
-            0% { opacity: 0; transform: rotate(45deg) scale(0.5); }
-            100% { opacity: 1; transform: rotate(45deg) scale(1); }
-        }
-        
-        /* Personalización de la barra de desplazamiento */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { @apply bg-gray-300 dark:bg-gray-600 rounded-full; }
-        ::-webkit-scrollbar-thumb:hover { @apply bg-gray-400 dark:bg-gray-500; }
-    </style>
-</head>
-<body class="bg-slate-50 text-gray-800 dark:bg-slate-900 dark:text-gray-100 transition-colors duration-300 selection:bg-uach-gold selection:text-white">
+            /* Estado de Tarjeta Estudiada (Completada) */
+            .card-studied {
+                @apply border-emerald-500 bg-emerald-50/30 dark:bg-emerald-900/10 dark:border-emerald-500 shadow-sm transition-all duration-500 ease-out opacity-75 hover:opacity-100;
+            }
 
-    <!-- BANNER DE AVISO -->
-    <div class="text-white text-center py-3 px-4 font-bold text-base md:text-lg sticky top-0 z-50 flex items-center justify-center gap-3 alerta-parcial backdrop-blur-sm">
-        <span class="text-2xl animate-bounce">🚨</span>
-        <span class="tracking-wide">PRÓXIMO EXAMEN 25 de FEBRERO - <a href="#" class="text-yellow-300 hover:text-yellow-100 transition-colors underline decoration-yellow-400/50 underline-offset-4">consulta la guía aquí</a></span>
-        <span class="text-2xl animate-bounce">🚨</span>
-    </div>
+            /* Checkbox Personalizado Animado */
+            .study-checkbox {
+                appearance: none;
+                @apply w-7 h-7 border-2 border-gray-300 dark:border-gray-500 rounded-lg cursor-pointer transition-all duration-300 relative bg-white dark:bg-gray-700 shadow-sm z-10;
+            }
+            .study-checkbox:checked {
+                @apply bg-emerald-500 border-emerald-500 dark:bg-emerald-500 dark:border-emerald-500;
+            }
+            .study-checkbox:checked::after {
+                content: "";
+                position: absolute;
+                left: 8px;
+                top: 4px;
+                width: 6px;
+                height: 12px;
+                border: solid white;
+                border-width: 0 2.5px 2.5px 0;
+                transform: rotate(45deg);
+                animation: checkmarkIn 0.2s ease-in-out forwards;
+            }
+            @keyframes checkmarkIn {
+                0% { opacity: 0; transform: rotate(45deg) scale(0.5); }
+                100% { opacity: 1; transform: rotate(45deg) scale(1); }
+            }
 
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex flex-col lg:flex-row gap-10">
-        
-        <!-- SIDEBAR / NAVEGACIÓN Y PROGRESO -->
-        <aside class="lg:w-1/4 flex-shrink-0">
-            <div class="sticky top-24 bg-white/80 dark:bg-gray-800/80 backdrop-blur-md rounded-3xl shadow-xl p-7 border border-white/20 dark:border-gray-700 transition-all duration-300 hover:shadow-2xl">
-                
-                <button id="themeToggle" class="w-full mb-8 flex items-center justify-center gap-3 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 py-3 rounded-xl font-bold transition-all duration-300 shadow-sm hover:shadow active:scale-95">
-                    <span id="themeIcon" class="text-xl">🌙</span> <span id="themeText">Modo Noche</span>
-                </button>
+            /* Estilos del contenido Modal */
+            .modal-content-prose p {
+                @apply leading-relaxed text-lg mb-4;
+            }
 
-                <div class="mb-8">
-                    <div class="flex justify-between items-end mb-3">
-                        <h2 class="text-lg font-extrabold text-gray-900 dark:text-white">Tu Progreso</h2>
-                        <span class="text-sm font-bold text-uach-blue dark:text-blue-400 bg-blue-100 dark:bg-blue-900/50 px-2.5 py-1 rounded-lg"><span id="progressText">0</span>%</span>
-                    </div>
-                    <div class="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-3.5 shadow-inner overflow-hidden relative">
-                        <div id="progressBar" class="bg-gradient-to-r from-blue-500 to-uach-blue h-full rounded-full transition-all duration-700 ease-out relative shadow-glow" style="width: 0%">
-                            <!-- Brillo interno de la barra -->
-                            <div class="absolute top-0 left-0 right-0 bottom-0 bg-white/20 rounded-full"></div>
+            ::-webkit-scrollbar { width: 8px; }
+            ::-webkit-scrollbar-track { background: transparent; }
+            ::-webkit-scrollbar-thumb { @apply bg-gray-300 dark:bg-gray-600 rounded-full; }
+            ::-webkit-scrollbar-thumb:hover { @apply bg-gray-400 dark:bg-gray-500; }
+        </style>
+    </head>
+    <body class="bg-slate-50 text-gray-800 dark:bg-slate-900 dark:text-gray-100 transition-colors duration-300 selection:bg-uach-gold selection:text-white">
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex flex-col lg:flex-row gap-10">
+            <!-- SIDEBAR / NAVEGACIÓN Y PROGRESO -->
+            <aside class="lg:w-1/4 flex-shrink-0">
+                <div class="sticky top-10 bg-white/80 dark:bg-gray-800/80 backdrop-blur-md rounded-3xl shadow-xl p-7 border border-white/20 dark:border-gray-700 transition-all duration-300 hover:shadow-2xl">
+                    <button id="themeToggle" class="w-full mb-8 flex items-center justify-center gap-3 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 py-3 rounded-xl font-bold transition-all duration-300 shadow-sm hover:shadow active:scale-95">
+                        <span id="themeIcon" class="text-xl">🌙</span>
+                        <span id="themeText">Modo Noche</span>
+                    </button>
+
+                    <div class="mb-8">
+                        <div class="flex justify-between items-end mb-3">
+                            <h2 class="text-lg font-extrabold text-gray-900 dark:text-white">Tu Progreso</h2>
+                            <span class="text-sm font-bold text-uach-blue dark:text-blue-400 bg-blue-100 dark:bg-blue-900/50 px-2.5 py-1 rounded-lg"><span id="progressText">0</span>%</span>
+                        </div>
+                        <div class="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-3.5 shadow-inner overflow-hidden relative">
+                            <div id="progressBar" class="bg-gradient-to-r from-blue-500 to-uach-blue h-full rounded-full transition-all duration-700 ease-out relative shadow-glow" style="width: 0%">
+                                <div class="absolute top-0 left-0 right-0 bottom-0 bg-white/20 rounded-full"></div>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <h3 class="font-bold text-gray-400 dark:text-gray-500 mb-4 uppercase text-xs tracking-widest">Índice Temático</h3>
-                <nav class="space-y-2 text-sm font-semibold text-gray-600 dark:text-gray-300">
-                    <a href="#bloque1" class="flex items-center gap-3 p-3 rounded-xl hover:bg-blue-50 hover:text-uach-blue dark:hover:bg-blue-900/30 dark:hover:text-blue-400 transition-all duration-200 group">
-                        <div class="w-2 h-2 rounded-full bg-gray-300 dark:bg-gray-600 group-hover:bg-uach-blue dark:group-hover:bg-blue-400 transition-colors"></div>
-                        1. Estructura de la Materia
-                    </a>
-                    <a href="#bloque2" class="flex items-center gap-3 p-3 rounded-xl hover:bg-blue-50 hover:text-uach-blue dark:hover:bg-blue-900/30 dark:hover:text-blue-400 transition-all duration-200 group">
-                        <div class="w-2 h-2 rounded-full bg-gray-300 dark:bg-gray-600 group-hover:bg-uach-blue dark:group-hover:bg-blue-400 transition-colors"></div>
-                        2. Estados de Agregación
-                    </a>
-                    <a href="#bloque3" class="flex items-center gap-3 p-3 rounded-xl hover:bg-blue-50 hover:text-uach-blue dark:hover:bg-blue-900/30 dark:hover:text-blue-400 transition-all duration-200 group">
-                        <div class="w-2 h-2 rounded-full bg-gray-300 dark:bg-gray-600 group-hover:bg-uach-blue dark:group-hover:bg-blue-400 transition-colors"></div>
-                        3. Lípidos y Membranas
-                    </a>
-                </nav>
+                    <h3 class="font-bold text-gray-400 dark:text-gray-500 mb-4 uppercase text-xs tracking-widest">Índice Temático</h3>
+                    <nav class="space-y-2 text-sm font-semibold text-gray-600 dark:text-gray-300">
+                        <a href="#bloque1" class="flex items-center gap-3 p-3 rounded-xl hover:bg-blue-50 hover:text-uach-blue dark:hover:bg-blue-900/30 dark:hover:text-blue-400 transition-all duration-200 group">
+                            <div class="w-2 h-2 rounded-full bg-gray-300 dark:bg-gray-600 group-hover:bg-uach-blue dark:group-hover:bg-blue-400 transition-colors"></div>
+                            1. Estructura de la Materia
+                        </a>
+                        <a href="#bloque2" class="flex items-center gap-3 p-3 rounded-xl hover:bg-emerald-50 hover:text-emerald-600 dark:hover:bg-emerald-900/30 dark:hover:text-emerald-400 transition-all duration-200 group">
+                            <div class="w-2 h-2 rounded-full bg-gray-300 dark:bg-gray-600 group-hover:bg-emerald-500 dark:group-hover:bg-emerald-400 transition-colors"></div>
+                            2. Estados de Agregación
+                        </a>
+                        <a href="#bloque3" class="flex items-center gap-3 p-3 rounded-xl hover:bg-purple-50 hover:text-purple-600 dark:hover:bg-purple-900/30 dark:hover:text-purple-400 transition-all duration-200 group">
+                            <div class="w-2 h-2 rounded-full bg-gray-300 dark:bg-gray-600 group-hover:bg-purple-500 dark:group-hover:bg-purple-400 transition-colors"></div>
+                            3. Lípidos y Membranas
+                        </a>
+                    </nav>
+                </div>
+            </aside>
+
+            <!-- CONTENIDO PRINCIPAL -->
+            <main class="lg:w-3/4 space-y-12">
+                <header class="bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-10 md:p-14 border border-gray-100 dark:border-gray-700 text-center relative overflow-hidden">
+                    <div class="absolute -top-24 -right-24 w-48 h-48 bg-blue-100 dark:bg-blue-900/20 rounded-full blur-3xl opacity-50 pointer-events-none"></div>
+                    <div class="absolute -bottom-24 -left-24 w-48 h-48 bg-yellow-100 dark:bg-yellow-900/20 rounded-full blur-3xl opacity-50 pointer-events-none"></div>
+
+                    <h1 class="text-4xl md:text-6xl font-extrabold mb-4 tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-uach-blue via-blue-700 to-uach-light dark:from-blue-400 dark:to-blue-200 drop-shadow-sm">
+                        Tarjetas de Estudio Interactivas
+                    </h1>
+                    <p class="text-xl md:text-2xl font-semibold text-gray-500 dark:text-gray-400 mb-6 tracking-wide">
+                        Temas Selectos de Biofísica y Bioquímica
+                    </p>
+                    <div class="inline-flex items-center gap-2 bg-gradient-to-r from-amber-100 to-yellow-100 dark:from-yellow-900/40 dark:to-amber-900/40 text-yellow-800 dark:text-yellow-400 px-6 py-2.5 rounded-full text-sm font-bold border border-yellow-200 dark:border-yellow-700/50 shadow-sm">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                        </svg>
+                        Objetivo: Obtener 100/100
+                    </div>
+                </header>
+
+                <!-- BLOQUE 1 -->
+                <section id="bloque1" class="scroll-mt-24 group">
+                    <div class="bg-gradient-to-r from-uach-blue to-blue-800 dark:from-gray-800 dark:to-gray-700 p-6 rounded-t-3xl shadow-lg flex items-center gap-4 relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-32 h-full bg-white/10 skew-x-12 transform translate-x-8"></div>
+                        <div class="bg-white/20 p-3 rounded-xl backdrop-blur-sm text-white">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5"></path></svg>
+                        </div>
+                        <h2 class="text-2xl md:text-3xl font-extrabold text-white tracking-tight z-10">1. ESTRUCTURA DE LA MATERIA</h2>
+                    </div>
+
+                    <div class="bg-white dark:bg-gray-800 rounded-b-3xl shadow-xl p-6 md:p-8 border-x border-b border-gray-100 dark:border-gray-700">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            
+                            <!-- Tarjeta 1.1 -->
+                            <div class="study-card cursor-pointer bg-white dark:bg-gray-800 border-2 border-gray-100 dark:border-gray-700 hover:border-blue-400 dark:hover:border-blue-500 rounded-3xl p-6 relative shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex flex-col h-full group/card">
+                                <div class="flex justify-between items-start mb-4">
+                                    <div class="bg-blue-100 dark:bg-blue-900/50 p-3 rounded-2xl text-uach-blue dark:text-blue-300">
+                                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
+                                    </div>
+                                    <input type="checkbox" title="Marcar como estudiado" class="study-checkbox" />
+                                </div>
+                                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2 group-hover/card:text-uach-blue dark:group-hover/card:text-blue-400 transition-colors card-title">Conceptos Fundamentales y Estructura Atómica</h3>
+                                <p class="text-gray-500 dark:text-gray-400 text-sm mb-6 line-clamp-3">Aprende la clasificación de las sustancias puras, los estados de agregación, las propiedades intensivas y la teoría atómica fundamental de Dalton, incluyendo protones, neutrones e isótopos.</p>
+                                <div class="mt-auto inline-flex items-center gap-2 font-bold text-uach-blue dark:text-blue-400">
+                                    <span>Abrir Tarjeta</span>
+                                    <svg class="w-4 h-4 transition-transform group-hover/card:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                                </div>
+                                <!-- Texto Oculto -->
+                                <div class="hidden card-content-payload">
+                                    <p>Para comprender las bases de la biofísica y la bioquímica, es esencial partir de la clasificación de las sustancias puras, las cuales se dividen únicamente en <span class="highlight">elementos y compuestos</span>. La materia en la naturaleza puede encontrarse principalmente en tres <span class="highlight">estados fundamentales de agregación: sólido, líquido y gaseoso</span>.</p>
+                                    <p>Al estudiar las características de la materia, es importante identificar cualquier <span class="highlight">propiedad intensiva</span>, definida como aquella que es <span class="highlight">completamente independiente</span> de la cantidad de masa presente, siendo ejemplos clásicos la densidad y la temperatura. Asimismo, es vital diferenciar la masa del <span class="highlight">peso</span>; este último representa la fuerza que ejerce la gravedad sobre la masa de un objeto. Desde una perspectiva histórica y conceptual, la <span class="highlight">teoría atómica de Dalton</span> sentó las bases al postular que los átomos de un mismo elemento se caracterizan por ser <span class="highlight">iguales entre sí en masa y propiedades</span>.</p>
+                                    <div class="bg-slate-50 dark:bg-slate-800/50 p-5 rounded-xl border border-slate-100 dark:border-slate-700 mt-4">
+                                        <p class="mb-0">A nivel subatómico, la identidad de un elemento está determinada por el <span class="highlight">protón</span>, una partícula con carga positiva ubicada en el núcleo que define el número atómico. Acompañando a los protones en el núcleo se encuentra el <span class="highlight">neutrón</span>, una partícula que <span class="highlight">carece de carga eléctrica</span> pero aporta masa. Cuando tenemos átomos de un mismo elemento (mismo número de protones) pero que poseen <span class="highlight">diferente número de masa</span> debido a una variación en su cantidad de neutrones, nos referimos a ellos como <span class="highlight">isótopos</span>.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Tarjeta 1.2 -->
+                            <div class="study-card cursor-pointer bg-white dark:bg-gray-800 border-2 border-gray-100 dark:border-gray-700 hover:border-blue-400 dark:hover:border-blue-500 rounded-3xl p-6 relative shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex flex-col h-full group/card">
+                                <div class="flex justify-between items-start mb-4">
+                                    <div class="bg-blue-100 dark:bg-blue-900/50 p-3 rounded-2xl text-uach-blue dark:text-blue-300">
+                                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                                    </div>
+                                    <input type="checkbox" title="Marcar como estudiado" class="study-checkbox" />
+                                </div>
+                                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2 group-hover/card:text-uach-blue dark:group-hover/card:text-blue-400 transition-colors card-title">Modelo Cuántico, Tabla Periódica y Enlaces</h3>
+                                <p class="text-gray-500 dark:text-gray-400 text-sm mb-6 line-clamp-3">Estudia los números cuánticos, el Principio de Pauli, las familias químicas como los gases nobles, y los mecanismos de la electronegatividad para formar enlaces covalentes e iónicos.</p>
+                                <div class="mt-auto inline-flex items-center gap-2 font-bold text-uach-blue dark:text-blue-400">
+                                    <span>Abrir Tarjeta</span>
+                                    <svg class="w-4 h-4 transition-transform group-hover/card:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                                </div>
+                                <!-- Texto Oculto -->
+                                <div class="hidden card-content-payload">
+                                    <p>El comportamiento de los electrones alrededor del núcleo se describe mediante números cuánticos. El <span class="highlight">número cuántico principal (n)</span> es fundamental porque indica la <span class="highlight">distancia promedio</span> del electrón respecto al núcleo y su nivel de energía, mientras que el <span class="highlight">número cuántico magnético (m)</span> describe la <span class="highlight">orientación espacial</span> específica de un orbital atómico. Al visualizar estos orbitales, cabe destacar que la nube de probabilidad de un <span class="highlight">orbital s</span> presenta una geometría perfectamente <span class="highlight">esférica</span>.</p>
+                                    <p>La distribución de estos electrones está regida por el <span class="highlight">principio de exclusión de Pauli</span>, el cual establece firmemente que en un átomo <span class="highlight">no puede haber dos electrones con los cuatro números cuánticos idénticos</span>. En la tabla periódica, los elementos con configuraciones electrónicas sumamente estables (con su octeto completo) se agrupan en la familia de los <span class="highlight">gases nobles</span>, los cuales se encuentran en el grupo 8A y son conocidos por su <span class="highlight">alta estabilidad</span> química. Por otro lado, la <span class="highlight">energía de ionización</span> se define como la energía mínima necesaria para <span class="highlight">arrancar un electrón</span> de un átomo cuando este se encuentra en estado gaseoso.</p>
+                                    <div class="bg-slate-50 dark:bg-slate-800/50 p-5 rounded-xl border border-slate-100 dark:border-slate-700 mt-4">
+                                        <p class="mb-0">La interacción entre los átomos para formar compuestos está dictada por su <span class="highlight">electronegatividad</span>, que es la capacidad intrínseca de un átomo para <span class="highlight">atraer hacia sí los electrones</span> compartidos en un enlace químico. Estas interacciones siguen la <span class="highlight">regla del octeto</span>, la cual describe la tendencia de los átomos a reaccionar hasta <span class="highlight">rodearse de ocho electrones</span> de valencia. Dependiendo de la diferencia de electronegatividad, se pueden formar distintos tipos de enlaces. Un <span class="highlight">enlace iónico</span> se forma por la <span class="highlight">atracción electrostática directa entre cationes y aniones</span> tras la transferencia de electrones. Si los electrones son <span class="highlight">compartidos de manera equitativa</span> por dos átomos, se habla de un <span class="highlight">enlace covalente no polar</span>. En cambio, en un <span class="highlight">enlace covalente polar</span>, los electrones se comparten, pero uno de los átomos los atrae con mayor fuerza debido a su <span class="highlight">mayor electronegatividad</span>, generando polos parciales. Un ejemplo clásico de moléculas con este tipo de interacciones es el agua (H₂O), cuya geometría molecular clásica no es lineal, sino <span class="highlight">angular</span>, debido a la repulsión de sus pares de electrones libres.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </section>
+
+                <!-- BLOQUE 2 -->
+                <section id="bloque2" class="scroll-mt-24 group">
+                    <div class="bg-gradient-to-r from-emerald-600 to-teal-700 dark:from-emerald-900 dark:to-teal-900 p-6 rounded-t-3xl shadow-lg flex items-center gap-4 relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-32 h-full bg-white/10 skew-x-12 transform translate-x-8"></div>
+                        <div class="bg-white/20 p-3 rounded-xl backdrop-blur-sm text-white">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
+                        </div>
+                        <h2 class="text-2xl md:text-3xl font-extrabold text-white tracking-tight z-10">2. ESTADOS DE AGREGACIÓN</h2>
+                    </div>
+
+                    <div class="bg-white dark:bg-gray-800 rounded-b-3xl shadow-xl p-6 md:p-8 border-x border-b border-gray-100 dark:border-gray-700">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            
+                            <!-- Tarjeta 2.1 -->
+                            <div class="study-card cursor-pointer bg-white dark:bg-gray-800 border-2 border-gray-100 dark:border-gray-700 hover:border-emerald-400 dark:hover:border-emerald-500 rounded-3xl p-6 relative shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex flex-col h-full group/card">
+                                <div class="flex justify-between items-start mb-4">
+                                    <div class="bg-emerald-100 dark:bg-emerald-900/50 p-3 rounded-2xl text-emerald-600 dark:text-emerald-400">
+                                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
+                                    </div>
+                                    <input type="checkbox" title="Marcar como estudiado" class="study-checkbox" />
+                                </div>
+                                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2 group-hover/card:text-emerald-600 dark:group-hover/card:text-emerald-400 transition-colors card-title">Físico-Química de Fluidos y Mezclas</h3>
+                                <p class="text-gray-500 dark:text-gray-400 text-sm mb-6 line-clamp-3">Repasa las diferencias entre mezclas, métodos de separación, transiciones de fase directa y propiedades reológicas como la viscosidad y tensión superficial.</p>
+                                <div class="mt-auto inline-flex items-center gap-2 font-bold text-emerald-600 dark:text-emerald-400">
+                                    <span>Abrir Tarjeta</span>
+                                    <svg class="w-4 h-4 transition-transform group-hover/card:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                                </div>
+                                <!-- Texto Oculto -->
+                                <div class="hidden card-content-payload">
+                                    <p>En el laboratorio y en la naturaleza, a menudo encontramos una <span class="highlight">mezcla heterogénea</span>, caracterizada porque su composición y propiedades <span class="highlight">no son uniformes</span> en todas sus partes. Para separar mezclas líquidas, un método físico muy utilizado es la <span class="highlight">destilación</span>, la cual separa los componentes basándose en sus <span class="highlight">puntos de ebullición</span>. Existe también un tipo de dispersión llamada <span class="highlight">coloide</span>, que se distingue por tener partículas de un tamaño mayor a las de las moléculas disueltas verdaderas, pero que <span class="highlight">no se asientan por gravedad</span>.</p>
+                                    <p>La materia puede cambiar de un estado a otro mediante diferentes procesos físicos; por ejemplo, la <span class="highlight">evaporación</span> es el cambio de fase directo de un <span class="highlight">líquido transformándose en gas</span>, mientras que la <span class="highlight">sublimación</span> es el proceso donde un material sólido pasa <span class="highlight">directamente al estado gaseoso</span> sin llegar a convertirse en líquido en ningún momento. Los fluidos también poseen propiedades medibles y únicas: la <span class="highlight">viscosidad</span> es la propiedad que mide la <span class="highlight">resistencia interna</span> que presenta un líquido a fluir, y la <span class="highlight">tensión superficial</span> es el resultado de fuerzas intermoleculares que hacen que la superficie de un líquido actúe de manera cohesiva, como si fuera una <span class="highlight">película elástica tensional</span>.</p>
+                                </div>
+                            </div>
+
+                            <!-- Tarjeta 2.2 -->
+                            <div class="study-card cursor-pointer bg-white dark:bg-gray-800 border-2 border-gray-100 dark:border-gray-700 hover:border-emerald-400 dark:hover:border-emerald-500 rounded-3xl p-6 relative shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex flex-col h-full group/card">
+                                <div class="flex justify-between items-start mb-4">
+                                    <div class="bg-emerald-100 dark:bg-emerald-900/50 p-3 rounded-2xl text-emerald-600 dark:text-emerald-400">
+                                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
+                                    </div>
+                                    <input type="checkbox" title="Marcar como estudiado" class="study-checkbox" />
+                                </div>
+                                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2 group-hover/card:text-emerald-600 dark:group-hover/card:text-emerald-400 transition-colors card-title">Disoluciones, Concentración y Leyes Físicas</h3>
+                                <p class="text-gray-500 dark:text-gray-400 text-sm mb-6 line-clamp-3">Comprende los tipos de disoluciones, el cálculo de molaridad y molalidad, y las leyes fundamentales de los gases (Ley de Boyle y solubilidad).</p>
+                                <div class="mt-auto inline-flex items-center gap-2 font-bold text-emerald-600 dark:text-emerald-400">
+                                    <span>Abrir Tarjeta</span>
+                                    <svg class="w-4 h-4 transition-transform group-hover/card:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                                </div>
+                                <!-- Texto Oculto -->
+                                <div class="hidden card-content-payload">
+                                    <p>Una <span class="highlight">disolución (o solución)</span> se define estrictamente como una <span class="highlight">mezcla homogénea de dos o más sustancias</span> a nivel molecular. Dependiendo de la cantidad de soluto presente, una disolución se clasifica como <span class="highlight">insaturada</span> si contiene una cantidad de soluto <span class="highlight">menor a su capacidad máxima</span> térmica, o como <span class="highlight">saturada</span> si contiene exactamente la <span class="highlight">cantidad máxima de soluto</span> que el disolvente puede disolver en equilibrio. Bajo ciertas condiciones, es posible crear una <span class="highlight">disolución sobresaturada</span>, la cual es una solución <span class="highlight">inestable</span> que contiene una cantidad de soluto mayor a su límite natural.</p>
+                                    <div class="bg-slate-50 dark:bg-slate-800/50 p-5 rounded-xl border border-slate-100 dark:border-slate-700 mt-4">
+                                        <p class="mb-0">Para cuantificar estas disoluciones, utilizamos unidades de concentración. La <span class="highlight">molaridad</span> se define como la cantidad de <span class="highlight">moles de soluto disueltos por cada litro</span> de disolución total. Por otro lado, la <span class="highlight">molalidad</span> mide los moles de soluto por <span class="highlight">cada kilogramo de disolvente puro</span>; esta unidad es de gran utilidad práctica ya que no cambia con las variaciones de temperatura.</p>
+                                    </div>
+                                    <p class="mt-4">El comportamiento de los gases y las soluciones está regido por principios físicos fundamentales. La <span class="highlight">ley de Boyle</span> establece que, a una temperatura constante, el <span class="highlight">volumen de un gas es inversamente proporcional a su presión</span>. Al hablar de la <span class="highlight">solubilidad de gases</span> en líquidos, una regla general es que, al incrementar la temperatura del líquido, la solubilidad del gas <span class="highlight">disminuye</span>. Cuando añadimos un soluto a un disolvente, alteramos sus características físicas generando <span class="highlight">propiedades coligativas</span>, las cuales se caracterizan por depender <span class="highlight">exclusivamente del número de partículas</span> de soluto disueltas y no de su naturaleza química. Una de estas propiedades se explica con la <span class="highlight">ley de Raoult</span>, la cual indica que la presión de vapor de una disolución es <span class="highlight">directamente proporcional a la fracción molar</span> de su solvente. Además de la concentración, es vital medir el nivel de acidez; en agua a 25°C, un medio estrictamente neutro equivale a un <span class="highlight">pH de 7</span>.</p>
+                                </div>
+                            </div>
+
+                            <!-- Tarjeta 2.3 -->
+                            <div class="study-card cursor-pointer bg-white dark:bg-gray-800 border-2 border-gray-100 dark:border-gray-700 hover:border-emerald-400 dark:hover:border-emerald-500 rounded-3xl p-6 relative shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex flex-col h-full group/card md:col-span-2">
+                                <div class="flex justify-between items-start mb-4">
+                                    <div class="bg-emerald-100 dark:bg-emerald-900/50 p-3 rounded-2xl text-emerald-600 dark:text-emerald-400">
+                                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                                    </div>
+                                    <input type="checkbox" title="Marcar como estudiado" class="study-checkbox" />
+                                </div>
+                                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2 group-hover/card:text-emerald-600 dark:group-hover/card:text-emerald-400 transition-colors card-title">Osmolaridad Biológica</h3>
+                                <p class="text-gray-500 dark:text-gray-400 text-sm mb-6 line-clamp-2">Conceptos fundamentales del equilibrio de líquidos en la célula a través del fenómeno de la ósmosis.</p>
+                                <div class="mt-auto inline-flex items-center gap-2 font-bold text-emerald-600 dark:text-emerald-400">
+                                    <span>Abrir Tarjeta</span>
+                                    <svg class="w-4 h-4 transition-transform group-hover/card:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                                </div>
+                                <!-- Texto Oculto -->
+                                <div class="hidden card-content-payload">
+                                    <p>En los sistemas vivos, el movimiento de líquidos es un fenómeno crítico regido por la <span class="highlight">ósmosis</span>, que es el movimiento selectivo del solvente (agua) a través de una membrana semipermeable desde un área <span class="highlight">más diluida hacia una zona de mayor concentración</span> de solutos. Para mantener la integridad celular, es fundamental que las células se encuentren en un medio adecuado, como una <span class="highlight">solución isotónica</span>, la cual posee exactamente la <span class="highlight">misma concentración de solutos</span> osmóticamente activos que el interior del citoplasma celular, previniendo así el daño osmótico.</p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </section>
+
+                <!-- BLOQUE 3 -->
+                <section id="bloque3" class="scroll-mt-24 group">
+                    <div class="bg-gradient-to-r from-purple-700 to-indigo-800 dark:from-indigo-900 dark:to-purple-900 p-6 rounded-t-3xl shadow-lg flex items-center gap-4 relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-32 h-full bg-white/10 skew-x-12 transform translate-x-8"></div>
+                        <div class="bg-white/20 p-3 rounded-xl backdrop-blur-sm text-white">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                        </div>
+                        <h2 class="text-2xl md:text-3xl font-extrabold text-white tracking-tight z-10">3. LÍPIDOS Y MEMBRANAS</h2>
+                    </div>
+
+                    <div class="bg-white dark:bg-gray-800 rounded-b-3xl shadow-xl p-6 md:p-8 border-x border-b border-gray-100 dark:border-gray-700">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            
+                            <!-- Nueva Tarjeta 3.1: Nomenclatura -->
+                            <div class="study-card cursor-pointer bg-white dark:bg-gray-800 border-2 border-gray-100 dark:border-gray-700 hover:border-purple-400 dark:hover:border-purple-500 rounded-3xl p-6 relative shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex flex-col h-full group/card">
+                                <div class="flex justify-between items-start mb-4">
+                                    <div class="bg-purple-100 dark:bg-purple-900/50 p-3 rounded-2xl text-purple-700 dark:text-purple-400">
+                                        <!-- Icono de Nomenclatura (Etiqueta/Tag) -->
+                                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path></svg>
+                                    </div>
+                                    <input type="checkbox" title="Marcar como estudiado" class="study-checkbox" />
+                                </div>
+                                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2 group-hover/card:text-purple-700 dark:group-hover/card:text-purple-400 transition-colors card-title">Nomenclatura de Ácidos Grasos (&Delta;)</h3>
+                                <p class="text-gray-500 dark:text-gray-400 text-sm mb-6 line-clamp-3">Aprende a interpretar la estructura química y contar los dobles enlaces de los lípidos utilizando la notación delta universal.</p>
+                                <div class="mt-auto inline-flex items-center gap-2 font-bold text-purple-700 dark:text-purple-400">
+                                    <span>Abrir Tarjeta</span>
+                                    <svg class="w-4 h-4 transition-transform group-hover/card:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                                </div>
+                                <!-- Texto Oculto -->
+                                <div class="hidden card-content-payload">
+                                    <p>En bioquímica, la nomenclatura sistemática para denotar la estructura de un ácido graso utiliza la notación general <strong>C:D &Delta;<sup>Posiciones</sup></strong>.</p>
+                                    <ul class="list-disc pl-5 space-y-2 mt-4 text-gray-600 dark:text-gray-300">
+                                        <li><strong>C</strong> indica el número total de átomos de carbono en la cadena hidrocarbonada.</li>
+                                        <li><strong>D</strong> indica el número total de dobles enlaces (insaturaciones).</li>
+                                        <li><strong>&Delta;<sup>Posiciones</sup></strong> señala exactamente en qué carbonos comienzan esos dobles enlaces, contando desde el extremo carboxilo de la molécula.</li>
+                                    </ul>
+                                    <div class="bg-purple-50 dark:bg-purple-900/30 p-5 rounded-xl border border-purple-100 dark:border-purple-800 mt-6">
+                                        <h4 class="font-bold text-purple-800 dark:text-purple-300 mb-2">Ejemplo de Examen: Ácido Linoleico</h4>
+                                        <p class="mb-0 text-gray-700 dark:text-gray-300 text-base">La fórmula del ácido linoleico se escribe como <span class="highlight bg-purple-200 dark:bg-purple-800 text-purple-900 dark:text-purple-100">18:2&Delta;<sup>9,12</sup></span>. Esto se traduce literalmente como una molécula compuesta por <span class="highlight bg-purple-200 dark:bg-purple-800 text-purple-900 dark:text-purple-100">18 carbonos y 2 dobles enlaces</span> (ubicados en las posiciones 9 y 12 de la cadena).</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Tarjeta 3.2 (Antes 3.1) -->
+                            <div class="study-card cursor-pointer bg-white dark:bg-gray-800 border-2 border-gray-100 dark:border-gray-700 hover:border-purple-400 dark:hover:border-purple-500 rounded-3xl p-6 relative shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex flex-col h-full group/card">
+                                <div class="flex justify-between items-start mb-4">
+                                    <div class="bg-purple-100 dark:bg-purple-900/50 p-3 rounded-2xl text-purple-700 dark:text-purple-400">
+                                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                                    </div>
+                                    <input type="checkbox" title="Marcar como estudiado" class="study-checkbox" />
+                                </div>
+                                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2 group-hover/card:text-purple-700 dark:group-hover/card:text-purple-400 transition-colors card-title">Ácidos Grasos, Eicosanoides y Lípidos de Almacenamiento</h3>
+                                <p class="text-gray-500 dark:text-gray-400 text-sm mb-6 line-clamp-3">Características de los ácidos grasos insaturados, los eicosanoides mediadores de dolor e inflamación, y las grasas de almacenamiento celular.</p>
+                                <div class="mt-auto inline-flex items-center gap-2 font-bold text-purple-700 dark:text-purple-400">
+                                    <span>Abrir Tarjeta</span>
+                                    <svg class="w-4 h-4 transition-transform group-hover/card:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                                </div>
+                                <!-- Texto Oculto -->
+                                <div class="hidden card-content-payload">
+                                    <p>Los lípidos son un grupo sumamente diverso de biomoléculas con funciones tanto estructurales como metabólicas. Todos parten de componentes básicos como los ácidos grasos. Es vital reconocer que los <span class="highlight">ácidos grasos insaturados</span> se diferencian estructuralmente porque poseen <span class="highlight">uno o más dobles enlaces</span> carbono-carbono en su cadena hidrocarbonada, lo que disminuye su punto de fusión. Algunos de estos son los llamados Omega-3 y Omega-6. Un ejemplo muy importante en la dieta humana es el <span class="highlight">ácido linoleico</span>, clasificado clínicamente como un ácido graso <span class="highlight">poliinsaturado esencial</span> que los mamíferos no pueden sintetizar y deben obtener forzosamente a través de la alimentación.</p>
+                                    <p>De manera similar, encontramos al <span class="highlight">ácido araquidónico</span>, un ácido graso poliinsaturado de 20 carbonos que tiene una enorme relevancia, ya que actúa como la <span class="highlight">molécula precursora universal de los eicosanoides</span>. Esta gran familia de eicosanoides incluye leucotrienos, tromboxanos y, de manera muy destacada, las <span class="highlight">prostaglandinas</span>, las cuales tienen como función biológica principal actuar como <span class="highlight">mediadores u hormonas locales que regulan procesos inflamatorios y de dolor</span>.</p>
+                                    <p>Para la reserva energética a largo plazo, los organismos utilizan lípidos de almacenamiento. Los <span class="highlight">triacilgliceroles</span> (o triglicéridos) están conformados estructuralmente por <span class="highlight">un glicerol central y tres cadenas de ácidos grasos</span> que se unen mediante reacciones enzimáticas de esterificación. Al ser moléculas anhidras, el propósito biológico fundamental de estos triacilgliceroles es proveer un <span class="highlight">almacenamiento masivo y altamente concentrado de reservas de energía</span> para el organismo dentro del tejido adiposo. En la naturaleza existe otro tipo de lípido altamente hidrofóbico que provee protección: la <span class="highlight">cera</span>. Esta clase de lípido está constituida estrictamente por un ácido graso de cadena larga esterificado de forma directa a un <span class="highlight">alcohol monohidroxílico de cadena larga</span>, confiriendo propiedades impermeabilizantes al pelaje, plumas y hojas de plantas.</p>
+                                </div>
+                            </div>
+
+                            <!-- Tarjeta 3.3 (Antes 3.2) -->
+                            <div class="study-card cursor-pointer bg-white dark:bg-gray-800 border-2 border-gray-100 dark:border-gray-700 hover:border-purple-400 dark:hover:border-purple-500 rounded-3xl p-6 relative shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex flex-col h-full group/card">
+                                <div class="flex justify-between items-start mb-4">
+                                    <div class="bg-purple-100 dark:bg-purple-900/50 p-3 rounded-2xl text-purple-700 dark:text-purple-400">
+                                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                                    </div>
+                                    <input type="checkbox" title="Marcar como estudiado" class="study-checkbox" />
+                                </div>
+                                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2 group-hover/card:text-purple-700 dark:group-hover/card:text-purple-400 transition-colors card-title">Tipos de Fosfolípidos y Esfingolípidos</h3>
+                                <p class="text-gray-500 dark:text-gray-400 text-sm mb-6 line-clamp-3">Lípidos anfipáticos de membrana, el rol de la cardiolipina, fosfolipasas y el esqueleto de la esfingosina en el tejido nervioso.</p>
+                                <div class="mt-auto inline-flex items-center gap-2 font-bold text-purple-700 dark:text-purple-400">
+                                    <span>Abrir Tarjeta</span>
+                                    <svg class="w-4 h-4 transition-transform group-hover/card:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                                </div>
+                                <!-- Texto Oculto -->
+                                <div class="hidden card-content-payload">
+                                    <p>La arquitectura de las membranas celulares depende de lípidos que poseen características físicas duales; estas moléculas se denominan <span class="highlight">anfipáticas</span>, ya que contienen simultáneamente regiones fuertemente <span class="highlight">hidrofílicas (polares)</span> y regiones <span class="highlight">hidrofóbicas (apolares)</span>. Si analizamos la estructura base de los <span class="highlight">fosfoglicéridos</span> (los lípidos más abundantes en las membranas, como la fosfatidilcolina o la fosfatidiletanolamina), notaremos que el componente principal que les confiere esta característica de cabeza polar es el <span class="highlight">grupo fosfato esterificado</span>.</p>
+                                    <p>A partir del ácido fosfatídico se derivan fosfolípidos muy especializados. Un gran ejemplo clínico es la <span class="highlight">cardiolipina</span>, un lípido grande y atípico que resulta ser un componente <span class="highlight">exclusivo e indispensable de la membrana mitocondrial interna</span>, ayudando a anclar las proteínas de la cadena respiratoria. Además de su rol de barrera estructural, algunos fosfolípidos tienen profundas funciones de comunicación. El <span class="highlight">fosfatidilinositol</span>, por ejemplo, actúa como una reserva precursora incrustada en la membrana plasmática para generar <span class="highlight">segundos mensajeros</span> (como el IP3 y el DAG) durante la compleja señalización intracelular. Para el recambio continuo de lípidos y esta liberación de señales, las células utilizan diferentes tipos de <span class="highlight">fosfolipasas</span> (A1, A2, C y D), que son <span class="highlight">enzimas específicas</span> biológicamente responsables de hidrolizar los enlaces éster de los fosfoglicéridos en puntos anatómicos muy precisos.</p>
+                                    <p>Paralelamente a los fosfolípidos basados en glicerol, encontramos otra familia estructural crucial en los tejidos superiores: los esfingolípidos. Estos utilizan como esqueleto central de anclaje a la <span class="highlight">esfingosina</span>, que es un <span class="highlight">aminoalcohol de 18 carbonos</span> de cadena larga que reemplaza la función del glicerol clásico. Cuando la esfingosina se une a un ácido graso forma la ceramida, la cual es la base de todos los demás derivados. Un derivado notable es la <span class="highlight">esfingomielina</span>, la cual es un lípido extremadamente abundante en las <span class="highlight">vainas aislantes que protegen los axones neuronales</span>, facilitando la transmisión rápida del impulso nervioso. Asimismo, en la cara externa de las membranas celulares animales, expuestos al medio extracelular, encontramos a los complejos <span class="highlight">glucolípidos</span> (como los cerebrósidos y gangliósidos). Estos esfingolípidos modificados poseen <span class="highlight">residuos de carbohidratos</span> que participan activamente en procesos de <span class="highlight">reconocimiento celular e identidad tisular</span>, siendo responsables, por ejemplo, de los grupos sanguíneos en los eritrocitos.</p>
+                                </div>
+                            </div>
+
+                            <!-- Tarjeta 3.3 -->
+                            <div class="study-card cursor-pointer bg-white dark:bg-gray-800 border-2 border-gray-100 dark:border-gray-700 hover:border-purple-400 dark:hover:border-purple-500 rounded-3xl p-6 relative shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex flex-col h-full group/card">
+                                <div class="flex justify-between items-start mb-4">
+                                    <div class="bg-purple-100 dark:bg-purple-900/50 p-3 rounded-2xl text-purple-700 dark:text-purple-400">
+                                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                                    </div>
+                                    <input type="checkbox" title="Marcar como estudiado" class="study-checkbox" />
+                                </div>
+                                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2 group-hover/card:text-purple-700 dark:group-hover/card:text-purple-400 transition-colors card-title">Isoprenoides, Esteroides y Transporte Sistémico</h3>
+                                <p class="text-gray-500 dark:text-gray-400 text-sm mb-6 line-clamp-3">Lípidos sin ácidos grasos, como los terpenos y el colesterol. Concluye con el transporte sanguíneo mediante lipoproteínas.</p>
+                                <div class="mt-auto inline-flex items-center gap-2 font-bold text-purple-700 dark:text-purple-400">
+                                    <span>Abrir Tarjeta</span>
+                                    <svg class="w-4 h-4 transition-transform group-hover/card:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                                </div>
+                                <!-- Texto Oculto -->
+                                <div class="hidden card-content-payload">
+                                    <p>Más allá de las membranas bicapa y las reservas energéticas, existen múltiples lípidos que no contienen cadenas de ácidos grasos en absoluto. Entre estos destacan los <span class="highlight">isoprenoides (terpenos)</span>, que son compuestos derivados de la polimerización bioquímica de unidades de cinco carbonos llamadas isopreno. En esta diversa y colorida familia de lípidos se incluyen el escualeno, la ubiquinona, y sustancias fisiológicas vitales como las <span class="highlight">vitaminas liposolubles A, E y K</span>.</p>
+                                    <p>En la familia estrechamente relacionada de los esteroides, caracterizados por su núcleo de anillos fusionados (ciclopentanoperhidrofenantreno), el principal protagonista en mamíferos es el <span class="highlight">colesterol</span>. Esta molécula cumple una vital doble función metabólica: estructuralmente, se intercala en la bicapa lipídica y se encarga de modular y mantener la <span class="highlight">fluidez de las membranas plasmáticas animales</span>; por otra parte, funciona bioquímicamente como la molécula precursora directa e indispensable para la síntesis de <span class="highlight">hormonas esteroideas y sales biliares</span>, regulando desde la digestión de grasas hasta los caracteres sexuales secundarios y el equilibrio de estrés (cortisol).</p>
+                                    <p>Finalmente, surge un problema fisiológico: debido a que los triglicéridos, el colesterol esterificado y otros lípidos complejos son inmiscibles e insolubles en medios acuosos como el plasma sanguíneo, el cuerpo humano requiere de un sistema de distribución y empaquetamiento especializado. Esto se logra bioquímicamente mediante las <span class="highlight">lipoproteínas</span> (como las HDL, LDL, VLDL). Estas son complejos macromoleculares esféricos y anfipáticos, recubiertos de apolipoproteínas, cuya función principal es <span class="highlight">transportar lípidos altamente insolubles</span> a través de la circulación sistémica. Un ejemplo clave y muy voluminoso de este sistema son los <span class="highlight">quilomicrones</span>, una clase específica de lipoproteína sintetizada en los enterocitos del epitelio intestinal después de una comida. Su función primordial y exclusiva es <span class="highlight">transportar los triacilgliceroles exógenos obtenidos de la dieta</span> hacia el hígado y el resto de los tejidos periféricos del organismo.</p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </section>
+
+                <footer class="text-center py-10 mt-12 border-t border-gray-200 dark:border-gray-800">
+                    <p class="text-gray-500 dark:text-gray-400 italic text-lg font-medium">¡Mucho éxito en tu examen! Confía en tu estudio; dominar este vocabulario hoy es construir los cimientos de tu futuro razonamiento clínico.</p>
+                    <div class="mt-4 flex justify-center gap-4 text-sm text-gray-400">
+                        <span>Universidad Autónoma de Chihuahua</span>
+                        <span>•</span>
+                        <span>Facultad de Medicina</span>
+                    </div>
+                </footer>
+            </main>
+        </div>
+
+        <!-- ESTRUCTURA MODAL UNIVERSAL -->
+        <div id="studyModal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4 sm:p-6 opacity-0 transition-opacity duration-300">
+            <!-- Backdrop Oscuro -->
+            <div id="modalBackdrop" class="absolute inset-0 bg-gray-900/60 backdrop-blur-sm transition-opacity"></div>
+            
+            <!-- Contenido del Modal -->
+            <div id="modalContentBox" class="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col relative transform scale-95 transition-transform duration-300 border border-gray-200 dark:border-gray-700">
+                <!-- Header -->
+                <div class="px-6 py-5 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center bg-gray-50 dark:bg-gray-800/80">
+                    <h3 id="modalTitle" class="text-2xl font-extrabold text-gray-900 dark:text-white pr-8">Título del Tema</h3>
+                    <button id="closeModalBtn" class="text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 transition-colors p-1 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 absolute right-6">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
+                </div>
+                
+                <!-- Body (Scrollable Text) -->
+                <div id="modalBody" class="p-6 md:p-8 overflow-y-auto modal-content-prose prose dark:prose-invert max-w-none text-gray-600 dark:text-gray-300">
+                    <!-- Aquí se inyecta el contenido dinámicamente -->
+                </div>
+                
+                <!-- Footer -->
+                <div class="px-6 py-4 border-t border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/80 flex justify-end">
+                    <button id="modalActionBtn" class="bg-uach-blue hover:bg-blue-700 text-white px-8 py-2.5 rounded-xl font-bold transition-all transform hover:scale-105 shadow-md">
+                        Entendido, cerrar
+                    </button>
+                </div>
             </div>
-        </aside>
+        </div>
 
-        <!-- CONTENIDO PRINCIPAL -->
-        <main class="lg:w-3/4 space-y-12">
-            
-            <header class="bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-10 md:p-14 border border-gray-100 dark:border-gray-700 text-center relative overflow-hidden">
-                <!-- Decoración de fondo -->
-                <div class="absolute -top-24 -right-24 w-48 h-48 bg-blue-100 dark:bg-blue-900/20 rounded-full blur-3xl opacity-50 pointer-events-none"></div>
-                <div class="absolute -bottom-24 -left-24 w-48 h-48 bg-yellow-100 dark:bg-yellow-900/20 rounded-full blur-3xl opacity-50 pointer-events-none"></div>
+        <!-- Scripts de Interacción -->
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
                 
-                <h1 class="text-4xl md:text-6xl font-extrabold mb-4 tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-uach-blue via-blue-700 to-uach-light dark:from-blue-400 dark:to-blue-200 drop-shadow-sm">
-                    Guía de Estudio Definitiva
-                </h1>
-                <p class="text-xl md:text-2xl font-semibold text-gray-500 dark:text-gray-400 mb-6 tracking-wide">Temas Selectos de Biofísica y Bioquímica</p>
-                <div class="inline-flex items-center gap-2 bg-gradient-to-r from-amber-100 to-yellow-100 dark:from-yellow-900/40 dark:to-amber-900/40 text-yellow-800 dark:text-yellow-400 px-6 py-2.5 rounded-full text-sm font-bold border border-yellow-200 dark:border-yellow-700/50 shadow-sm">
-                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
-                    Objetivo: Obtener 100/100
-                </div>
-            </header>
+                /* ---------- MODO OSCURO ---------- */
+                const themeToggle = document.getElementById("themeToggle");
+                const themeIcon = document.getElementById("themeIcon");
+                const themeText = document.getElementById("themeText");
+                const htmlElement = document.documentElement;
 
-            <!-- BLOQUE 1 -->
-            <section id="bloque1" class="scroll-mt-24 group">
-                <div class="bg-gradient-to-r from-uach-blue to-blue-800 dark:from-gray-800 dark:to-gray-700 p-6 rounded-t-3xl shadow-lg flex items-center gap-4 relative overflow-hidden">
-                    <div class="absolute top-0 right-0 w-32 h-full bg-white/10 skew-x-12 transform translate-x-8"></div>
-                    <div class="bg-white/20 p-3 rounded-xl backdrop-blur-sm text-white">
-                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5"></path></svg>
-                    </div>
-                    <h2 class="text-2xl md:text-3xl font-extrabold text-white tracking-tight z-10">1. ESTRUCTURA DE LA MATERIA</h2>
-                </div>
-                
-                <div class="bg-white dark:bg-gray-800 rounded-b-3xl shadow-xl p-6 md:p-8 border-x border-b border-gray-100 dark:border-gray-700 space-y-8">
-                    <p class="text-sm text-gray-400 dark:text-gray-500 font-medium flex items-center gap-2">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
-                        Fuente: Química - Raymond Chang
-                    </p>
-
-                    <!-- Tarjeta 1.1 -->
-                    <div class="study-card bg-white dark:bg-gray-800 border-2 border-gray-100 dark:border-gray-700 hover:border-blue-200 dark:hover:border-blue-700 rounded-2xl p-6 relative shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-                        <div class="flex justify-between items-start mb-5 border-b border-gray-100 dark:border-gray-700 pb-4">
-                            <h3 class="text-xl font-bold text-gray-900 dark:text-white">Conceptos Fundamentales y Estructura Atómica</h3>
-                            <input type="checkbox" title="Marcar como estudiado" class="study-checkbox mt-1">
-                        </div>
-                        <div class="prose dark:prose-invert max-w-none text-gray-600 dark:text-gray-300">
-                            <p class="leading-relaxed text-lg">
-                                Para comprender las bases de la biofísica y la bioquímica, es esencial partir de la clasificación de las sustancias puras, las cuales se dividen únicamente en <span class="highlight">elementos y compuestos</span>. La materia en la naturaleza puede encontrarse principalmente en tres <span class="highlight">estados fundamentales de agregación: sólido, líquido y gaseoso</span>. 
-                            </p>
-                            <p class="leading-relaxed text-lg mt-4">
-                                Al estudiar las características de la materia, es importante identificar cualquier <span class="highlight">propiedad intensiva</span>, definida como aquella que es <span class="highlight">completamente independiente</span> de la cantidad de masa presente, siendo ejemplos clásicos la densidad y la temperatura. Asimismo, es vital diferenciar la masa del <span class="highlight">peso</span>; este último representa la fuerza que ejerce la gravedad sobre la masa de un objeto. Desde una perspectiva histórica y conceptual, la <span class="highlight">teoría atómica de Dalton</span> sentó las bases al postular que los átomos de un mismo elemento se caracterizan por ser <span class="highlight">iguales entre sí en masa y propiedades</span>.
-                            </p>
-                            <p class="leading-relaxed text-lg mt-4 bg-slate-50 dark:bg-slate-800/50 p-5 rounded-xl border border-slate-100 dark:border-slate-700">
-                                A nivel subatómico, la identidad de un elemento está determinada por el <span class="highlight">protón</span>, una partícula con carga positiva ubicada en el núcleo que define el número atómico. Acompañando a los protones en el núcleo se encuentra el <span class="highlight">neutrón</span>, una partícula que <span class="highlight">carece de carga eléctrica</span> pero aporta masa. Cuando tenemos átomos de un mismo elemento (mismo número de protones) pero que poseen <span class="highlight">diferente número de masa</span> debido a una variación en su cantidad de neutrones, nos referimos a ellos como <span class="highlight">isótopos</span>.
-                            </p>
-                        </div>
-                    </div>
-
-                    <!-- Tarjeta 1.2 -->
-                    <div class="study-card bg-white dark:bg-gray-800 border-2 border-gray-100 dark:border-gray-700 hover:border-blue-200 dark:hover:border-blue-700 rounded-2xl p-6 relative shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-                        <div class="flex justify-between items-start mb-5 border-b border-gray-100 dark:border-gray-700 pb-4">
-                            <h3 class="text-xl font-bold text-gray-900 dark:text-white">Modelo Cuántico, Tabla Periódica y Enlaces</h3>
-                            <input type="checkbox" class="study-checkbox mt-1">
-                        </div>
-                        <div class="prose dark:prose-invert max-w-none text-gray-600 dark:text-gray-300">
-                            <p class="leading-relaxed text-lg">
-                                El comportamiento de los electrones alrededor del núcleo se describe mediante números cuánticos. El <span class="highlight">número cuántico principal (n)</span> es fundamental porque indica la <span class="highlight">distancia promedio</span> del electrón respecto al núcleo y su nivel de energía, mientras que el <span class="highlight">número cuántico magnético (m)</span> describe la <span class="highlight">orientación espacial</span> específica de un orbital atómico. Al visualizar estos orbitales, cabe destacar que la nube de probabilidad de un <span class="highlight">orbital s</span> presenta una geometría perfectamente <span class="highlight">esférica</span>. 
-                            </p>
-                            <p class="leading-relaxed text-lg mt-4">
-                                La distribución de estos electrones está regida por el <span class="highlight">principio de exclusión de Pauli</span>, el cual establece firmemente que en un átomo <span class="highlight">no puede haber dos electrones con los cuatro números cuánticos idénticos</span>. En la tabla periódica, los elementos con configuraciones electrónicas sumamente estables (con su octeto completo) se agrupan en la familia de los <span class="highlight">gases nobles</span>, los cuales se encuentran en el grupo 8A y son conocidos por su <span class="highlight">alta estabilidad</span> química. Por otro lado, la <span class="highlight">energía de ionización</span> se define como la energía mínima necesaria para <span class="highlight">arrancar un electrón</span> de un átomo cuando este se encuentra en estado gaseoso.
-                            </p>
-                            <p class="leading-relaxed text-lg mt-4 bg-slate-50 dark:bg-slate-800/50 p-5 rounded-xl border border-slate-100 dark:border-slate-700">
-                                La interacción entre los átomos para formar compuestos está dictada por su <span class="highlight">electronegatividad</span>, que es la capacidad intrínseca de un átomo para <span class="highlight">atraer hacia sí los electrones</span> compartidos en un enlace químico. Estas interacciones siguen la <span class="highlight">regla del octeto</span>, la cual describe la tendencia de los átomos a reaccionar hasta <span class="highlight">rodearse de ocho electrones</span> de valencia. Dependiendo de la diferencia de electronegatividad, se pueden formar distintos tipos de enlaces. Un <span class="highlight">enlace iónico</span> se forma por la <span class="highlight">atracción electrostática directa entre cationes y aniones</span> tras la transferencia de electrones. Si los electrones son <span class="highlight">compartidos de manera equitativa</span> por dos átomos, se habla de un <span class="highlight">enlace covalente no polar</span>. En cambio, en un <span class="highlight">enlace covalente polar</span>, los electrones se comparten, pero uno de los átomos los atrae con mayor fuerza debido a su <span class="highlight">mayor electronegatividad</span>, generando polos parciales. Un ejemplo clásico de moléculas con este tipo de interacciones es el agua (H₂O), cuya geometría molecular clásica no es lineal, sino <span class="highlight">angular</span>, debido a la repulsión de sus pares de electrones libres.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- BLOQUE 2 -->
-            <section id="bloque2" class="scroll-mt-24 group">
-                <div class="bg-gradient-to-r from-teal-600 to-emerald-700 dark:from-emerald-900 dark:to-teal-900 p-6 rounded-t-3xl shadow-lg flex items-center gap-4 relative overflow-hidden">
-                    <div class="absolute top-0 right-0 w-32 h-full bg-white/10 skew-x-12 transform translate-x-8"></div>
-                    <div class="bg-white/20 p-3 rounded-xl backdrop-blur-sm text-white">
-                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
-                    </div>
-                    <h2 class="text-2xl md:text-3xl font-extrabold text-white tracking-tight z-10">2. ESTADOS DE AGREGACIÓN</h2>
-                </div>
-                
-                <div class="bg-white dark:bg-gray-800 rounded-b-3xl shadow-xl p-6 md:p-8 border-x border-b border-gray-100 dark:border-gray-700 space-y-8">
-                    <p class="text-sm text-gray-400 dark:text-gray-500 font-medium flex items-center gap-2">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
-                        Fuente: Química - Raymond Chang
-                    </p>
-
-                    <div class="study-card bg-white dark:bg-gray-800 border-2 border-gray-100 dark:border-gray-700 hover:border-teal-200 dark:hover:border-teal-700 rounded-2xl p-6 relative shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-                        <div class="flex justify-between items-start mb-5 border-b border-gray-100 dark:border-gray-700 pb-4">
-                            <h3 class="text-xl font-bold text-gray-900 dark:text-white">Físico-Química de Fluidos y Mezclas</h3>
-                            <input type="checkbox" class="study-checkbox mt-1">
-                        </div>
-                        <div class="prose dark:prose-invert max-w-none text-gray-600 dark:text-gray-300">
-                            <p class="leading-relaxed text-lg">
-                                En el laboratorio y en la naturaleza, a menudo encontramos una <span class="highlight">mezcla heterogénea</span>, caracterizada porque su composición y propiedades <span class="highlight">no son uniformes</span> en todas sus partes. Para separar mezclas líquidas, un método físico muy utilizado es la <span class="highlight">destilación</span>, la cual separa los componentes basándose en sus <span class="highlight">puntos de ebullición</span>. Existe también un tipo de dispersión llamada <span class="highlight">coloide</span>, que se distingue por tener partículas de un tamaño mayor a las de las moléculas disueltas verdaderas, pero que <span class="highlight">no se asientan por gravedad</span>.
-                            </p>
-                            <p class="leading-relaxed text-lg mt-4">
-                                La materia puede cambiar de un estado a otro mediante diferentes procesos físicos; por ejemplo, la <span class="highlight">evaporación</span> es el cambio de fase directo de un <span class="highlight">líquido transformándose en gas</span>, mientras que la <span class="highlight">sublimación</span> es el proceso donde un material sólido pasa <span class="highlight">directamente al estado gaseoso</span> sin llegar a convertirse en líquido en ningún momento. Los fluidos también poseen propiedades medibles y únicas: la <span class="highlight">viscosidad</span> es la propiedad que mide la <span class="highlight">resistencia interna</span> que presenta un líquido a fluir, y la <span class="highlight">tensión superficial</span> es el resultado de fuerzas intermoleculares que hacen que la superficie de un líquido actúe de manera cohesiva, como si fuera una <span class="highlight">película elástica tensional</span>.
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="study-card bg-white dark:bg-gray-800 border-2 border-gray-100 dark:border-gray-700 hover:border-teal-200 dark:hover:border-teal-700 rounded-2xl p-6 relative shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-                        <div class="flex justify-between items-start mb-5 border-b border-gray-100 dark:border-gray-700 pb-4">
-                            <h3 class="text-xl font-bold text-gray-900 dark:text-white">Disoluciones, Concentración y Leyes Físicas</h3>
-                            <input type="checkbox" class="study-checkbox mt-1">
-                        </div>
-                        <div class="prose dark:prose-invert max-w-none text-gray-600 dark:text-gray-300">
-                            <p class="leading-relaxed text-lg">
-                                Una <span class="highlight">disolución (o solución)</span> se define estrictamente como una <span class="highlight">mezcla homogénea de dos o más sustancias</span> a nivel molecular. Dependiendo de la cantidad de soluto presente, una disolución se clasifica como <span class="highlight">insaturada</span> si contiene una cantidad de soluto <span class="highlight">menor a su capacidad máxima</span> térmica, o como <span class="highlight">saturada</span> si contiene exactamente la <span class="highlight">cantidad máxima de soluto</span> que el disolvente puede disolver en equilibrio. Bajo ciertas condiciones, es posible crear una <span class="highlight">disolución sobresaturada</span>, la cual es una solución <span class="highlight">inestable</span> que contiene una cantidad de soluto mayor a su límite natural.
-                            </p>
-                            <p class="leading-relaxed text-lg mt-4 bg-slate-50 dark:bg-slate-800/50 p-5 rounded-xl border border-slate-100 dark:border-slate-700">
-                                Para cuantificar estas disoluciones, utilizamos unidades de concentración. La <span class="highlight">molaridad</span> se define como la cantidad de <span class="highlight">moles de soluto disueltos por cada litro</span> de disolución total. Por otro lado, la <span class="highlight">molalidad</span> mide los moles de soluto por <span class="highlight">cada kilogramo de disolvente puro</span>; esta unidad es de gran utilidad práctica ya que no cambia con las variaciones de temperatura.
-                            </p>
-                            <p class="leading-relaxed text-lg mt-4">
-                                El comportamiento de los gases y las soluciones está regido por principios físicos fundamentales. La <span class="highlight">ley de Boyle</span> establece que, a una temperatura constante, el <span class="highlight">volumen de un gas es inversamente proporcional a su presión</span>. Al hablar de la <span class="highlight">solubilidad de gases</span> en líquidos, una regla general es que, al incrementar la temperatura del líquido, la solubilidad del gas <span class="highlight">disminuye</span>. Cuando añadimos un soluto a un disolvente, alteramos sus características físicas generando <span class="highlight">propiedades coligativas</span>, las cuales se caracterizan por depender <span class="highlight">exclusivamente del número de partículas</span> de soluto disueltas y no de su naturaleza química. Una de estas propiedades se explica con la <span class="highlight">ley de Raoult</span>, la cual indica que la presión de vapor de una disolución es <span class="highlight">directamente proporcional a la fracción molar</span> de su solvente. Además de la concentración, es vital medir el nivel de acidez; en agua a 25°C, un medio estrictamente neutro equivale a un <span class="highlight">pH de 7</span>.
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="study-card bg-white dark:bg-gray-800 border-2 border-gray-100 dark:border-gray-700 hover:border-teal-200 dark:hover:border-teal-700 rounded-2xl p-6 relative shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-                        <div class="flex justify-between items-start mb-5 border-b border-gray-100 dark:border-gray-700 pb-4">
-                            <h3 class="text-xl font-bold text-gray-900 dark:text-white">Osmolaridad Biológica</h3>
-                            <input type="checkbox" class="study-checkbox mt-1">
-                        </div>
-                        <div class="prose dark:prose-invert max-w-none text-gray-600 dark:text-gray-300">
-                            <p class="leading-relaxed text-lg">
-                                En los sistemas vivos, el movimiento de líquidos es un fenómeno crítico regido por la <span class="highlight">ósmosis</span>, que es el movimiento selectivo del solvente (agua) a través de una membrana semipermeable desde un área <span class="highlight">más diluida hacia una zona de mayor concentración</span> de solutos. Para mantener la integridad celular, es fundamental que las células se encuentren en un medio adecuado, como una <span class="highlight">solución isotónica</span>, la cual posee exactamente la <span class="highlight">misma concentración de solutos</span> osmóticamente activos que el interior del citoplasma celular, previniendo así el daño osmótico.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- BLOQUE 3 -->
-            <section id="bloque3" class="scroll-mt-24 group">
-                <div class="bg-gradient-to-r from-purple-700 to-indigo-800 dark:from-indigo-900 dark:to-purple-900 p-6 rounded-t-3xl shadow-lg flex items-center gap-4 relative overflow-hidden">
-                    <div class="absolute top-0 right-0 w-32 h-full bg-white/10 skew-x-12 transform translate-x-8"></div>
-                    <div class="bg-white/20 p-3 rounded-xl backdrop-blur-sm text-white">
-                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-                    </div>
-                    <h2 class="text-2xl md:text-3xl font-extrabold text-white tracking-tight z-10">3. LÍPIDOS Y MEMBRANAS</h2>
-                </div>
-                
-                <div class="bg-white dark:bg-gray-800 rounded-b-3xl shadow-xl p-6 md:p-8 border-x border-b border-gray-100 dark:border-gray-700 space-y-8">
-                    <p class="text-sm text-gray-400 dark:text-gray-500 font-medium flex items-center gap-2">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
-                        Fuente: Bioquímica - Trudy McKee
-                    </p>
-
-                    <div class="study-card bg-white dark:bg-gray-800 border-2 border-gray-100 dark:border-gray-700 hover:border-indigo-200 dark:hover:border-indigo-700 rounded-2xl p-6 relative shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-                        <div class="flex justify-between items-start mb-5 border-b border-gray-100 dark:border-gray-700 pb-4">
-                            <h3 class="text-xl font-bold text-gray-900 dark:text-white">Ácidos Grasos, Eicosanoides y Lípidos de Almacenamiento</h3>
-                            <input type="checkbox" class="study-checkbox mt-1">
-                        </div>
-                        <div class="prose dark:prose-invert max-w-none text-gray-600 dark:text-gray-300">
-                            <p class="leading-relaxed text-lg">
-                                Los lípidos son un grupo sumamente diverso de biomoléculas con funciones tanto estructurales como metabólicas. Todos parten de componentes básicos como los ácidos grasos. Es vital reconocer que los <span class="highlight">ácidos grasos insaturados</span> se diferencian estructuralmente porque poseen <span class="highlight">uno o más dobles enlaces</span> carbono-carbono en su cadena hidrocarbonada, lo que disminuye su punto de fusión. Algunos de estos son los llamados Omega-3 y Omega-6. Un ejemplo muy importante en la dieta humana es el <span class="highlight">ácido linoleico</span>, clasificado clínicamente como un ácido graso <span class="highlight">poliinsaturado esencial</span> que los mamíferos no pueden sintetizar y deben obtener forzosamente a través de la alimentación. 
-                            </p>
-                            <p class="leading-relaxed text-lg mt-4 bg-slate-50 dark:bg-slate-800/50 p-5 rounded-xl border border-slate-100 dark:border-slate-700">
-                                De manera similar, encontramos al <span class="highlight">ácido araquidónico</span>, un ácido graso poliinsaturado de 20 carbonos que tiene una enorme relevancia, ya que actúa como la <span class="highlight">molécula precursora universal de los eicosanoides</span>. Esta gran familia de eicosanoides incluye leucotrienos, tromboxanos y, de manera muy destacada, las <span class="highlight">prostaglandinas</span>, las cuales tienen como función biológica principal actuar como <span class="highlight">mediadores u hormonas locales que regulan procesos inflamatorios y de dolor</span>.
-                            </p>
-                            <p class="leading-relaxed text-lg mt-4">
-                                Para la reserva energética a largo plazo, los organismos utilizan lípidos de almacenamiento. Los <span class="highlight">triacilgliceroles</span> (o triglicéridos) están conformados estructuralmente por <span class="highlight">un glicerol central y tres cadenas de ácidos grasos</span> que se unen mediante reacciones enzimáticas de esterificación. Al ser moléculas anhidras, el propósito biológico fundamental de estos triacilgliceroles es proveer un <span class="highlight">almacenamiento masivo y altamente concentrado de reservas de energía</span> para el organismo dentro del tejido adiposo. En la naturaleza existe otro tipo de lípido altamente hidrofóbico que provee protección: la <span class="highlight">cera</span>. Esta clase de lípido está constituida estrictamente por un ácido graso de cadena larga esterificado de forma directa a un <span class="highlight">alcohol monohidroxílico de cadena larga</span>, confiriendo propiedades impermeabilizantes al pelaje, plumas y hojas de plantas.
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="study-card bg-white dark:bg-gray-800 border-2 border-gray-100 dark:border-gray-700 hover:border-indigo-200 dark:hover:border-indigo-700 rounded-2xl p-6 relative shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-                        <div class="flex justify-between items-start mb-5 border-b border-gray-100 dark:border-gray-700 pb-4">
-                            <h3 class="text-xl font-bold text-gray-900 dark:text-white">Tipos de Fosfolípidos y Esfingolípidos</h3>
-                            <input type="checkbox" class="study-checkbox mt-1">
-                        </div>
-                        <div class="prose dark:prose-invert max-w-none text-gray-600 dark:text-gray-300">
-                            <p class="leading-relaxed text-lg">
-                                La arquitectura de las membranas celulares depende de lípidos que poseen características físicas duales; estas moléculas se denominan <span class="highlight">anfipáticas</span>, ya que contienen simultáneamente regiones fuertemente <span class="highlight">hidrofílicas (polares)</span> y regiones <span class="highlight">hidrofóbicas (apolares)</span>. Si analizamos la estructura base de los <span class="highlight">fosfoglicéridos</span> (los lípidos más abundantes en las membranas, como la fosfatidilcolina o la fosfatidiletanolamina), notaremos que el componente principal que les confiere esta característica de cabeza polar es el <span class="highlight">grupo fosfato esterificado</span>. 
-                            </p>
-                            <p class="leading-relaxed text-lg mt-4 bg-slate-50 dark:bg-slate-800/50 p-5 rounded-xl border border-slate-100 dark:border-slate-700">
-                                A partir del ácido fosfatídico se derivan fosfolípidos muy especializados. Un gran ejemplo clínico es la <span class="highlight">cardiolipina</span>, un lípido grande y atípico que resulta ser un componente <span class="highlight">exclusivo e indispensable de la membrana mitocondrial interna</span>, ayudando a anclar las proteínas de la cadena respiratoria. Además de su rol de barrera estructural, algunos fosfolípidos tienen profundas funciones de comunicación. El <span class="highlight">fosfatidilinositol</span>, por ejemplo, actúa como una reserva precursora incrustada en la membrana plasmática para generar <span class="highlight">segundos mensajeros</span> (como el IP3 y el DAG) durante la compleja señalización intracelular. Para el recambio continuo de lípidos y esta liberación de señales, las células utilizan diferentes tipos de <span class="highlight">fosfolipasas</span> (A1, A2, C y D), que son <span class="highlight">enzimas específicas</span> biológicamente responsables de hidrolizar los enlaces éster de los fosfoglicéridos en puntos anatómicos muy precisos.
-                            </p>
-                            <p class="leading-relaxed text-lg mt-4">
-                                Paralelamente a los fosfolípidos basados en glicerol, encontramos otra familia estructural crucial en los tejidos superiores: los esfingolípidos. Estos utilizan como esqueleto central de anclaje a la <span class="highlight">esfingosina</span>, que es un <span class="highlight">aminoalcohol de 18 carbonos</span> de cadena larga que reemplaza la función del glicerol clásico. Cuando la esfingosina se une a un ácido graso forma la ceramida, la cual es la base de todos los demás derivados. Un derivado notable es la <span class="highlight">esfingomielina</span>, la cual es un lípido extremadamente abundante en las <span class="highlight">vainas aislantes que protegen los axones neuronales</span>, facilitando la transmisión rápida del impulso nervioso. Asimismo, en la cara externa de las membranas celulares animales, expuestos al medio extracelular, encontramos a los complejos <span class="highlight">glucolípidos</span> (como los cerebrósidos y gangliósidos). Estos esfingolípidos modificados poseen <span class="highlight">residuos de carbohidratos</span> que participan activamente en procesos de <span class="highlight">reconocimiento celular e identidad tisular</span>, siendo responsables, por ejemplo, de los grupos sanguíneos en los eritrocitos.
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="study-card bg-white dark:bg-gray-800 border-2 border-gray-100 dark:border-gray-700 hover:border-indigo-200 dark:hover:border-indigo-700 rounded-2xl p-6 relative shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-                        <div class="flex justify-between items-start mb-5 border-b border-gray-100 dark:border-gray-700 pb-4">
-                            <h3 class="text-xl font-bold text-gray-900 dark:text-white">Isoprenoides, Esteroides y Transporte Sistémico</h3>
-                            <input type="checkbox" class="study-checkbox mt-1">
-                        </div>
-                        <div class="prose dark:prose-invert max-w-none text-gray-600 dark:text-gray-300">
-                            <p class="leading-relaxed text-lg">
-                                Más allá de las membranas bicapa y las reservas energéticas, existen múltiples lípidos que no contienen cadenas de ácidos grasos en absoluto. Entre estos destacan los <span class="highlight">isoprenoides (terpenos)</span>, que son compuestos derivados de la polimerización bioquímica de unidades de cinco carbonos llamadas isopreno. En esta diversa y colorida familia de lípidos se incluyen el escualeno, la ubiquinona, y sustancias fisiológicas vitales como las <span class="highlight">vitaminas liposolubles A, E y K</span>. 
-                            </p>
-                            <p class="leading-relaxed text-lg mt-4 bg-slate-50 dark:bg-slate-800/50 p-5 rounded-xl border border-slate-100 dark:border-slate-700">
-                                En la familia estrechamente relacionada de los esteroides, caracterizados por su núcleo de anillos fusionados (ciclopentanoperhidrofenantreno), el principal protagonista en mamíferos es el <span class="highlight">colesterol</span>. Esta molécula cumple una vital doble función metabólica: estructuralmente, se intercala en la bicapa lipídica y se encarga de modular y mantener la <span class="highlight">fluidez de las membranas plasmáticas animales</span>; por otra parte, funciona bioquímicamente como la molécula precursora directa e indispensable para la síntesis de <span class="highlight">hormonas esteroideas y sales biliares</span>, regulando desde la digestión de grasas hasta los caracteres sexuales secundarios y el equilibrio de estrés (cortisol).
-                            </p>
-                            <p class="leading-relaxed text-lg mt-4">
-                                Finalmente, surge un problema fisiológico: debido a que los triglicéridos, el colesterol esterificado y otros lípidos complejos son inmiscibles e insolubles en medios acuosos como el plasma sanguíneo, el cuerpo humano requiere de un sistema de distribución y empaquetamiento especializado. Esto se logra bioquímicamente mediante las <span class="highlight">lipoproteínas</span> (como las HDL, LDL, VLDL). Estas son complejos macromoleculares esféricos y anfipáticos, recubiertos de apolipoproteínas, cuya función principal es <span class="highlight">transportar lípidos altamente insolubles</span> a través de la circulación sistémica. Un ejemplo clave y muy voluminoso de este sistema son los <span class="highlight">quilomicrones</span>, una clase específica de lipoproteína sintetizada en los enterocitos del epitelio intestinal después de una comida. Su función primordial y exclusiva es <span class="highlight">transportar los triacilgliceroles exógenos obtenidos de la dieta</span> hacia el hígado y el resto de los tejidos periféricos del organismo.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            
-            <footer class="text-center py-10 mt-12 border-t border-gray-200 dark:border-gray-800">
-                <p class="text-gray-500 dark:text-gray-400 italic text-lg font-medium">¡Mucho éxito en tu examen! Confía en tu estudio; dominar este vocabulario hoy es construir los cimientos de tu futuro razonamiento clínico.</p>
-                <div class="mt-4 flex justify-center gap-4 text-sm text-gray-400">
-                    <span>Universidad Autónoma de Chihuahua</span>
-                    <span>•</span>
-                    <span>Facultad de Medicina</span>
-                </div>
-            </footer>
-
-        </main>
-    </div>
-
-    <!-- Scripts de Interacción -->
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const themeToggle = document.getElementById('themeToggle');
-            const themeIcon = document.getElementById('themeIcon');
-            const themeText = document.getElementById('themeText');
-            const htmlElement = document.documentElement;
-
-            if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                htmlElement.classList.add('dark');
-                updateThemeUI(true);
-            } else {
-                htmlElement.classList.remove('dark');
-                updateThemeUI(false);
-            }
-
-            themeToggle.addEventListener('click', () => {
-                htmlElement.classList.toggle('dark');
-                const isDark = htmlElement.classList.contains('dark');
-                localStorage.theme = isDark ? 'dark' : 'light';
-                updateThemeUI(isDark);
-            });
-
-            function updateThemeUI(isDark) {
-                if(isDark) {
-                    themeIcon.textContent = '☀️';
-                    themeText.textContent = 'Modo Día';
+                if (localStorage.theme === "dark" || (!("theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+                    htmlElement.classList.add("dark");
+                    updateThemeUI(true);
                 } else {
-                    themeIcon.textContent = '🌙';
-                    themeText.textContent = 'Modo Noche';
+                    htmlElement.classList.remove("dark");
+                    updateThemeUI(false);
                 }
-            }
 
-            const checkboxes = document.querySelectorAll('.study-checkbox');
-            const progressBar = document.getElementById('progressBar');
-            const progressText = document.getElementById('progressText');
-            const totalCards = checkboxes.length;
-
-            function updateProgress() {
-                const checkedCount = document.querySelectorAll('.study-checkbox:checked').length;
-                const percentage = Math.round((checkedCount / totalCards) * 100);
-                
-                progressBar.style.width = `${percentage}%`;
-                progressText.textContent = percentage;
-
-                if(percentage === 100) {
-                    progressBar.classList.remove('from-blue-500', 'to-uach-blue', 'shadow-glow');
-                    progressBar.classList.add('from-emerald-400', 'to-emerald-600', 'shadow-glow-success');
-                } else {
-                    progressBar.classList.add('from-blue-500', 'to-uach-blue', 'shadow-glow');
-                    progressBar.classList.remove('from-emerald-400', 'to-emerald-600', 'shadow-glow-success');
-                }
-            }
-
-            checkboxes.forEach(box => {
-                box.addEventListener('change', function() {
-                    const card = this.closest('.study-card');
-                    if(this.checked) {
-                        card.classList.add('card-studied');
-                    } else {
-                        card.classList.remove('card-studied');
-                    }
-                    updateProgress();
+                themeToggle.addEventListener("click", () => {
+                    htmlElement.classList.toggle("dark");
+                    const isDark = htmlElement.classList.contains("dark");
+                    localStorage.theme = isDark ? "dark" : "light";
+                    updateThemeUI(isDark);
                 });
+
+                function updateThemeUI(isDark) {
+                    if (isDark) {
+                        themeIcon.textContent = "☀️";
+                        themeText.textContent = "Modo Día";
+                    } else {
+                        themeIcon.textContent = "🌙";
+                        themeText.textContent = "Modo Noche";
+                    }
+                }
+
+                /* ---------- BARRA DE PROGRESO ---------- */
+                const checkboxes = document.querySelectorAll(".study-checkbox");
+                const progressBar = document.getElementById("progressBar");
+                const progressText = document.getElementById("progressText");
+                const totalCards = checkboxes.length;
+
+                function updateProgress() {
+                    const checkedCount = document.querySelectorAll(".study-checkbox:checked").length;
+                    const percentage = Math.round((checkedCount / totalCards) * 100);
+
+                    progressBar.style.width = `${percentage}%`;
+                    progressText.textContent = percentage;
+
+                    if (percentage === 100) {
+                        progressBar.classList.remove("from-blue-500", "to-uach-blue", "shadow-glow");
+                        progressBar.classList.add("from-emerald-400", "to-emerald-600", "shadow-glow-success");
+                    } else {
+                        progressBar.classList.add("from-blue-500", "to-uach-blue", "shadow-glow");
+                        progressBar.classList.remove("from-emerald-400", "to-emerald-600", "shadow-glow-success");
+                    }
+                }
+
+                // Evitar que el clic en el checkbox abra el modal
+                checkboxes.forEach((box) => {
+                    box.addEventListener("click", (e) => {
+                        e.stopPropagation();
+                    });
+
+                    box.addEventListener("change", function () {
+                        const card = this.closest(".study-card");
+                        if (this.checked) {
+                            card.classList.add("card-studied");
+                        } else {
+                            card.classList.remove("card-studied");
+                        }
+                        updateProgress();
+                    });
+                });
+
+                /* ---------- LÓGICA DEL MODAL ---------- */
+                const modal = document.getElementById('studyModal');
+                const modalContentBox = document.getElementById('modalContentBox');
+                const modalTitle = document.getElementById('modalTitle');
+                const modalBody = document.getElementById('modalBody');
+                const closeModalBtn = document.getElementById('closeModalBtn');
+                const modalActionBtn = document.getElementById('modalActionBtn');
+                const modalBackdrop = document.getElementById('modalBackdrop');
+                const studyCards = document.querySelectorAll('.study-card');
+
+                function openModal(title, htmlContent) {
+                    modalTitle.textContent = title;
+                    modalBody.innerHTML = htmlContent;
+                    
+                    // Mostrar Modal
+                    modal.classList.remove('hidden');
+                    modal.classList.add('flex');
+                    document.body.style.overflow = 'hidden';
+                    
+                    // Pequeño delay para la animación
+                    setTimeout(() => {
+                        modal.classList.remove('opacity-0');
+                        modalContentBox.classList.remove('scale-95');
+                    }, 10);
+                }
+
+                function closeModal() {
+                    modal.classList.add('opacity-0');
+                    modalContentBox.classList.add('scale-95');
+                    
+                    setTimeout(() => {
+                        modal.classList.add('hidden');
+                        modal.classList.remove('flex');
+                        document.body.style.overflow = '';
+                    }, 300); // Mismo tiempo que la duración de la transición
+                }
+
+                // Asignar clics a las tarjetas
+                studyCards.forEach(card => {
+                    card.addEventListener('click', (e) => {
+                        // Si se hizo clic en el checkbox, ignorar
+                        if(e.target.classList.contains('study-checkbox')) return;
+
+                        const title = card.querySelector('.card-title').textContent;
+                        const hiddenContent = card.querySelector('.card-content-payload').innerHTML;
+                        
+                        openModal(title, hiddenContent);
+                    });
+                });
+
+                // Eventos para cerrar modal
+                closeModalBtn.addEventListener('click', closeModal);
+                modalActionBtn.addEventListener('click', closeModal);
+                modalBackdrop.addEventListener('click', closeModal);
+                
+                // Cerrar con Escape
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+                        closeModal();
+                    }
+                });
+
             });
-        });
-    </script>
-</body>
+        </script>
+    </body>
 </html>
