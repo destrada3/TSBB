@@ -80,20 +80,58 @@
             font-size: 0.9em;
         }
         
-         /* Banner Parpadeante Suavizado */
-         .alerta-parcial {
+        /* =========================================
+           NUEVO BANNER DE AVISO (CSS PURO)
+           ========================================= */
+        .alerta-parcial {
+            color: white;
+            text-align: center;
+            padding: 12px 16px;
+            font-weight: bold;
+            font-size: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
             animation: alertaBlink 1.5s infinite alternate ease-in-out;
+            letter-spacing: 0.025em;
+        }
+
+        @media (min-width: 768px) {
+            .alerta-parcial { font-size: 1.125rem; }
+        }
+
+        .alerta-icon {
+            font-size: 1.5rem;
+            display: inline-block;
+            animation: bounceIcon 1s infinite;
+        }
+
+        .alerta-link {
+            color: #fde047; /* Amarillo */
+            text-decoration: underline;
+            text-decoration-color: rgba(250, 204, 21, 0.5);
+            text-underline-offset: 4px;
+            transition: color 0.2s ease;
+        }
+
+        .alerta-link:hover {
+            color: #fef08a; /* Amarillo claro */
         }
 
         @keyframes alertaBlink {
-            0% {
-                background-color: #ef4444;
-                box-shadow: 0 4px 15px rgba(239, 68, 68, 0.6);
-            }
-            100% {
-                background-color: #991b1b;
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
-            }
+            0% { background-color: rgba(239, 68, 68, 0.95); box-shadow: 0 4px 15px rgba(239, 68, 68, 0.6); }
+            100% { background-color: rgba(153, 27, 27, 0.95); box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4); }
+        }
+
+        @keyframes bounceIcon {
+            0%, 100% { transform: translateY(-25%); animation-timing-function: cubic-bezier(0.8,0,1,1); }
+            50% { transform: none; animation-timing-function: cubic-bezier(0,0,0.2,1); }
         }
         
         /* Banner de información */
@@ -235,20 +273,11 @@
 </head>
 
 <body>
-        <!-- BANNER DE AVISO -->
-        <div
-            class="text-white text-center py-3 px-4 font-bold text-base md:text-lg sticky top-0 z-50 flex items-center justify-center gap-3 alerta-parcial backdrop-blur-sm"
-        >
-            <span class="text-2xl animate-bounce">🚨</span>
-            <span class="tracking-wide"
-                >PRÓXIMO EXAMEN 25 de FEBRERO -
-                <a
-                    href="#"
-                    class="text-yellow-300 hover:text-yellow-100 transition-colors underline decoration-yellow-400/50 underline-offset-4"
-                    >consulta la guía aquí</a
-                ></span
-            >
-            <span class="text-2xl animate-bounce">🚨</span>
+        <!-- BANNER DE AVISO CON CSS PURO -->
+        <div class="alerta-parcial">
+            <span class="alerta-icon">🚨</span>
+            <span>PRÓXIMO EXAMEN 25 de FEBRERO - <a href="guia_primer_parcial.html" class="alerta-link">consulta la guía aquí</a></span>
+            <span class="alerta-icon">🚨</span>
         </div>
 
     <!-- Modal del Reglamento -->
@@ -339,6 +368,13 @@
     </div>
 
     <div class="container">
+        
+        <!-- Banner de Alerta de Reglamento MOVIDO ABAJO DEL BANNER DE EXAMEN PARA QUE NO ESTORBE -->
+        <div id="reglamentoAlert" class="reglamento-banner">
+            <p>⚠️ <strong>Atención Estudiante:</strong> Tienes pendiente la firma de los lineamientos del curso. 
+            <span onclick="openReglamento()" style="text-decoration: underline; cursor: pointer; font-weight: 700; margin-left: 10px;">Firmar conformidad ahora</span></p>
+        </div>
+
         <header>
             <h1>Fundamentos de Biofísica y Bioquímica</h1>
             <p class="subtitle">Recursos Interactivos y Laboratorio Virtual</p>
